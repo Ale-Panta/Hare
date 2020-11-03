@@ -17,3 +17,8 @@
 #else
 	#error Hare only supports windows!
 #endif
+
+// Macro used to filter events in categories.
+// Multiple categories are allowed.
+/// <"see cref="$(SolutionDir)Hare/Hare/Events/Event.h"/>
+#define BIT(x) (1 << x)
