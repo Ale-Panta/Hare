@@ -2,9 +2,6 @@
 
 #include "Hare/Core.h"
 
-#include <string>		// Should be in precompiled header.
-#include <functional>	// Should be in precompiled header.
-
 namespace Hare
 {
 	// Events in Hare are currently blocking, meaning when an event occurs it

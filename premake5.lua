@@ -18,6 +18,9 @@ project "Hare"
 	targetdir  ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir  ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "hrpch.h"
+	pchsource "Hare/src/hrpch.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",

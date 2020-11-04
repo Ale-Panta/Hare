@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Hare
 {
 	class HARE_API MouseMovedEvent : public Event 
