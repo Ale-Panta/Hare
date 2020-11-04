@@ -1,14 +1,9 @@
-# Binaries
-**/bin/
-!vendor/premake/bin/
+# Directories
+.vs/
+bin/
 bin-int/
 
-# Hare files
-*.log
-
-# Visual Studio files and folder
-.vs/
-**.sln
+# Files
+*.user
 **.vcxproj
-**.vcxproj.filters
-**.vcxproj.user
+**.filters
