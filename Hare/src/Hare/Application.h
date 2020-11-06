@@ -3,6 +3,7 @@
 #include "Core.h"
 #include "Window.h"
 #include "Events/Event.h"
+#include "Hare/Events/ApplicationEvent.h"
 
 namespace Hare
 {
@@ -19,8 +20,11 @@ namespace Hare
 		/// Run the application.
 		/// </summary>
 		void Run();
+		void OnEvent(Event& e);
 
 	private:
+		bool OnWindowClose(WindowCloseEvent& e);
+
 		std::unique_ptr<Window> m_Window;
 		bool m_IsRunning = true;
 	};

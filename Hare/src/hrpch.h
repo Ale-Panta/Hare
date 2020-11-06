@@ -19,6 +19,6 @@
 #include "Hare/Log.h"
 
 #ifdef HR_PLATFORM_WINDOWS
-	#include <Windows.h>
+	#include <Hare/Window.h>
 #endif
 
