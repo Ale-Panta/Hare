@@ -4,6 +4,7 @@
 // For use by Hare applications.
 
 #include "Hare/Log.h"
+#include "Hare/Layer.h"
 #include "Hare/Application.h"
 
 // ---Entry Point-----------
