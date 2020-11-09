@@ -34,13 +34,13 @@ namespace Hare
 
 
 		// Iterate the layers backwords, because we want the latest layer 
-		// blocks input.
+		// to blocks input first (if it handle it).
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
 			(*--it)->OnEvent(e);
 
 			if (e.Handled)
-				break;
+				break;			// Break as soon the event is handled by the layer.
 		}
 	}
 

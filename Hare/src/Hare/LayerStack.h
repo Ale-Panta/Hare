@@ -7,14 +7,30 @@
 
 namespace Hare
 {
+	/// <summary>
+	/// Wrapper class that layers the event system.
+	/// Input are blocked from end to begin layers.
+	/// <example>
+	/// Usually UI elements need to be place on the latest layer,
+	/// because if encautered any inputs it will be the first to blocks it.
+	/// </example>
+	/// </summary>
 	class HARE_API LayerStack 
 	{
 	public:
 		LayerStack();
 		~LayerStack();
 
+		/// <summary>
+		/// Push layer in the first half of list.
+		/// </summary>
 		void PushLayer(Layer* layer);
+		
+		/// <summary>
+		/// Push layer at the very last of the list.
+		/// </summary>
 		void PushOverlay(Layer* overlay);
+
 		void PopLayer(Layer* layer);
 		void PopOverlay(Layer* overlay);
 

@@ -19,10 +19,6 @@ namespace Hare
 			delete layer;
 	}
 
-	// -----------------------------------------------------------------
-	// PUSH
-	// -----------------------------------------------------------------
-
 	void LayerStack::PushLayer(Layer* layer)
 	{
 		m_LayerInsert = m_Layers.emplace(m_LayerInsert, layer);
@@ -32,10 +28,6 @@ namespace Hare
 	{
 		m_Layers.emplace_back(overlay);
 	}
-
-	// -----------------------------------------------------------------
-	// POP
-	// -----------------------------------------------------------------
 
 	void LayerStack::PopLayer(Layer* layer)
 	{
