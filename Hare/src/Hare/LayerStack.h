@@ -10,10 +10,10 @@ namespace Hare
 	/// <summary>
 	/// Wrapper class that layers the event system.
 	/// Input are blocked from end to begin layers.
-	/// <example>
+	/// <para>
 	/// Usually UI elements need to be place on the latest layer,
 	/// because if encautered any inputs it will be the first to blocks it.
-	/// </example>
+	/// </para>
 	/// </summary>
 	class HARE_API LayerStack 
 	{

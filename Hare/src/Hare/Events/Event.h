@@ -4,10 +4,12 @@
 
 namespace Hare
 {
-	// Events in Hare are currently blocking, meaning when an event occurs it
-	// immediatly gets dispatched and must be dealt with right then an there.
-	// For the future, a better strategy might be to buffer events in an event
-	// bus and process them during the "event" part of the update stage.
+	/* 
+	Events in Hare are currently blocking, meaning when an event occurs it
+	immediatly gets dispatched and must be dealt with right then an there.
+	For the future, a better strategy might be to buffer events in an event
+	bus and process them during the "event" part of the update stage.
+	*/
 
 	enum class EventType {
 		None = 0,
@@ -27,13 +29,15 @@ namespace Hare
 		EventCategoryMouseButton	= BIT(4)
 	};
 
-	// Those macros are used to override that functions in a cleaner way.
-	// We want to be able to at runtime check to see which type this
-	// key pressed event is, so obviously we need a function that return 
-	// which event type it is. This does not have to be a member function.
-	// It can just be a static function because if we say: "key pressed 
-	// event type or whatever we don't need to have an instance of the key
-	// pressed event class to actually see what type it is.
+	/*
+	Those macros are used to override that functions in a cleaner way.
+	We want to be able to at runtime check to see which type this
+	key pressed event is, so obviously we need a function that return 
+	which event type it is. This does not have to be a member function.
+	It can just be a static function because if we say: "key pressed 
+	event type or whatever we don't need to have an instance of the key
+	pressed event class to actually see what type it is.
+	*/
 #define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::##type; }\
 								virtual EventType GetEventType() const override { return GetStaticType(); }\
 								virtual const char* GetName() const override { return #type; }

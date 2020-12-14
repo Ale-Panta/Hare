@@ -30,8 +30,11 @@
 	
 #endif
 
-
-// Macro used to filter events in categories.
-// Multiple categories are allowed.
-/// <"see cref="$(SolutionDir)Hare/Hare/Events/Event.h"/>
+/// <summary>
+/// Macro used to filter events in categories.
+/// Multiple categories are allowed.
+/// <para>
+/// <see cref="$(SolutionDir)Hare/Hare/Events/Event.h"/>
+/// </para>
+/// </summary>
 #define BIT(x) (1 << x)
