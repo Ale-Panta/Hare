@@ -4,3 +4,6 @@
 [submodule "Hare/vendor/GLFW"]
 	path = Hare/vendor/GLFW
 	url = https://github.com/TheCherno/glfw
+[submodule "Hare/vendor/imgui"]
+	path = Hare/vendor/imgui
+	url = https://github.com/TheCherno/imgui
