@@ -13,8 +13,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "Hare/vendor/GLFW/include"
+IncludeDir["Glad"] = "Hare/vendor/Glad/include"
 
 include "Hare/vendor/GLFW"
+include "Hare/vendor/Glad"
 
 project "Hare"
 	location "Hare"
@@ -37,12 +39,14 @@ project "Hare"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 
 	links
 	{
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
@@ -54,7 +58,8 @@ project "Hare"
 		defines
 		{
 			"HR_PLATFORM_WINDOWS",
-			"HR_BUILD_DLL"
+			"HR_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands
