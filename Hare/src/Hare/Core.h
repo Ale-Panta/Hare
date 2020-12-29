@@ -38,3 +38,12 @@
 /// </para>
 /// </summary>
 #define BIT(x) (1 << x)
+
+/// <summary>
+/// Used to bind events. Used in particular
+/// in ImGuiLayer.
+/// <para>
+/// <see cref="$(SolutionDir)Hare/Hare/ImGui/ImGuiLayer.h"/>
+/// </para>
+/// </summary>
+#define HR_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
