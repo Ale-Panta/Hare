@@ -4,6 +4,15 @@
 
 namespace Hare
 {
+	/*
+	* 
+	*/
+
+	//---------------------------------------------
+	//--- Window Events ---
+	//---------------------------------------------
+	
+
 	class HARE_API WindowResizeEvent : public Event
 	{
 	public:
@@ -35,6 +44,7 @@ namespace Hare
 		EVENT_CLASS_TYPE(WindowClose)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
+
 
 	class HARE_API AppTickEvent : public Event
 	{

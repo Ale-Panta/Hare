@@ -45,6 +45,12 @@ namespace Hare
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
 
+		/*
+		Expose our window instance (GLFW window for now) to the client. It is void pointer
+		because potentially it doesn't have to return GLFW window, it could be anything.
+		*/
+		virtual void* GetNativeWindow() const = 0;
+
 		static Window* Create(const WindowProps& props = WindowProps());
 	};
 }

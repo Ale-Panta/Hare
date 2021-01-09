@@ -18,8 +18,7 @@ int main(int argc, char** argv)
 {
 	Hare::Log::Init();					// For testing purpose.
 	HR_CORE_WARN("Initialize Log!");	// For testing purpose.
-	int a = 5;							// For testing purpose.
-	HR_INFO("Hello! Var={0}", a);		// For testing purpose.
+	HR_INFO("Hello!");					// For testing purpose.
 
 	auto app = Hare::CreateApplication();
 	app->Run();

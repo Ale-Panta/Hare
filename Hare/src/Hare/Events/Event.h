@@ -44,6 +44,13 @@ namespace Hare
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 
+
+	/*
+	It's purpose is to define a parent wrapper for all event's.
+	Then it will be specialized based on the event type.
+	Those wrappers has no logic inside itself but contains only
+	datas utils to ImGui (in this case, in this project).
+	*/
 	class HARE_API Event 
 	{
 		friend class EventDispatcher;
@@ -63,6 +70,7 @@ namespace Hare
 		}
 	};
 
+
 	class EventDispatcher 
 	{
 		template<typename T>
@@ -72,6 +80,11 @@ namespace Hare
 		EventDispatcher(Event& event)
 			: m_Event(event) { }
 
+		/* 
+		Passed a function with proper signature, we called it
+		and we store the result in the Event.
+		@param func : std::function<bool(T&)>
+		*/
 		template<typename T>
 		bool Dispatch(EventFn<T> func)
 		{
@@ -84,6 +97,7 @@ namespace Hare
 		}
 
 	private:
+		// Store event info. We are able to know what events do.
 		Event& m_Event;
 	};
 

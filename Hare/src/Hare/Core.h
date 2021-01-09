@@ -18,6 +18,10 @@
 	#error Hare only supports windows!
 #endif
 
+#ifdef HR_DEBUG
+	#define HR_ENABLE_ASSERT
+#endif
+
 #ifdef  HR_ENABLE_ASSERTS
 
 	#define HR_ASSERT(x, ...) { if(!(x)) { HR_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
