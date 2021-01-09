@@ -1,8 +1,11 @@
 #include "hrpch.h"
+#include "WindowsInput.h"
 #include "WindowsWindow.h"
 #include "Hare/Events/KeyEvent.h"
 #include "Hare/Events/MouseEvent.h"
 #include "Hare/Events/ApplicationEvent.h"
+
+#include "Hare/Input.h"
 
 #include <glad/glad.h>
 

@@ -1,5 +1,12 @@
 #include <Hare.h>
 
+////////////////////////////////////////
+//////////////////Test//////////////////
+////////////////////////////////////////
+
+/*
+This is just an example of how to create new custom layers.
+*/
 class ExampleLayer : public Hare::Layer 
 {
 public:
@@ -17,12 +24,18 @@ public:
 	}
 };
 
+////////////////////////////////////////
+/////////Client Application/////////////
+////////////////////////////////////////
+
 class Sandbox : public Hare::Application 
 {
 public:
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		// Uncomment the line below to see how react the custom layer in console.
+		//PushLayer(new ExampleLayer());
+
 		PushOverlay(new Hare::ImGuiLayer());
 	}
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Hare.h"
+#include "Hare/Core.h"
 
 namespace Hare
 {
