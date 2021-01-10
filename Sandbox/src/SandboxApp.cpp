@@ -11,7 +11,9 @@ class ExampleLayer : public Hare::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example") { }
+		: Layer("Example") 
+	{
+	}
 
 	void OnUpdate() override 
 	{

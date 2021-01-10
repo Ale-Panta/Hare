@@ -7,3 +7,6 @@
 [submodule "Hare/vendor/imgui"]
 	path = Hare/vendor/imgui
 	url = https://github.com/TheCherno/imgui
+[submodule "Hare/vendor/glm"]
+	path = Hare/vendor/glm
+	url = https://github.com/g-truc/glm
