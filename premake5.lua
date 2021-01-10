@@ -25,7 +25,7 @@ include "Hare/vendor/imgui"
 
 project "Hare"
 	location "Hare"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
 	staticruntime "off"
 
