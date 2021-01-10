@@ -15,12 +15,21 @@ public:
 
 	void OnUpdate() override 
 	{
-		HR_INFO("ExampleLayer::Update");
+		if (Hare::Input::IsKeyPressed(HR_KEY_TAB))
+			HR_TRACE("[POOL] Tab key is pressed.");
 	}
 
 	void OnEvent(Hare::Event& event) override
 	{
-		HR_TRACE("{0}", event);
+		if (event.GetEventType() == Hare::EventType::KeyPressed) 
+		{
+			Hare::KeyPressedEvent& e = (Hare::KeyPressedEvent&)event;
+
+			if (e.GetKeyCode() == HR_KEY_TAB) {
+				HR_TRACE("[EVENT] Tab key is pressed.");
+			}
+			HR_TRACE("[EVENT] {0}", (char)e.GetKeyCode());
+		}
 	}
 };
 
@@ -34,7 +43,7 @@ public:
 	Sandbox()
 	{
 		// Uncomment the line below to see how react the custom layer in console.
-		//PushLayer(new ExampleLayer());
+		PushLayer(new ExampleLayer());
 
 		PushOverlay(new Hare::ImGuiLayer());
 	}
