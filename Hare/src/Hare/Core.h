@@ -6,12 +6,14 @@
 		// https://docs.microsoft.com/en-us/cpp/cpp/dllexport-dllimport?view=msvc-160
 		// This macro should be active when build Hare library.
 		#define HARE_API __declspec(dllexport) 
+		#define IMGUI_API __declspec(dllexport)
 
 	#else
 		
 		// https://docs.microsoft.com/en-us/cpp/cpp/dllexport-dllimport?view=msvc-160
 		// This macro should be active when build Sandbox library.
 		#define HARE_API __declspec(dllimport)
+		#define IMGUI_API __declspec(dllimport)
 
 	#endif
 #else

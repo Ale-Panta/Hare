@@ -1,5 +1,7 @@
 #include <Hare.h>
 
+#include "imgui/imgui.h"
+
 ////////////////////////////////////////
 //////////////////Test//////////////////
 ////////////////////////////////////////
@@ -19,6 +21,13 @@ public:
 	{
 		if (Hare::Input::IsKeyPressed(HR_KEY_TAB))
 			HR_TRACE("[POOL] Tab key is pressed.");
+	}
+
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Hello World!");
+		ImGui::End();
 	}
 
 	void OnEvent(Hare::Event& event) override
@@ -46,8 +55,6 @@ public:
 	{
 		// Uncomment the line below to see how react the custom layer in console.
 		PushLayer(new ExampleLayer());
-
-		PushOverlay(new Hare::ImGuiLayer());
 	}
 
 	~Sandbox()

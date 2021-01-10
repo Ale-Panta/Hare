@@ -111,6 +111,7 @@ project "Sandbox"
 	{
 		"Hare/vendor/spdlog/include",
 		"Hare/src",
+		"Hare/vendor",
 		"%{IncludeDir.glm}"
 	}
 

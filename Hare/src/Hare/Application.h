@@ -6,6 +6,8 @@
 #include "Events/Event.h"
 #include "Hare/Events/ApplicationEvent.h"
 
+#include "Hare/ImGui/ImGuiLayer.h"
+
 namespace Hare
 {
 	/// <summary>
@@ -33,6 +35,7 @@ namespace Hare
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_IsRunning = true;
 		LayerStack m_LayerStack;
 
