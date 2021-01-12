@@ -27,6 +27,7 @@ public:
 	{
 		ImGui::Begin("Test");
 		ImGui::Text("Hello World!");
+		ImGui::TextColored(ImVec4(1.0f, 0.46f, 0.8f, 1.0f), "Hare Engine");
 		ImGui::End();
 	}
 

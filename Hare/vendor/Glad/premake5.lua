@@ -19,11 +19,11 @@ project "Glad"
 
 	filter "system:linux"
 		systemversion "latest"
-		staticruntime "On"
+		staticruntime "on"
 
 	filter "system:windows"
 		systemversion "latest"
-		staticruntime "On"
+		staticruntime "on"
 
 	filter "configurations:Debug"
 		runtime "Debug"
