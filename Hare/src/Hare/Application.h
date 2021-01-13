@@ -39,6 +39,12 @@ namespace Hare
 		bool m_IsRunning = true;
 		LayerStack m_LayerStack;
 
+		// --- Begin Renderer 
+		unsigned int m_VertexArray;
+		unsigned int m_VertexBuffer;
+		unsigned int m_IndexBuffer;
+		// --- End renderer
+
 		static Application* s_Instance;
 	};
 

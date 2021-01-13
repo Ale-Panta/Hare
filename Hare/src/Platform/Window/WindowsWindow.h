@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hare/Window.h"
+#include "Hare/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -30,6 +31,7 @@ namespace  Hare
 
 	private:
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		struct WindowData {
 			std::string Title;
