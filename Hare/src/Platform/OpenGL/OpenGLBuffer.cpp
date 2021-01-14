@@ -5,9 +5,7 @@
 
 namespace Hare
 {
-	//////////////////
-	//// Vertex //////
-	//////////////////
+#pragma region Vertex
 
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* verticies, uint32_t size)
 	{
@@ -41,9 +39,9 @@ namespace Hare
 		return m_Layout;
 	}
 
-	//////////////////
-	//// Index ///////
-	//////////////////
+#pragma endregion
+
+#pragma region Index
 
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indicies, uint32_t count)
 		: m_Count(count)
@@ -71,4 +69,6 @@ namespace Hare
 	{
 		return m_Count;
 	}
+
+#pragma endregion
 }

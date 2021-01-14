@@ -10,9 +10,7 @@
 
 namespace Hare
 {
-	//////////////////
-	//// Vertex //////
-	//////////////////
+#pragma region Vertex
 
 	VertexBuffer* VertexBuffer::Create(float* verticies, uint32_t size)
 	{
@@ -31,9 +29,9 @@ namespace Hare
 		return nullptr;
 	}
 
-	//////////////////
-	//// Index ///////
-	//////////////////
+#pragma endregion
+
+#pragma region Vertex
 
 	IndexBuffer* IndexBuffer::Create(uint32_t* indicies, uint32_t size)
 	{
@@ -48,4 +46,6 @@ namespace Hare
 		HR_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
 	}
+
+#pragma endregion
 }

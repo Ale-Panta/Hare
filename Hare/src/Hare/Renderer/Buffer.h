@@ -13,6 +13,12 @@ namespace Hare
 	return that type of data.
 	*/
 
+#pragma region Layout
+
+	/*
+	Buffer layout works as link between vertex and index buffer.
+	*/
+
 	enum class ShaderDataType : uint8_t
 	{
 		// Return the size of the data type.
@@ -30,7 +36,6 @@ namespace Hare
 	{
 		switch (type)
 		{
-		case Hare::ShaderDataType::None:	return 0;
 		case Hare::ShaderDataType::Bool:	return 1;
 		case Hare::ShaderDataType::Float:	return 4;
 		case Hare::ShaderDataType::Float2:	return 4 * 2;
@@ -70,7 +75,6 @@ namespace Hare
 		{
 			switch (Type)
 			{
-			case Hare::ShaderDataType::None:	return 0;
 			case Hare::ShaderDataType::Bool:	return 1;
 			case Hare::ShaderDataType::Float:	return 1;
 			case Hare::ShaderDataType::Float2:	return 2;
@@ -126,10 +130,9 @@ namespace Hare
 		uint32_t m_Stride = 0;
 	};
 
+#pragma endregion
 
-	//////////////////
-	//// Vertex //////
-	//////////////////
+#pragma region Vertex buffer
 
 	class VertexBuffer 
 	{
@@ -145,9 +148,9 @@ namespace Hare
 		static VertexBuffer* Create(float* verticies, uint32_t size);
 	};
 
-	//////////////////
-	//// Index ///////
-	//////////////////
+#pragma endregion
+
+#pragma region Index buffer
 
 	class IndexBuffer
 	{
@@ -162,4 +165,6 @@ namespace Hare
 
 		static IndexBuffer* Create(uint32_t* indicies, uint32_t size);
 	};
+
+#pragma endregion
 }

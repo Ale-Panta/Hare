@@ -4,9 +4,7 @@
 
 namespace Hare
 {
-	//////////////////
-	//// Vertex //////
-	//////////////////
+#pragma region Vertex
 
 	class OpenGLVertexBuffer : public VertexBuffer
 	{
@@ -25,9 +23,9 @@ namespace Hare
 		BufferLayout m_Layout;
 	};
 
-	//////////////////
-	//// Index ///////
-	//////////////////
+#pragma endregion
+
+#pragma region Index
 
 	class OpenGLIndexBuffer : public IndexBuffer
 	{
@@ -44,4 +42,6 @@ namespace Hare
 		uint32_t m_Count;
 		uint32_t m_RendererID;
 	};
+
+#pragma endregion
 }

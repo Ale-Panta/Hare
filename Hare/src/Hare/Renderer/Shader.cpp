@@ -6,7 +6,6 @@
 namespace Hare
 {
 	Shader::Shader(const std::string& vertexSource, const std::string& fragmentSource)
-		: m_RendererID(0)
 	{
 		// Create an empty vertex shader handle
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);

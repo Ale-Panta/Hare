@@ -11,28 +11,6 @@ namespace Hare
 
 	Application* Application::s_Instance = nullptr;
 
-	// Temp
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-	{
-		switch (type)
-		{
-		case Hare::ShaderDataType::Bool:	return GL_BOOL;
-		case Hare::ShaderDataType::Float:	return GL_FLOAT;
-		case Hare::ShaderDataType::Float2:	return GL_FLOAT;
-		case Hare::ShaderDataType::Float3:	return GL_FLOAT;
-		case Hare::ShaderDataType::Float4:	return GL_FLOAT;
-		case Hare::ShaderDataType::Mat3:	return GL_FLOAT;
-		case Hare::ShaderDataType::Mat4:	return GL_FLOAT;
-		case Hare::ShaderDataType::Int:		return GL_INT;
-		case Hare::ShaderDataType::Int2:	return GL_INT;
-		case Hare::ShaderDataType::Int3:	return GL_INT;
-		case Hare::ShaderDataType::Int4:	return GL_INT;
-		}
-
-		HR_CORE_ASSERT(false, "Unknown ShaderDataType!");
-		return 0;
-	}
-
 	Application::Application()
 	{
 		HR_CORE_ASSERT(!s_Instance, "Application already exist!")
@@ -44,10 +22,9 @@ namespace Hare
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
+		m_VertexArray.reset(VertexArray::Create());
 
-		float verticies[3 * 7] =														// This exist only in the CPU at this point of code.
+		float verticies[3 * 7] =
 		{
 			-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
 			 0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
@@ -62,23 +39,35 @@ namespace Hare
 		};
 
 		m_VertexBuffer->SetLayout(layout);
-
-		uint32_t index = 0;
-		for (const auto& element : m_VertexBuffer->GetLayout())
-		{
-			glEnableVertexAttribArray(index);	// Enable the data at index 0.
-			glVertexAttribPointer(index, 
-				element.GetComponentCount(), 
-				ShaderDataTypeToOpenGLBaseType(element.Type), 
-				element.Normalized ? GL_TRUE : GL_FALSE, 
-				m_VertexBuffer->GetLayout().GetStride(),
-				(const void*)element.Offset);
-			index++;
-		}
-
+		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
 		uint32_t indicies[3] = { 0, 1, 2 };
 		m_IndexBuffer.reset(IndexBuffer::Create(indicies, sizeof(indicies) / sizeof(uint32_t)));
+		m_VertexArray->AddIndexBuffer(m_IndexBuffer);
+
+		/////////////////////////////////////////////////////////////////////////////////////////
+
+		m_SquareVA.reset(VertexArray::Create());
+
+		float squareVerticies[3 * 4] =
+		{
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f
+		};
+
+		std::shared_ptr<VertexBuffer> squareVB;
+		squareVB.reset(VertexBuffer::Create(squareVerticies, sizeof(squareVerticies)));
+
+		squareVB->SetLayout({ { ShaderDataType::Float3, "a_Position" } });
+		m_SquareVA->AddVertexBuffer(squareVB);
+
+		uint32_t squareIndicies[6] = { 0, 1, 2, 2, 3, 0 };
+		std::shared_ptr<IndexBuffer> squareIB;
+		squareIB.reset(IndexBuffer::Create(squareIndicies, sizeof(squareIndicies) / sizeof(uint32_t)));
+
+		m_SquareVA->AddIndexBuffer(squareIB);
 
 		// Test
 		std::string vertexSource = R"(
@@ -94,7 +83,7 @@ namespace Hare
 			{
 				v_Position = a_Position;
 				v_Color = a_Color;
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = vec4(a_Position + 0.5, 1.0);
 			}
 		)";
 
@@ -114,6 +103,36 @@ namespace Hare
 		)";
 
 		m_Shader.reset(new Shader(vertexSource, fragmentSource));
+
+		// Test
+		std::string squareVertexSource2 = R"(
+			#version 330 core
+		
+			layout(location = 0) in vec3 a_Position;
+
+			out vec3 v_Position;
+			
+			void main()
+			{
+				v_Position = a_Position;
+				gl_Position = vec4(a_Position, 1.0);
+			}
+		)";
+
+		std::string squareFragmentSource2 = R"(
+			#version 330 core
+		
+			layout(location = 0) out vec4 color;
+
+			in vec3 v_Position;
+
+			void main()
+			{
+				color = vec4(0.4, 0, 1, 1);
+			}
+		)";
+
+		m_ShaderSquare.reset(new Shader(squareVertexSource2, squareFragmentSource2));
 	}
 
 	Application::~Application()
@@ -156,8 +175,12 @@ namespace Hare
 			glClearColor(0.1f, 0.1f, 0.1f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			m_Shader->Bind();	// Must be bound before draw call.
-			glBindVertexArray(m_VertexArray);
+			m_ShaderSquare->Bind();
+			m_SquareVA->Bind();
+			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
+			m_Shader->Bind();
+			m_VertexArray->Bind();
 			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 			for (Layer* layer : m_LayerStack)
