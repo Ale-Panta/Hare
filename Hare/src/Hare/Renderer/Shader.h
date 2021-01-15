@@ -26,9 +26,7 @@ namespace Hare
 		*/
 
 	private:
-		/*
-		Allow OpenGL to identify the object.
-		*/
+		// Allow OpenGL to identify obejcts.
 		uint32_t m_RendererID;
 	};
 }

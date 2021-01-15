@@ -6,6 +6,8 @@
 
 namespace Hare
 {
+	// Vertex Array interfaces. It must be implemented for every platform.
+
 	class VertexArray
 	{
 	public:

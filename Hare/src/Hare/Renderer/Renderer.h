@@ -1,20 +1,17 @@
 #pragma once
 
+#include "RenderCommand.h"
+
 namespace Hare
 {
-	enum class RendererAPI
-	{
-		None = 0,
-		OpenGL
-	};
-
 	class Renderer
 	{
 	public:
-		inline static RendererAPI GetAPI() { return s_RendererAPI; }
-		inline static void SetAPI(RendererAPI api) { s_RendererAPI = api; }	// Define it before create the application context.
+		static void BeginScene(); // TODO: Add parameters in order to renderer the scene
+		static void EndScene();
 
-	private:
-		static RendererAPI s_RendererAPI;
+		static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+
+		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	};
 }

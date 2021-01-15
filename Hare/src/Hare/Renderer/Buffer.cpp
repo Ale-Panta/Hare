@@ -17,9 +17,9 @@ namespace Hare
 		switch (Renderer::GetAPI())
 		{
 		// #if HR_PLATFORM_WINDOWS
-		case RendererAPI::None:		HR_CORE_ASSERT(false, "RendererAPI::None is currently not supported");  return nullptr;
+		case RendererAPI::API::None:	HR_CORE_ASSERT(false, "RendererAPI::None is currently not supported");  return nullptr;
 		// #elseif ...
-		case RendererAPI::OpenGL:	return new OpenGLVertexBuffer(verticies, size);
+		case RendererAPI::API::OpenGL:	return new OpenGLVertexBuffer(verticies, size);
 		// #endif
 
 		default: break;
@@ -37,8 +37,8 @@ namespace Hare
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:		HR_CORE_ASSERT(false, "RendererAPI::None is currently not supported");  return nullptr;
-		case RendererAPI::OpenGL:	return new OpenGLIndexBuffer(indicies, size);
+		case RendererAPI::API::None:	HR_CORE_ASSERT(false, "RendererAPI::None is currently not supported");  return nullptr;
+		case RendererAPI::API::OpenGL:	return new OpenGLIndexBuffer(indicies, size);
 
 		default: break;
 		}

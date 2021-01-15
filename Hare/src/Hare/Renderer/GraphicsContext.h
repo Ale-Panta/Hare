@@ -2,6 +2,8 @@
 
 namespace Hare
 {
+	// Context Interface. It will be implemented for every platform.
+
 	class GraphicsContext 
 	{
 	public:
