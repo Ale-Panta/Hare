@@ -8,10 +8,9 @@
 
 #include "Hare/ImGui/ImGuiLayer.h"
 
-// Temp
-#include "Renderer/Shader.h"
-#include "Renderer/Buffer.h"
-#include "Renderer/VertexArray.h"
+#include "Hare/Core/TimeStep.h"
+
+#include "Hare/Renderer/OrthographicCamera.h"
 
 namespace Hare
 {
@@ -39,21 +38,12 @@ namespace Hare
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
+	private:
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_IsRunning = true;
 		LayerStack m_LayerStack;
-
-		// --- Begin Renderer 
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexBuffer> m_VertexBuffer;
-		std::shared_ptr<IndexBuffer> m_IndexBuffer;
-		std::shared_ptr<VertexArray> m_VertexArray;
-
-		std::shared_ptr<Shader> m_ShaderSquare;
-		std::shared_ptr<VertexArray> m_SquareVA;
-		// --- End renderer
-
+		float m_LastFrameTime = 0.0f;	// Time that took to render the last frame.
 
 		static Application* s_Instance;
 	};

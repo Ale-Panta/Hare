@@ -9,11 +9,24 @@ For use by Hare applications.
 #include "Hare/Layer.h"
 #include "Hare/Application.h"
 
+#include "Hare/Core/TimeStep.h"
+
 #include "Hare/Input.h"
 #include "Hare/Keycodes.h"
 #include "Hare/MouseButtonCodes.h"
 
 #include "Hare/ImGui/ImGuiLayer.h"
+
+// --- Renderer ----------------
+#include "Hare/Renderer/Renderer.h"
+#include "Hare/Renderer/RenderCommand.h"
+
+#include "Hare/Renderer/Buffer.h"
+#include "Hare/Renderer/Shader.h"
+#include "Hare/Renderer/VertexArray.h"
+
+#include "hare/Renderer/OrthographicCamera.h"
+// -------------------------------------------
 
 // ---Entry Point-----------
 #include "Hare/EntryPoint.h"

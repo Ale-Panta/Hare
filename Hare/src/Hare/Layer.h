@@ -2,6 +2,7 @@
 
 #include "Hare/Core.h"
 #include "Hare/Events/Event.h"
+#include "Hare/Core/TimeStep.h"
 
 namespace Hare 
 {
@@ -13,7 +14,7 @@ namespace Hare
 
 		virtual void OnAttach() { }
 		virtual void OnDetach() { }
-		virtual void OnUpdate() { }
+		virtual void OnUpdate(TimeStep ts) { }
 		virtual void OnImGuiRender() { }
 		virtual void OnEvent(Event& event) { }
 
