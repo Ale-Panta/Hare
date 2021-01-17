@@ -1,5 +1,6 @@
 #include "hrpch.h"
 #include "Renderer.h"
+#include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Hare
 {
@@ -18,11 +19,13 @@ namespace Hare
 	{
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4 transfrom)
+	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4 transfrom)
 	{
 		shader->Bind();
-		shader->UploadUniformMat4f("u_ViewProjection", m_SceneData->ViewProjectionMatrix);	// TODO: this should be run per shader.
-		shader->UploadUniformMat4f("u_Transform", transfrom);	// This run per object.
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);	// TODO: this should be run per shader.
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_Transform", transfrom);	// This run per object.
+
+		// mi->Bind();
 		vertexArray->Bind();
 		RenderCommand::DrawIndex(vertexArray);
 	}

@@ -1,11 +1,13 @@
 #include <Hare.h>
 
-#include "imgui/imgui.h"
+#include "Platform/OpenGL/OpenGLShader.h"
 
+#include "imgui/imgui.h"
 
 ////////////////////////////////////////
 //////////////////Test//////////////////
 ////////////////////////////////////////
+#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 /*
@@ -27,19 +29,21 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f
 		};
 
-		m_VertexBuffer.reset(Hare::VertexBuffer::Create(verticies, sizeof(verticies)));
+		Hare::Ref<Hare::VertexBuffer> vertexBuffer;
+		vertexBuffer.reset(Hare::VertexBuffer::Create(verticies, sizeof(verticies)));
 
 		Hare::BufferLayout layout = {
 			{ Hare::ShaderDataType::Float3, "a_Position" },
 			{ Hare::ShaderDataType::Float4, "a_Color" }
 		};
 
-		m_VertexBuffer->SetLayout(layout);
-		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
+		vertexBuffer->SetLayout(layout);
+		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indicies[3] = { 0, 1, 2 };
-		m_IndexBuffer.reset(Hare::IndexBuffer::Create(indicies, sizeof(indicies) / sizeof(uint32_t)));
-		m_VertexArray->AddIndexBuffer(m_IndexBuffer);
+		Hare::Ref<Hare::IndexBuffer> indexBuffer;
+		indexBuffer.reset(Hare::IndexBuffer::Create(indicies, sizeof(indicies) / sizeof(uint32_t)));
+		m_VertexArray->AddIndexBuffer(indexBuffer);
 
 		/////////////////////////////////////////////////////////////////////////////////////////
 
@@ -53,14 +57,14 @@ public:
 			-0.5f,  0.5f, 0.0f
 		};
 
-		std::shared_ptr<Hare::VertexBuffer> squareVB;
+		Hare::Ref<Hare::VertexBuffer> squareVB;
 		squareVB.reset(Hare::VertexBuffer::Create(squareVerticies, sizeof(squareVerticies)));
 
 		squareVB->SetLayout({ { Hare::ShaderDataType::Float3, "a_Position" } });
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndicies[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<Hare::IndexBuffer> squareIB;
+		Hare::Ref<Hare::IndexBuffer> squareIB;
 		squareIB.reset(Hare::IndexBuffer::Create(squareIndicies, sizeof(squareIndicies) / sizeof(uint32_t)));
 
 		m_SquareVA->AddIndexBuffer(squareIB);
@@ -100,7 +104,7 @@ public:
 			}
 		)";
 
-		m_Shader.reset(new Hare::Shader(vertexSource, fragmentSource));
+		m_Shader.reset(Hare::Shader::Create(vertexSource, fragmentSource));
 
 		// Test
 		std::string squareVertexSource2 = R"(
@@ -125,15 +129,17 @@ public:
 		
 			layout(location = 0) out vec4 color;
 
+			uniform vec3 u_Color;
+
 			in vec3 v_Position;
 
 			void main()
 			{
-				color = vec4(0.4, 0, 1, 1);
+				color = vec4(u_Color, 1.0);
 			}
 		)";
 
-		m_ShaderSquare.reset(new Hare::Shader(squareVertexSource2, squareFragmentSource2));
+		m_ShaderSquare.reset(Hare::Shader::Create(squareVertexSource2, squareFragmentSource2));
 	}
 
 	void OnUpdate(Hare::TimeStep ts) override 
@@ -166,6 +172,17 @@ public:
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+		std::dynamic_pointer_cast<Hare::OpenGLShader>(m_ShaderSquare)->Bind();
+		std::dynamic_pointer_cast<Hare::OpenGLShader>(m_ShaderSquare)->UploadUniformFloat3("u_Color", m_SquareColor);
+
+		//Hare::MaterialRef material = new Hare::Material(m_ShaderSquare);
+		//Hare::MaterialInstanceRef mi = new Hare::Material(material);
+
+		//mi->Set("u_Color", redColor);
+		//mi->SetTexture("u_AlbedoMap", texture);
+
+		//squareMesh->SetMaterial(mi);
+
 		for (int y = 0; y < 20; y++)
 		{
 			for (int x = 0; x < 20; x++)
@@ -183,7 +200,9 @@ public:
 
 	void OnImGuiRender() override
 	{
-
+		ImGui::Begin("Setting");
+		ImGui::ColorEdit3("SquareColor", glm::value_ptr(m_SquareColor));
+		ImGui::End();
 	}
 
 	void OnEvent(Hare::Event& event) override
@@ -192,13 +211,11 @@ public:
 
 private:
 	// --- Begin Renderer 
-	std::shared_ptr<Hare::Shader> m_Shader;
-	std::shared_ptr<Hare::VertexBuffer> m_VertexBuffer;
-	std::shared_ptr<Hare::IndexBuffer> m_IndexBuffer;
-	std::shared_ptr<Hare::VertexArray> m_VertexArray;
+	Hare::Ref<Hare::Shader> m_Shader;
+	Hare::Ref<Hare::VertexArray> m_VertexArray;
 
-	std::shared_ptr<Hare::Shader> m_ShaderSquare;
-	std::shared_ptr<Hare::VertexArray> m_SquareVA;
+	Hare::Ref<Hare::Shader> m_ShaderSquare;
+	Hare::Ref<Hare::VertexArray> m_SquareVA;
 	// --- End renderer
 
 	Hare::OrthographicCamera m_Camera;
@@ -208,6 +225,8 @@ private:
 
 	float m_CameraRotation = 0.0f;
 	float m_CameraAngularSpeed = 100.0f;
+
+	glm::vec3 m_SquareColor = {0.2f, 0.3, 0.4f};
 };
 
 ////////////////////////////////////////

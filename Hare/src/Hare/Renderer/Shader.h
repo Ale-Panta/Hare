@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glm/glm.hpp>
 #include <string>
 
 namespace Hare
@@ -8,23 +7,11 @@ namespace Hare
 	class Shader 
 	{
 	public:
-		Shader(const std::string& vertexSource, const std::string& fragmentSource);
-		~Shader();
+		virtual ~Shader() = default;
 
-		void Bind();
-		void Unbind();
+		virtual void Bind() const = 0;
+		virtual void Unbind() const = 0;
 
-		// --- From here all types of Set function are declared...
-		void UploadUniformMat4f(const std::string& name, const glm::mat4 matrix);
-
-
-	private:
-		/*int GetUniformLocation(const std::string& name);
-		unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
-		unsigned int CompileShader(unsigned int type, const std::string& source);*/
-
-	private:
-		// Allow OpenGL to identify obejcts.
-		uint32_t m_RendererID;
+		static Shader* Create(const std::string& vertexSource, const std::string& fragmentSource);
 	};
 }

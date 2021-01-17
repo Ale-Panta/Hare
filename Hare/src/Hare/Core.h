@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef HR_PLATFORM_WINDOWS
 	#if HR_DYNAMIC_LINK
 		
@@ -22,10 +24,10 @@
 #endif
 
 #ifdef HR_DEBUG
-	#define HR_ENABLE_ASSERT
+	#define HR_ENABLE_ASSERTS
 #endif
 
-#ifdef  HR_ENABLE_ASSERTS
+#ifdef HR_ENABLE_ASSERTS
 
 	#define HR_ASSERT(x, ...) { if(!(x)) { HR_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
 	#define HR_CORE_ASSERT(x, ...) { if(!(x)) { HR_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
@@ -54,3 +56,21 @@
 /// </para>
 /// </summary>
 #define HR_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
+
+namespace Hare
+{
+	/*
+	We change how unique and shared pointers looks like.
+	Every object in the scene will be 99% of the time a shared pointer,
+	mostly for this reason: it's multithread safety because it use
+	atomic increment and decrement. We need this kind of safety because 
+	the rendering calculation is done in a different thread.
+	*/
+
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+}
