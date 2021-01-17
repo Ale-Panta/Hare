@@ -1,19 +1,18 @@
 #include "hrpch.h"
-
+#include "Texture.h"
 #include "Renderer.h"
-#include "VertexArray.h"
-#include "Platform/OpenGL/OpenGLVertexArray.h"
+#include "Platform/OpenGL/OpenGLTexture.h"
 
 namespace Hare
 {
-	Ref<VertexArray> VertexArray::Create()
+	Ref<Texture2D> Texture2D::Create(const std::string& filepath)
 	{
 		switch (Renderer::GetAPI())
 		{
 			// #if HR_PLATFORM_WINDOWS
 		case RendererAPI::API::None:	HR_CORE_ASSERT(false, "RendererAPI::None is currently not supported");  return nullptr;
 			// #elseif ...
-		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLVertexArray>();
+		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D>(filepath);
 			// #endif
 		}
 

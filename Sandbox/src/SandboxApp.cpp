@@ -20,7 +20,7 @@ public:
 		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(glm::vec3(0.0f))
 	{
 
-		m_VertexArray.reset(Hare::VertexArray::Create());
+		m_VertexArray = Hare::VertexArray::Create();
 
 		float verticies[3 * 7] =
 		{
@@ -47,20 +47,23 @@ public:
 
 		/////////////////////////////////////////////////////////////////////////////////////////
 
-		m_SquareVA.reset(Hare::VertexArray::Create());
+		m_SquareVA = Hare::VertexArray::Create();
 
-		float squareVerticies[3 * 4] =
+		float squareVerticies[5 * 4] =
 		{
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
 		};
 
 		Hare::Ref<Hare::VertexBuffer> squareVB;
 		squareVB.reset(Hare::VertexBuffer::Create(squareVerticies, sizeof(squareVerticies)));
 
-		squareVB->SetLayout({ { Hare::ShaderDataType::Float3, "a_Position" } });
+		squareVB->SetLayout({ 
+			{ Hare::ShaderDataType::Float3, "a_Position" },
+			{ Hare::ShaderDataType::Float2, "a_TexCoord" }
+		});
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndicies[6] = { 0, 1, 2, 2, 3, 0 };
@@ -140,6 +143,47 @@ public:
 		)";
 
 		m_ShaderSquare.reset(Hare::Shader::Create(squareVertexSource2, squareFragmentSource2));
+
+		// Test
+		std::string textureVertexSource = R"(
+			#version 330 core
+		
+			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec2 a_TexCoord;
+
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
+
+			out vec2 v_TexCoord;
+
+			void main()
+			{
+				v_TexCoord = a_TexCoord;
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
+			}
+		)";
+
+		std::string textureFragmentSource = R"(
+			#version 330 core
+		
+			layout(location = 0) out vec4 color;
+
+			uniform sampler2D u_Texture;
+
+			in vec2 v_TexCoord;
+
+			void main()
+			{
+				color = texture(u_Texture, v_TexCoord);
+			}
+		)";
+
+		m_TextureShader.reset(Hare::Shader::Create(textureVertexSource, textureFragmentSource));
+
+		m_Texture = Hare::Texture2D::Create("assets/textures/Blood.png");
+		std::dynamic_pointer_cast<Hare::OpenGLShader>(m_TextureShader)->Bind();
+		std::dynamic_pointer_cast<Hare::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+
 	}
 
 	void OnUpdate(Hare::TimeStep ts) override 
@@ -193,7 +237,11 @@ public:
 			}
 		}
 
-		Hare::Renderer::Submit(m_Shader, m_VertexArray);
+		m_Texture->Bind();
+		Hare::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+		// Triangle
+		//Hare::Renderer::Submit(m_Shader, m_VertexArray);
 
 		Hare::Renderer::EndScene();
 	}
@@ -216,6 +264,9 @@ private:
 
 	Hare::Ref<Hare::Shader> m_ShaderSquare;
 	Hare::Ref<Hare::VertexArray> m_SquareVA;
+
+	Hare::Ref<Hare::Shader> m_TextureShader;
+	Hare::Ref<Hare::Texture2D> m_Texture;
 	// --- End renderer
 
 	Hare::OrthographicCamera m_Camera;
