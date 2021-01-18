@@ -181,6 +181,8 @@ public:
 		m_TextureShader.reset(Hare::Shader::Create(textureVertexSource, textureFragmentSource));
 
 		m_Texture = Hare::Texture2D::Create("assets/textures/Blood.png");
+		m_SecondTexture = Hare::Texture2D::Create("assets/textures/Blood1.png");
+
 		std::dynamic_pointer_cast<Hare::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<Hare::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
 
@@ -239,6 +241,8 @@ public:
 
 		m_Texture->Bind();
 		Hare::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		m_SecondTexture->Bind();
+		Hare::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		// Triangle
 		//Hare::Renderer::Submit(m_Shader, m_VertexArray);
@@ -267,6 +271,7 @@ private:
 
 	Hare::Ref<Hare::Shader> m_TextureShader;
 	Hare::Ref<Hare::Texture2D> m_Texture;
+	Hare::Ref<Hare::Texture2D> m_SecondTexture;
 	// --- End renderer
 
 	Hare::OrthographicCamera m_Camera;

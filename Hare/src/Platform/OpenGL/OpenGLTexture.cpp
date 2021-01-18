@@ -21,17 +21,32 @@ namespace Hare
 		m_Width = width;
 		m_Height = height;
 
-		// Upload the data in the GPU steps...
+		// Read channels and set image's data format and internal format.
+		GLenum internalFormat = 0;
+		GLenum dataFormat = 0;
+
+		if (channels == 4)
+		{
+			internalFormat = GL_RGBA8;
+			dataFormat = GL_RGBA;
+		}
+		else if (channels == 3)
+		{
+			internalFormat = GL_RGB8;
+			dataFormat = GL_RGB;
+		}
+
+		HR_CORE_ASSERT(dataFormat & internalFormat, "Format not supported!");
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-		glTextureStorage2D(m_RendererID, 1, GL_RGBA8, m_Width, m_Height);	// Allocate memory in the GPU.
+		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);	// Allocate memory in the GPU. How openGL is going to store our texture.
 
 		// Set texture parameters.
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		// Upload our texture in the GPU.
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		// Upload our texture in the GPU. Determine the format of our data.
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
 
 		// Once the data are uploaded tp the GPU we no longer need to retain it in the CPU memory.
 		stbi_image_free(data);
