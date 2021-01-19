@@ -10,6 +10,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+
 /*
 This is just an example of how to create new custom layers.
 */
@@ -107,7 +108,7 @@ public:
 			}
 		)";
 
-		m_Shader.reset(Hare::Shader::Create(vertexSource, fragmentSource));
+		m_Shader = Hare::Shader::Create("VertexPosColor", vertexSource, fragmentSource);
 
 		// Test
 		std::string squareVertexSource2 = R"(
@@ -142,15 +143,15 @@ public:
 			}
 		)";
 
-		m_ShaderSquare.reset(Hare::Shader::Create(squareVertexSource2, squareFragmentSource2));
+		m_ShaderSquare = Hare::Shader::Create("FlatColor", squareVertexSource2, squareFragmentSource2);
 
-		m_TextureShader.reset(Hare::Shader::Create("assets/shaders/Texture.glsl"));
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = Hare::Texture2D::Create("assets/textures/Blood.png");
 		m_SecondTexture = Hare::Texture2D::Create("assets/textures/Blood1.png");
 
-		std::dynamic_pointer_cast<Hare::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast<Hare::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+		std::dynamic_pointer_cast<Hare::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<Hare::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 
 	}
 
@@ -205,10 +206,12 @@ public:
 			}
 		}
 
+		auto textureShader = m_ShaderLibrary.Get("Texture");
+
 		m_Texture->Bind();
-		Hare::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Hare::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		m_SecondTexture->Bind();
-		Hare::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Hare::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		// Triangle
 		//Hare::Renderer::Submit(m_Shader, m_VertexArray);
@@ -229,13 +232,14 @@ public:
 
 private:
 	// --- Begin Renderer 
+	Hare::ShaderLibrary m_ShaderLibrary;
+
 	Hare::Ref<Hare::Shader> m_Shader;
 	Hare::Ref<Hare::VertexArray> m_VertexArray;
 
 	Hare::Ref<Hare::Shader> m_ShaderSquare;
 	Hare::Ref<Hare::VertexArray> m_SquareVA;
 
-	Hare::Ref<Hare::Shader> m_TextureShader;
 	Hare::Ref<Hare::Texture2D> m_Texture;
 	Hare::Ref<Hare::Texture2D> m_SecondTexture;
 	// --- End renderer

@@ -12,9 +12,32 @@ namespace Hare
 		std::string source = ReadFile(filePath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
+
+		// Extract name from filepath...
+
+		/*
+		Retrieve the name after the last slash, cut also the file extension
+		for example if we have: assets/shaders/Texture.glsl,
+		we retrieve "Texture".
+		*/
+		auto lastSlash = filePath.find_last_of("/\\");
+		/*
+		We handle also the case were the file is positioned in the follow example
+		Texture.glsl. So it's not inside to any folder.
+		*/
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+
+		/*
+		Retrieve the name before the dot and after the slash. We handle 
+		the case were the extension do not exist.
+		*/
+		auto lastDot = filePath.rfind('.');
+		auto count = lastDot == std::string::npos ? filePath.size() - lastSlash : lastDot - lastSlash;
+		m_Name = filePath.substr(lastSlash, count);
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource)
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
+		: m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSource;
@@ -30,7 +53,7 @@ namespace Hare
 	std::string OpenGLShader::ReadFile(const std::string& filePath)
 	{
 		std::string result;
-		std::ifstream in(filePath, std::ios::in, std::ios::binary);
+		std::ifstream in(filePath, std::ios::in | std::ios::binary);
 
 		if (in)
 		{
@@ -87,7 +110,11 @@ namespace Hare
 	void OpenGLShader::Compile(std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShadersIDs(shaderSources.size());
+
+		HR_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders for now");
+		std::array<GLenum, 2> glShadersIDs;
+
+		int glShaderIDIndex = 0;
 
 		for (auto& kv : shaderSources)
 		{
@@ -126,8 +153,10 @@ namespace Hare
 			}
 
 			glAttachShader(program, shader);
-			glShadersIDs.push_back(shader);
+			glShadersIDs[glShaderIDIndex++] = shader;
 		}
+
+		m_RendererID = program;
 
 		// Link our program
 		glLinkProgram(program);
@@ -160,7 +189,6 @@ namespace Hare
 		for (auto id : glShadersIDs)
 			glDetachShader(program, id);
 
-		m_RendererID = program;
 	}
 
 	void OpenGLShader::Bind() const

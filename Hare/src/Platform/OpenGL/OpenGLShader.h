@@ -12,12 +12,13 @@ namespace Hare
 	{
 	public:
 		OpenGLShader(const std::string& filePath);
-		OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource);
+		OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource);
 		virtual ~OpenGLShader();
 
 	public:
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+		inline virtual const std::string& GetName() const override { return m_Name; }
 
 		// --- From here all types of Set function are declared...
 
@@ -47,5 +48,6 @@ namespace Hare
 	private:
 		// Allow OpenGL to identify obejcts.
 		uint32_t m_RendererID;
+		std::string m_Name;
 	};
 }

@@ -16,8 +16,9 @@ Each .cpp file must include this file and it must be the first to include else i
 
 // ---Data Structure---
 #include <string>
-#include <vector>
 #include <sstream>
+#include <array>
+#include <vector>
 #include <unordered_map>
 #include <unordered_set>
 
