@@ -9,9 +9,10 @@ namespace Hare
 		OrthographicCamera(float left, float right, float bottom, float top);
 
 	public:
+		void SetProjection(float left, float right, float bottom, float top);
 		inline void SetPosition(const glm::vec3& position) { m_Position = position; RecalculateViewMatrix(); }
 		inline void SetRotation(const float rotation) { m_Rotation = rotation; RecalculateViewMatrix(); }
-		
+
 		inline const glm::vec3& GetPosition() const { return m_Position; }
 		inline const float& GetRotation() const { return m_Rotation; }
 

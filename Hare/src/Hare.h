@@ -14,6 +14,7 @@ For use by Hare applications.
 #include "Hare/Input.h"
 #include "Hare/Keycodes.h"
 #include "Hare/MouseButtonCodes.h"
+#include "Hare/OrthographicCameraController.h"
 
 #include "Hare/ImGui/ImGuiLayer.h"
 
@@ -26,7 +27,7 @@ For use by Hare applications.
 #include "Hare/Renderer/Texture.h"
 #include "Hare/Renderer/VertexArray.h"
 
-#include "hare/Renderer/OrthographicCamera.h"
+#include "Hare/Renderer/OrthographicCamera.h"
 // -------------------------------------------
 
 // ---Entry Point-----------

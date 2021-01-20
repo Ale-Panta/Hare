@@ -18,7 +18,7 @@ class ExampleLayer : public Hare::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(glm::vec3(0.0f))
+		: Layer("Example"), m_CameraController(1200.0f / 720.0f, true)
 	{
 
 		m_VertexArray = Hare::VertexArray::Create();
@@ -157,31 +157,14 @@ public:
 
 	void OnUpdate(Hare::TimeStep ts) override 
 	{
-		if (Hare::Input::IsKeyPressed(HR_KEY_LEFT))
-			m_CameraPosition.x -= m_CameraMovementSpeed * ts;
+		// Update
+		m_CameraController.OnUpdate(ts);
 
-		else if (Hare::Input::IsKeyPressed(HR_KEY_RIGHT))
-			m_CameraPosition.x += m_CameraMovementSpeed * ts;
-
-		if (Hare::Input::IsKeyPressed(HR_KEY_DOWN))
-			m_CameraPosition.y -= m_CameraMovementSpeed * ts;
-
-		else if (Hare::Input::IsKeyPressed(HR_KEY_UP))
-			m_CameraPosition.y += m_CameraMovementSpeed * ts;
-
-		if (Hare::Input::IsKeyPressed(HR_KEY_A))
-			m_CameraRotation += m_CameraAngularSpeed * ts;
-
-		else if (Hare::Input::IsKeyPressed(HR_KEY_D))
-			m_CameraRotation -= m_CameraAngularSpeed * ts;
-
+		// Renderer
 		Hare::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 		Hare::RenderCommand::Clear();
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-
-		Hare::Renderer::BeginScene(m_Camera);
+		Hare::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -226,8 +209,9 @@ public:
 		ImGui::End();
 	}
 
-	void OnEvent(Hare::Event& event) override
+	void OnEvent(Hare::Event& e) override
 	{
+		m_CameraController.OnEvent(e);
 	}
 
 private:
@@ -244,13 +228,7 @@ private:
 	Hare::Ref<Hare::Texture2D> m_SecondTexture;
 	// --- End renderer
 
-	Hare::OrthographicCamera m_Camera;
-
-	glm::vec3 m_CameraPosition;
-	float m_CameraMovementSpeed = 10.0f;
-
-	float m_CameraRotation = 0.0f;
-	float m_CameraAngularSpeed = 100.0f;
+	Hare::OrthographicCameraController m_CameraController;
 
 	glm::vec3 m_SquareColor = {0.2f, 0.3, 0.4f};
 };
