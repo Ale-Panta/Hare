@@ -50,7 +50,7 @@ namespace Hare
 
 		inline bool IsInCategory(EventCategory category)
 		{
-			return GetCategoryFlags() & category;
+			return GetCategoryFlags() & (int)category;
 		}
 	};
 
