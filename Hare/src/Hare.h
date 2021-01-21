@@ -20,6 +20,7 @@ For use by Hare applications.
 
 // --- Renderer ----------------
 #include "Hare/Renderer/Renderer.h"
+#include "Hare/Renderer/Renderer2D.h"
 #include "Hare/Renderer/RenderCommand.h"
 
 #include "Hare/Renderer/Buffer.h"

@@ -1,10 +1,11 @@
 #include "hrpch.h"
 #include "Renderer.h"
 #include "Platform/OpenGL/OpenGLShader.h"
+#include "Renderer2D.h"
 
 namespace Hare
 {
-	Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData;
+	Scope<Renderer::SceneData> Renderer::m_SceneData = CreateScope<Renderer::SceneData>();
 
 	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
@@ -22,6 +23,7 @@ namespace Hare
 	void Renderer::Init()
 	{
 		RenderCommand::Init();
+		Renderer2D::Init();
 	}
 
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4 transfrom)
