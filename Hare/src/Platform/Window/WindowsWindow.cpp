@@ -5,7 +5,7 @@
 #include "Hare/Events/MouseEvent.h"
 #include "Hare/Events/ApplicationEvent.h"
 
-#include "Hare/Input.h"
+#include "Hare/Core/Input.h"
 
 #include "Platform/OpenGL/OpenGLContext.h"
 
@@ -68,8 +68,7 @@ namespace Hare
 			data.Height = height;
 
 			WindowResizeEvent event(width, height);
-			// Dispatch
-			data.EventCallback(event);
+			data.EventCallback(event);	// Dispatch
 		});
 
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)

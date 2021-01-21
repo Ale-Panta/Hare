@@ -15,6 +15,8 @@ namespace Hare
 	public:
 		void OnUpdate(TimeStep ts);
 		void OnEvent(Event& e);
+		//inline void SetZoomLevel(float zoomLevel) { m_ZoomLevel = zoomLevel; }
+		//inline float GetZoomLevel() const { return m_ZoomLevel; }
 		inline OrthographicCamera& GetCamera() { return m_Camera; }
 		inline const OrthographicCamera& GetCamera() const { return m_Camera; }
 
@@ -27,10 +29,10 @@ namespace Hare
 		float m_ZoomLevel = 1.0f;
 
 		glm::vec3 m_CameraPosition = glm::vec3(0.0f);
+		float m_CameraTranslationSpeed = 4.0f;
+
 		bool m_RotationEnabled = false;
 		float m_CameraRotation = 0.0f;
-
-		float m_CameraTranslationSpeed = 4.0f;
 		float m_CameraRotationSpeed = 180.0f;
 
 		OrthographicCamera m_Camera;

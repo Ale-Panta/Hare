@@ -5,16 +5,16 @@ This .h file is only intended to be included by client applications. So Hare wil
 For use by Hare applications.
 */
 
-#include "Hare/Log.h"
-#include "Hare/Layer.h"
-#include "Hare/Application.h"
+#include "Hare/Core/Log.h"
+#include "Hare/Core/Layer.h"
+#include "Hare/Core/Application.h"
 
 #include "Hare/Core/TimeStep.h"
 
-#include "Hare/Input.h"
-#include "Hare/Keycodes.h"
-#include "Hare/MouseButtonCodes.h"
-#include "Hare/OrthographicCameraController.h"
+#include "Hare/Core/Input.h"
+#include "Hare/Core/Keycodes.h"
+#include "Hare/Core/MouseButtonCodes.h"
+#include "Hare/Renderer/OrthographicCameraController.h"
 
 #include "Hare/ImGui/ImGuiLayer.h"
 
@@ -31,5 +31,5 @@ For use by Hare applications.
 // -------------------------------------------
 
 // ---Entry Point-----------
-#include "Hare/EntryPoint.h"
+#include "Hare/Core/EntryPoint.h"
 // -------------------------

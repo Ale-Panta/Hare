@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hare/Input.h"
+#include "Hare/Core/Input.h"
 
 namespace Hare
 {

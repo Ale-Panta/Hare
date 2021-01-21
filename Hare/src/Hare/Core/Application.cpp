@@ -44,7 +44,9 @@ namespace Hare
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
 
 
 		// Iterate the layers backwords, because we want the latest layer 
@@ -67,8 +69,11 @@ namespace Hare
 			TimeStep timeStep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate(timeStep);
+			if (!m_Minimize)
+			{
+				for (Layer* layer : m_LayerStack)
+					layer->OnUpdate(timeStep);
+			}
 
 			// ------ Start ImGui render -------
 			// Will be rendered in render tread.
@@ -86,5 +91,20 @@ namespace Hare
 	{
 		m_IsRunning = false;
 		return true;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent & e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeigth() == 0)
+		{
+			m_Minimize = true;
+			return false;
+		}
+
+		m_Minimize = false;
+
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeigth());
+
+		return false;
 	}
 }

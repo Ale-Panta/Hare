@@ -22,9 +22,9 @@ Each .cpp file must include this file and it must be the first to include else i
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Hare/Log.h"
+#include "Hare/Core/Log.h"
 
 #ifdef HR_PLATFORM_WINDOWS
-	#include <Hare/Window.h>
+	#include <Hare/Core/Window.h>
 #endif
 

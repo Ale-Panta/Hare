@@ -1,6 +1,6 @@
 #include "hrpch.h"
 #include "WindowsInput.h"
-#include "Hare/Application.h"
+#include "Hare/Core/Application.h"
 
 #include <GLFW/glfw3.h>
 

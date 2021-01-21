@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Hare/Window.h"
+#include "Hare/Core/Window.h"
 #include "Hare/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>

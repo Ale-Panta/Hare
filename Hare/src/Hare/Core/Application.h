@@ -2,8 +2,8 @@
 
 #include "Core.h"
 #include "Window.h"
-#include "Hare/LayerStack.h"
-#include "Events/Event.h"
+#include "Hare/Core/LayerStack.h"
+#include "Hare/Events/Event.h"
 #include "Hare/Events/ApplicationEvent.h"
 
 #include "Hare/ImGui/ImGuiLayer.h"
@@ -37,11 +37,15 @@ namespace Hare
 
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
 	private:
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
+
 		bool m_IsRunning = true;
+		bool m_Minimize = false;
+
 		LayerStack m_LayerStack;
 		float m_LastFrameTime = 0.0f;	// Time that took to render the last frame.
 

@@ -1,7 +1,7 @@
 #include "hrpch.h"
-#include "Hare/OrthographicCameraController.h"
-#include "Hare/Input.h"
-#include "Hare/Keycodes.h"
+#include "Hare/Renderer/OrthographicCameraController.h"
+#include "Hare/Core/Input.h"
+#include "Hare/Core/Keycodes.h"
 
 namespace Hare
 {

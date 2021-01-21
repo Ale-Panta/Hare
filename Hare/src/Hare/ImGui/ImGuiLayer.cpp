@@ -5,7 +5,7 @@
 #include "examples/imgui_impl_glfw.h"
 #include "examples/imgui_impl_opengl3.h"
 
-#include "Hare/Application.h"
+#include "Hare/Core/Application.h"
 
 // TEMP
 #include <GLFW/glfw3.h>
