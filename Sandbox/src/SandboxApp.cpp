@@ -1,15 +1,16 @@
 #include <Hare.h>
-
-#include "Platform/OpenGL/OpenGLShader.h"
+#include <Hare/Core/EntryPoint.h>	// Declare the entry point only when it's needed.
 
 #include "imgui/imgui.h"
+#include "Platform/OpenGL/OpenGLShader.h"
 
 ////////////////////////////////////////
 //////////////////Test//////////////////
 ////////////////////////////////////////
+#include "Sandbox2D.h"
+
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
 
 /*
 This is just an example of how to create new custom layers.
@@ -243,7 +244,8 @@ public:
 	Sandbox()
 	{
 		// Uncomment the line below to see how react the custom layer in console.
-		PushLayer(new ExampleLayer());
+		// PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 
 	~Sandbox()

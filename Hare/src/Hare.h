@@ -29,7 +29,3 @@ For use by Hare applications.
 
 #include "Hare/Renderer/OrthographicCamera.h"
 // -------------------------------------------
-
-// ---Entry Point-----------
-#include "Hare/Core/EntryPoint.h"
-// -------------------------
