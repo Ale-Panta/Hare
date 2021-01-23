@@ -13,7 +13,7 @@ namespace Hare
 	struct Renderer2DStorage
 	{
 		Ref<VertexArray> QuadVertexArray;
-		Ref<Shader> FlatColorShader;
+		Ref<Texture2D> WhiteTexture;
 		Ref<Shader> TextureShader;
 	};
 
@@ -48,8 +48,11 @@ namespace Hare
 
 		s_Storage->QuadVertexArray->AddIndexBuffer(squareIB);
 
-		s_Storage->FlatColorShader =	Shader::Create("assets/shaders/FlatColorShader.glsl");
-		s_Storage->TextureShader =		Shader::Create("assets/shaders/Texture.glsl");
+		s_Storage->WhiteTexture = Texture2D::Create(1, 1);
+		uint32_t whiteTextureData = 0xffffffff;
+		s_Storage->WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+
+		s_Storage->TextureShader = Shader::Create("assets/shaders/Texture.glsl");
 		s_Storage->TextureShader->Bind();
 		s_Storage->TextureShader->SetInt("u_Texture", 0);	// Set texture slot to be 0.
 	}
@@ -62,9 +65,6 @@ namespace Hare
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
 		// Set view projection matrix reference to all shaders.
-
-		s_Storage->FlatColorShader->Bind();
-		s_Storage->FlatColorShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
 		s_Storage->TextureShader->Bind();
 		s_Storage->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
@@ -82,11 +82,11 @@ namespace Hare
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
-		s_Storage->FlatColorShader->Bind();
-		s_Storage->FlatColorShader->SetFloat4("u_Color", color);
+		s_Storage->TextureShader->SetFloat4("u_Color", color);
+		s_Storage->WhiteTexture->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * /* rotation*/ glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 1.0f));
-		s_Storage->FlatColorShader->SetMat4("u_Transform", transform);
+		s_Storage->TextureShader->SetMat4("u_Transform", transform);
 
 		s_Storage->QuadVertexArray->Bind();
 		RenderCommand::DrawIndex(s_Storage->QuadVertexArray);
@@ -102,10 +102,10 @@ namespace Hare
 		s_Storage->TextureShader->Bind();
 		s_Storage->TextureShader->SetFloat4("u_Color", color);
 
+		texture->Bind();
+
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * /* rotation*/ glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 1.0f));
 		s_Storage->TextureShader->SetMat4("u_Transform", transform);
-
-		texture->Bind();
 
 		s_Storage->QuadVertexArray->Bind();
 		RenderCommand::DrawIndex(s_Storage->QuadVertexArray);
