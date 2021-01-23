@@ -18,9 +18,14 @@ namespace Hare
 	public:
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
-		inline virtual const std::string& GetName() const override { return m_Name; }
 
-		// --- From here all types of Set function are declared...
+		// High level concepts. Those set methods will change once we have a material system.
+		virtual void SetInt(const std::string& name, int value) override;
+		virtual void SetFloat3(const std::string& name, const glm::vec3& value) override;
+		virtual void SetFloat4(const std::string& name, const glm::vec4& value) override;
+		virtual void SetMat4(const std::string& name, const glm::mat4& value) override;
+
+		inline virtual const std::string& GetName() const override { return m_Name; }
 
 		// --- Int ------------------------------------------------------
 		void UploadUniformInt(const std::string& name, const int& value);
@@ -46,7 +51,7 @@ namespace Hare
 		void Compile(std::unordered_map<GLenum, std::string>& shaderSources);
 
 	private:
-		// Allow OpenGL to identify obejcts.
+		// Allow OpenGL to identify objects.
 		uint32_t m_RendererID;
 		std::string m_Name;
 	};

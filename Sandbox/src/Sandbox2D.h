@@ -21,4 +21,5 @@ private:
 	Hare::Ref<Hare::Shader> m_FlatColorShader;
 	Hare::Ref<Hare::VertexArray> m_SquareVA;
 	glm::vec4 m_Color = glm::vec4(0.2f, 0.3f, 0.8f, 1.0f);
+	Hare::Ref<Hare::Texture2D> m_Texture;
 };

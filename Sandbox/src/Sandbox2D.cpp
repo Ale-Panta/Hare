@@ -13,6 +13,7 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
+	m_Texture = Hare::Texture2D::Create("assets/textures/ADC2021.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -29,13 +30,10 @@ void Sandbox2D::OnUpdate(Hare::TimeStep ts)
 	Hare::RenderCommand::Clear();
 
 	Hare::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	Hare::Renderer2D::DrawQuad(glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec4(0.2f, 0.4f, 0.8f, 1.0f));
+	Hare::Renderer2D::DrawQuad(glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(0.8f, 0.8f), glm::vec4(0.2f, 0.4f, 0.8f, 1.0f));
+	Hare::Renderer2D::DrawQuad(glm::vec3(0.5f, -0.5f, 0.0f), glm::vec2(0.5f, 0.75f), glm::vec4(0.7f, 0.4f, 0.5f, 1.0f));
+	Hare::Renderer2D::DrawQuad(glm::vec3(0.0f, 0.0f, -0.1f), glm::vec2(10.0f, 10.0f), m_Texture, glm::vec4(0.7f, 0.4f, 0.5f, 1.0f));
 	Hare::Renderer2D::EndScene();
-
-	// TODO: Add the following functions Shader::SetMat4, Shader::SetFlaot4
-	//std::dynamic_pointer_cast<Hare::OpenGLShader>(m_FlatColorShader)->Bind();
-	//std::dynamic_pointer_cast<Hare::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat4("u_Color", m_Color);
-
 }
 
 void Sandbox2D::OnImGuiRender()
