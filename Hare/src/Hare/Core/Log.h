@@ -28,17 +28,17 @@ namespace Hare
 }
 
 // ---Core Log Macros---
-#define HR_CORE_TRACE(...)	::Hare::Log::GetCoreLogger()->trace(__VA_ARGS__)
-#define HR_CORE_INFO(...)	::Hare::Log::GetCoreLogger()->info(__VA_ARGS__)
-#define HR_CORE_WARN(...)	::Hare::Log::GetCoreLogger()->warn(__VA_ARGS__)
-#define HR_CORE_ERROR(...)	::Hare::Log::GetCoreLogger()->error(__VA_ARGS__)
-#define HR_CORE_FATAL(...)	::Hare::Log::GetCoreLogger()->fatal(__VA_ARGS__)
+#define HR_CORE_TRACE(...) ::Hare::Log::GetCoreLogger()->trace(__VA_ARGS__)
+#define HR_CORE_INFO(...) ::Hare::Log::GetCoreLogger()->info(__VA_ARGS__)
+#define HR_CORE_WARN(...) ::Hare::Log::GetCoreLogger()->warn(__VA_ARGS__)
+#define HR_CORE_ERROR(...) ::Hare::Log::GetCoreLogger()->error(__VA_ARGS__)
+#define HR_CORE_FATAL(...) ::Hare::Log::GetCoreLogger()->fatal(__VA_ARGS__)
 // ---------------------
 
 // ---Client Log Macros---
-#define HR_TRACE(...)		::Hare::Log::GetClientLogger()->trace(__VA_ARGS__)
-#define HR_INFO(...)		::Hare::Log::GetClientLogger()->info(__VA_ARGS__)
-#define HR_WARN(...)		::Hare::Log::GetClientLogger()->warn(__VA_ARGS__)
-#define HR_ERROR(...)		::Hare::Log::GetClientLogger()->error(__VA_ARGS__)
-#define HR_FATAL(...)		::Hare::Log::GetClientLogger()->fatal(__VA_ARGS__)
+#define HR_TRACE(...) ::Hare::Log::GetClientLogger()->trace(__VA_ARGS__)
+#define HR_INFO(...) ::Hare::Log::GetClientLogger()->info(__VA_ARGS__)
+#define HR_WARN(...) ::Hare::Log::GetClientLogger()->warn(__VA_ARGS__)
+#define HR_ERROR(...) ::Hare::Log::GetClientLogger()->error(__VA_ARGS__)
+#define HR_FATAL(...) ::Hare::Log::GetClientLogger()->fatal(__VA_ARGS__)
 // ----------------------

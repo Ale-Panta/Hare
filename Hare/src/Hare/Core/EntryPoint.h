@@ -17,12 +17,19 @@ extern Hare::Application* Hare::CreateApplication();
 int main(int argc, char** argv)
 {
 	Hare::Log::Init();					// For testing purpose.
-	HR_CORE_WARN("Initialize Log!");	// For testing purpose.
-	HR_INFO("Hello!");					// For testing purpose.
 
+	HR_PROFILE_BEGIN_SESSION("Startup", "HareProfile-Startup.json");
 	auto app = Hare::CreateApplication();
+	HR_PROFILE_END_SESSION();
+	
+	HR_PROFILE_BEGIN_SESSION("Runtime", "HareProfile-Runtime.json");
 	app->Run();
+	HR_PROFILE_END_SESSION();
+
+	HR_PROFILE_BEGIN_SESSION("Shutdown", "HareProfile-Shutdown.json");
 	delete app;
+	HR_PROFILE_END_SESSION();
+
 	return 0;
 }
 

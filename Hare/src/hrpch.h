@@ -23,6 +23,7 @@ Each .cpp file must include this file and it must be the first to include else i
 #include <unordered_set>
 
 #include "Hare/Core/Log.h"
+#include "Hare/Debug/Instrumentation.h"
 
 #ifdef HR_PLATFORM_WINDOWS
 	#include <Hare/Core/Window.h>

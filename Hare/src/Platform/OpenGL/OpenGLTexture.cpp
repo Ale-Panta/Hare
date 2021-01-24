@@ -9,7 +9,7 @@ namespace Hare
 		: m_Width(width), m_Height(height)
 	{
 		// Read channels and set image's data format and internal format.
-		m_InternalFormat = GL_RGBA;
+		m_InternalFormat = GL_RGBA8;
 		m_DataFormat = GL_RGBA;
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);

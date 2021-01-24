@@ -38,7 +38,7 @@ namespace Hare
 
 		squareVB->SetLayout({
 			{ ShaderDataType::Float3, "a_Position" },
-			{ ShaderDataType::Float2, "a_TexCoord" } 
+			{ ShaderDataType::Float2, "a_TexCoord" }
 		});
 		s_Storage->QuadVertexArray->AddVertexBuffer(squareVB);
 
@@ -83,6 +83,7 @@ namespace Hare
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
 		s_Storage->TextureShader->SetFloat4("u_Color", color);
+
 		s_Storage->WhiteTexture->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * /* rotation*/ glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 1.0f));

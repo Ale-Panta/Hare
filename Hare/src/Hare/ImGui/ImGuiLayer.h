@@ -16,7 +16,6 @@ namespace Hare
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
-		virtual void OnImGuiRender() override; // Doing any kind of ImGui rendering.
 
 		void Begin();	// Begin ImGui rendering
 		void End();		// End ImGui rendering

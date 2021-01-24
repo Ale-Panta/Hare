@@ -33,7 +33,7 @@ namespace Hare
 	It's purpose is to define a parent wrapper for all event's.
 	Then it will be specialized based on the event type.
 	Those wrappers has no logic inside itself but contains only
-	datas utils to ImGui (in this case, in this project).
+	data utilized to ImGui (in this case, in this project).
 	*/
 	class HARE_API Event 
 	{
