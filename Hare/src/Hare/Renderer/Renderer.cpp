@@ -22,8 +22,15 @@ namespace Hare
 
 	void Renderer::Init()
 	{
+		HR_PROFILE_FUNCTION();
+
 		RenderCommand::Init();
 		Renderer2D::Init();
+	}
+
+	void Renderer::ShutDown()
+	{
+		Renderer2D::ShutDown();
 	}
 
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4 transfrom)

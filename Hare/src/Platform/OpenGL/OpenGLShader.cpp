@@ -9,6 +9,8 @@ namespace Hare
 {
 	OpenGLShader::OpenGLShader(const std::string& filePath)
 	{
+		HR_PROFILE_FUNCTION();
+
 		std::string source = ReadFile(filePath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
@@ -39,6 +41,8 @@ namespace Hare
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
 		: m_Name(name)
 	{
+		HR_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSource;
 		sources[GL_FRAGMENT_SHADER] = fragmentSource;
@@ -47,21 +51,34 @@ namespace Hare
 
 	OpenGLShader::~OpenGLShader()
 	{
+		HR_PROFILE_FUNCTION();
+
 		glDeleteProgram(m_RendererID);
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& filePath)
 	{
+		HR_PROFILE_FUNCTION();
+
 		std::string result;
 		std::ifstream in(filePath, std::ios::in | std::ios::binary);
 
 		if (in)
 		{
 			in.seekg(0, std::ios::end);			// What the file size is.
-			result.resize(in.tellg());			// Tell us were the actual pointer is.
-			in.seekg(0, std::ios::beg);			// Bring us back to the start.
-			in.read(&result[0], result.size());	// And read the file.
-			in.close();
+			size_t size = in.tellg();
+
+			if (size != -1)
+			{
+				result.resize(size);			// Tell us were the actual pointer is.
+				in.seekg(0, std::ios::beg);		// Bring us back to the start.
+				in.read(&result[0], size);		// And read the file.
+				in.close();
+			}
+			else
+			{
+				HR_CORE_ASSERT("Could not read from file {0}", filePath);
+			}
 		}
 		else
 		{
@@ -73,6 +90,8 @@ namespace Hare
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
 	{
+		HR_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const char* typeToken = "#type";			// After this token, the next one tell us what type the shader is.
@@ -109,6 +128,8 @@ namespace Hare
 
 	void OpenGLShader::Compile(std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		HR_PROFILE_FUNCTION();
+
 		GLuint program = glCreateProgram();
 
 		HR_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders for now");
@@ -193,31 +214,43 @@ namespace Hare
 
 	void OpenGLShader::Bind() const
 	{
+		HR_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Unbind() const
 	{
+		HR_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::SetInt(const std::string& name, int value)
 	{
+		HR_PROFILE_FUNCTION();
+
 		UploadUniformInt(name, value);
 	}
 
 	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& value)
 	{
+		HR_PROFILE_FUNCTION();
+
 		UploadUniformFloat3(name, value);
 	}
 
 	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& value)
 	{
+		HR_PROFILE_FUNCTION();
+
 		UploadUniformFloat4(name, value);
 	}
 
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value)
 	{
+		HR_PROFILE_FUNCTION();
+
 		UploadUniformMat4(name, value);
 	}
 

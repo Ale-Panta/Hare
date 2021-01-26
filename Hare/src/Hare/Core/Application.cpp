@@ -13,6 +13,8 @@ namespace Hare
 
 	Application::Application()
 	{
+		HR_PROFILE_FUNCTION();
+
 		HR_CORE_ASSERT(!s_Instance, "Application already exist!")
 		s_Instance = this;
 
@@ -27,29 +29,38 @@ namespace Hare
 
 	Application::~Application()
 	{
+		HR_PROFILE_FUNCTION();
+
+		Renderer::ShutDown();
 	}
 
 	void Application::PushLayer(Layer* layer)
 	{
+		HR_PROFILE_FUNCTION();
+
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* layer)
 	{
+		HR_PROFILE_FUNCTION();
+
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
 	}
 
 	void Application::OnEvent(Event& e)
 	{
+		HR_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
 
 
-		// Iterate the layers backwords, because we want the latest layer 
+		// Iterate the layers backwards, because we want the latest layer 
 		// to blocks input first (if it handle it).
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
@@ -62,8 +73,12 @@ namespace Hare
 
 	void Application::Run()
 	{
+		HR_PROFILE_FUNCTION();
+
 		while (m_IsRunning)
 		{
+			HR_PROFILE_SCOPE("Runloop");
+
 			// Delta time calculation.
 			float time = (float)glfwGetTime();	// TODO: Platform::GetTime();
 			TimeStep timeStep = time - m_LastFrameTime;
@@ -71,17 +86,26 @@ namespace Hare
 
 			if (!m_Minimize)
 			{
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate(timeStep);
+				{
+					HR_PROFILE_SCOPE("LayerStack OnUpdate");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(timeStep);
+				}
+
+				// ------ Start ImGui render -------
+				// Will be rendered in render tread.
+				m_ImGuiLayer->Begin();
+				{
+					HR_PROFILE_SCOPE("LayerStack OnImGuiRenderer");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
+				// ------ End ImGui render ---------
 			}
 
-			// ------ Start ImGui render -------
-			// Will be rendered in render tread.
-			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-			m_ImGuiLayer->End();
-			// ------ End ImGui render ---------
 
 			m_Window->OnUpdate();
 		}
@@ -95,6 +119,8 @@ namespace Hare
 
 	bool Application::OnWindowResize(WindowResizeEvent & e)
 	{
+		HR_PROFILE_FUNCTION();
+
 		if (e.GetWidth() == 0 || e.GetHeigth() == 0)
 		{
 			m_Minimize = true;

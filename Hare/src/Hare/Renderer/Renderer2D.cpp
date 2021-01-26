@@ -21,6 +21,8 @@ namespace Hare
 
 	void Renderer2D::Init()
 	{
+		HR_PROFILE_FUNCTION();
+
 		s_Storage = new Renderer2DStorage();
 
 		s_Storage->QuadVertexArray = VertexArray::Create();
@@ -59,11 +61,15 @@ namespace Hare
 
 	void Renderer2D::ShutDown()
 	{
+		HR_PROFILE_FUNCTION();
+
 		delete s_Storage;
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
+		HR_PROFILE_FUNCTION();
+
 		// Set view projection matrix reference to all shaders.
 
 		s_Storage->TextureShader->Bind();
@@ -72,6 +78,7 @@ namespace Hare
 
 	void Renderer2D::EndScene()
 	{
+		HR_PROFILE_FUNCTION();
 
 	}
 
@@ -82,6 +89,8 @@ namespace Hare
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
+		HR_PROFILE_FUNCTION();
+
 		s_Storage->TextureShader->SetFloat4("u_Color", color);
 
 		s_Storage->WhiteTexture->Bind();
@@ -100,6 +109,8 @@ namespace Hare
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& color)
 	{
+		HR_PROFILE_FUNCTION();
+
 		s_Storage->TextureShader->Bind();
 		s_Storage->TextureShader->SetFloat4("u_Color", color);
 

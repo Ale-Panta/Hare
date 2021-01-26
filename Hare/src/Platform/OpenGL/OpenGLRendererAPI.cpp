@@ -7,6 +7,8 @@ namespace Hare
 {
 	void OpenGLRendererAPI::Init()
 	{
+		HR_PROFILE_FUNCTION();	// Usually we don't want to profile renderer because there are many calculation and we don't want to add any heavy functions.
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_DEPTH_TEST);

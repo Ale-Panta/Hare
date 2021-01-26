@@ -8,7 +8,7 @@ namespace Hare
 	{
 	public:
 		OpenGLVertexArray();
-		virtual ~OpenGLVertexArray() { }
+		virtual ~OpenGLVertexArray();
 
 	public:
 		virtual void Bind() const override;
@@ -17,8 +17,8 @@ namespace Hare
 		virtual void AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) override;
 		virtual void AddIndexBuffer(const Ref<IndexBuffer>& indexBuffer) override;
 
-		virtual const std::vector<Ref<VertexBuffer>>& GetVertexBuffers() const override;
-		virtual const Ref<IndexBuffer>& GetIndexBuffer() const override;
+		inline virtual const std::vector<Ref<VertexBuffer>>& GetVertexBuffers() const override { return m_VertexBuffers; }
+		inline virtual const Ref<IndexBuffer>& GetIndexBuffer() const override { return m_IndexBuffer; }
 
 	private:
 		uint32_t m_RendererID;

@@ -6,7 +6,7 @@ struct GLFWwindow;
 
 namespace Hare
 {
-	// Imlementation of OpenGL GraphicsContext interface.
+	// Implementation of OpenGL GraphicsContext interface.
 
 	class OpenGLContext : public GraphicsContext 
 	{
