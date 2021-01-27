@@ -1,7 +1,9 @@
 #include "hrpch.h"
 #include "Renderer.h"
-#include "Platform/OpenGL/OpenGLShader.h"
 #include "Renderer2D.h"
+#include "Platform/OpenGL/OpenGLShader.h"
+
+using namespace std;
 
 namespace Hare
 {
@@ -10,7 +12,7 @@ namespace Hare
 	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
 		// Make sure that the shader we are using has the right uniforms,
-		// wich cube map sample from... projection matric, view matrix,
+		// which cube map sample from... projection matrix, view matrix,
 		// lighting...
 
 		m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
@@ -36,8 +38,8 @@ namespace Hare
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4 transfrom)
 	{
 		shader->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);	// TODO: this should be run per shader.
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_Transform", transfrom);	// This run per object.
+		dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);	// TODO: this should be run per shader.
+		dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_Transform", transfrom);	// This run per object.
 
 		// mi->Bind();
 		vertexArray->Bind();

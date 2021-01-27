@@ -5,9 +5,11 @@
 
 #include <glfw/glfw3.h>
 
+using namespace std;
+
 namespace Hare
 {
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+#define BIND_EVENT_FN(x) bind(&Application::x, this, placeholders::_1)
 
 	Application* Application::s_Instance = nullptr;
 
@@ -18,7 +20,7 @@ namespace Hare
 		HR_CORE_ASSERT(!s_Instance, "Application already exist!")
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window = unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
 		Renderer::Init();

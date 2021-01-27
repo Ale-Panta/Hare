@@ -2,14 +2,11 @@
 
 #include "Core.h"
 #include "Window.h"
-#include "Hare/Core/LayerStack.h"
 #include "Hare/Events/Event.h"
-#include "Hare/Events/ApplicationEvent.h"
-
-#include "Hare/ImGui/ImGuiLayer.h"
-
 #include "Hare/Core/TimeStep.h"
-
+#include "Hare/Core/LayerStack.h"
+#include "Hare/ImGui/ImGuiLayer.h"
+#include "Hare/Events/ApplicationEvent.h"
 #include "Hare/Renderer/OrthographicCamera.h"
 
 namespace Hare

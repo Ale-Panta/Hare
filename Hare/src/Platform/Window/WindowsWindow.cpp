@@ -1,12 +1,10 @@
 #include "hrpch.h"
 #include "WindowsInput.h"
 #include "WindowsWindow.h"
+#include "Hare/Core/Input.h"
 #include "Hare/Events/KeyEvent.h"
 #include "Hare/Events/MouseEvent.h"
 #include "Hare/Events/ApplicationEvent.h"
-
-#include "Hare/Core/Input.h"
-
 #include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Hare

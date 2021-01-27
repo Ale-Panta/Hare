@@ -4,6 +4,8 @@
 
 #include <GLFW/glfw3.h>
 
+using namespace std;
+
 namespace Hare
 {
 	// Since the project works only on windows we can create the singleton instance here.
@@ -33,7 +35,7 @@ namespace Hare
 		return state == GLFW_PRESS;
 	}
 
-	std::pair<float, float> WindowsInput::GetMousePositionImpl()
+	pair<float, float> WindowsInput::GetMousePositionImpl()
 	{
 		// We want a GLFWwindow, this is the reason of static cast.
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
@@ -43,7 +45,7 @@ namespace Hare
 
 		glfwGetCursorPos(window, &xPos, &yPos);
 
-		// Return std::pair<float, float>. So we are returning two values in the same function.
+		// Return pair<float, float>. So we are returning two values in the same function.
 		return { (float)xPos, (float)yPos };
 	}
 

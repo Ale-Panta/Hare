@@ -3,9 +3,11 @@
 #include "Renderer.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
 
+using namespace std;
+
 namespace Hare
 {
-	Ref<Texture2D> Texture2D::Create(const std::string& filepath)
+	Ref<Texture2D> Texture2D::Create(const string& filepath)
 	{
 		switch (Renderer::GetAPI())
 		{

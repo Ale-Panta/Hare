@@ -2,10 +2,9 @@
 
 #include <string>
 #include <chrono>
-#include <algorithm>
-#include <fstream>
-
 #include <thread>
+#include <fstream>
+#include <algorithm>
 
 namespace Hare
 {

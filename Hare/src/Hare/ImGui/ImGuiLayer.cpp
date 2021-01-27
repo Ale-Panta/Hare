@@ -1,15 +1,15 @@
 #include "hrpch.h"
-#include "ImGuiLayer.h"
-
 #include "imgui.h"
+#include "ImGuiLayer.h"
+#include "Hare/Core/Application.h"
 #include "examples/imgui_impl_glfw.h"
 #include "examples/imgui_impl_opengl3.h"
-
-#include "Hare/Core/Application.h"
 
 // TEMP
 #include <GLFW/glfw3.h>
 #include <Glad/glad.h>
+
+using namespace ImGui;
 
 namespace Hare
 {
@@ -28,8 +28,8 @@ namespace Hare
 
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		CreateContext();
+		ImGuiIO& io = GetIO(); (void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
@@ -38,11 +38,11 @@ namespace Hare
 		//io.ConfigViewportsNoTaskBarIcon = true;
 
 		// Setup Dear ImGui style
-		ImGui::StyleColorsDark();
-		//ImGui::StyleColorsClassic();
+		StyleColorsDark();
+		//StyleColorsClassic();
 
-		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-		ImGuiStyle& style = ImGui::GetStyle();
+		// When viewport are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+		ImGuiStyle& style = GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			style.WindowRounding = 0.0f;
@@ -62,7 +62,7 @@ namespace Hare
 
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
+		DestroyContext();
 	}
 
 	void ImGuiLayer::Begin()
@@ -71,26 +71,26 @@ namespace Hare
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
+		NewFrame();
 	}
 
 	void ImGuiLayer::End()
 	{
 		HR_PROFILE_FUNCTION();
 
-		ImGuiIO& io = ImGui::GetIO();
+		ImGuiIO& io = GetIO();
 		Application& app = Application::Get();
 		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
 
 		// Rendering
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		Render();
+		ImGui_ImplOpenGL3_RenderDrawData(GetDrawData());
 
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			GLFWwindow* backup_current_context = glfwGetCurrentContext();
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
+			UpdatePlatformWindows();
+			RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backup_current_context);
 		}
 	}

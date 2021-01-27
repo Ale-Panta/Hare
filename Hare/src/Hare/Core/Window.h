@@ -1,7 +1,6 @@
 #pragma once
 
 #include "hrpch.h"
-
 #include "Hare/Core/Core.h"
 #include "Hare/Events/Event.h"
 

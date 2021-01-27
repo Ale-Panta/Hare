@@ -3,6 +3,8 @@
 
 #include <glad/glad.h>
 
+using namespace glm;
+
 namespace Hare
 {
 	void OpenGLRendererAPI::Init()
@@ -14,7 +16,7 @@ namespace Hare
 		glEnable(GL_DEPTH_TEST);
 	}
 
-	void OpenGLRendererAPI::SetClearColor(const glm::vec4& color)
+	void OpenGLRendererAPI::SetClearColor(const vec4& color)
 	{
 		glClearColor(color.r, color.g, color.b, color.a);
 	}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hare/Renderer/Shader.h"
+
 #include <glm/glm.hpp>
 
 // TODO : remove
@@ -21,6 +22,7 @@ namespace Hare
 
 		// High level concepts. Those set methods will change once we have a material system.
 		virtual void SetInt(const std::string& name, int value) override;
+		virtual void SetFloat(const std::string& name, float value) override;
 		virtual void SetFloat3(const std::string& name, const glm::vec3& value) override;
 		virtual void SetFloat4(const std::string& name, const glm::vec4& value) override;
 		virtual void SetMat4(const std::string& name, const glm::mat4& value) override;

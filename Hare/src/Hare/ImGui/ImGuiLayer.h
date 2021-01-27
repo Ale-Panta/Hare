@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Hare/Core/Layer.h"
-
 #include "Hare/Events/KeyEvent.h"
 #include "Hare/Events/MouseEvent.h"
 #include "Hare/Events/ApplicationEvent.h"

@@ -3,8 +3,10 @@
 
 #include <iostream>
 #include <GLFW/glfw3.h>
+// --- Must be included in this order ---
 #include <glad/glad.h>
 #include <GL/GL.h>
+// --------------------------------------
 
 namespace Hare
 {

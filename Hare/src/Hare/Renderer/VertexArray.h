@@ -1,8 +1,8 @@
 #pragma once
 
-#include <memory>
-
 #include "Hare/Renderer/Buffer.h"
+
+#include <memory>
 
 namespace Hare
 {

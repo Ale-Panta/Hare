@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Hare/Renderer/Texture.h"
 
 #include <glad/glad.h>

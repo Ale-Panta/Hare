@@ -1,7 +1,8 @@
 #include "hrpch.h"
+#include "stb_image.h"
 #include "OpenGLTexture.h"
 
-#include "stb_image.h"
+using namespace std;
 
 namespace Hare
 {
@@ -24,7 +25,7 @@ namespace Hare
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
+	OpenGLTexture2D::OpenGLTexture2D(const string& path)
 		: m_Path(path)
 	{
 		HR_PROFILE_FUNCTION();
@@ -37,7 +38,7 @@ namespace Hare
 
 		stbi_uc* data = nullptr;
 		{
-			HR_PROFILE_SCOPE("stbi_load - OpenGLTexture2D::OpenGLTexture2D(const std::string&)");
+			HR_PROFILE_SCOPE("stbi_load - OpenGLTexture2D::OpenGLTexture2D(const string&)");
 			data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 		}
 

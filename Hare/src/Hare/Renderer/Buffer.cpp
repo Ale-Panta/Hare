@@ -1,8 +1,6 @@
 #include "hrpch.h"
 #include "Buffer.h"
-
 #include "Renderer.h"
-
 // #ifdef HR_PLATFORM_WINDOWS
 #include "Platform/OpenGL/OpenGLBuffer.h"
 // #elseif ...
