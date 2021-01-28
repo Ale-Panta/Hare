@@ -6,35 +6,51 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+using namespace std;
 using namespace glm;
 
 namespace Hare
 {
+	/*
+	Batch renderer system.
+	It allow us to render multiple geometry 
+	in a single draw call.
+	The way it works is the follow:
+	pass all possible values to the vertex buffer 
+	such as position, color, texture.
+	*/
+
+	// Single vertex properties.
 	struct QuadVertex
 	{
 		vec3 Position;
 		vec4 Color;
 		vec2 TexCoord;
-		// TODO: color, texid.
+		float TexIndex;
+		float TilingFactor;
 	};
-
 
 	// Rendering struct of the game. It depends on the game.
 	struct Renderer2DData
 	{
 		// Maximum numbers for draw call.
-		const uint32_t MaxQuads		= 10000;
-		const uint32_t MaxVerticies = MaxQuads * 4;
-		const uint32_t MaxIndicies	= MaxQuads * 6;
+		const uint32_t MaxQuads			= 10000;
+		const uint32_t MaxVerticies		= MaxQuads * 4;
+		const uint32_t MaxIndicies		= MaxQuads * 6;
+		static const uint32_t MaxTextureSlots	= 32;
 
-		Ref<VertexBuffer> QuadVertexBuffer;
 		Ref<VertexArray> QuadVertexArray;
-		Ref<Texture2D> WhiteTexture;
+		Ref<VertexBuffer> QuadVertexBuffer;
 		Ref<Shader> TextureShader;
+		Ref<Texture2D> WhiteTexture;
 
+		/// Number of element to draw. In a single quad there are 6 indicies.
 		uint32_t QuadIndexCount = 0;
 		QuadVertex* QuadVertexBufferBase	= nullptr;
 		QuadVertex* QuadVertexBufferPtr		= nullptr;
+
+		array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
+		uint32_t TextureSlotIndex = 1;	// Slot index 0 --> white texture
 	};
 
 	static Renderer2DData s_Data;
@@ -43,22 +59,43 @@ namespace Hare
 	{
 		HR_PROFILE_FUNCTION();
 
-		s_Data.QuadVertexArray = VertexArray::Create();
+		/*
+		We don't pass any data to the vertex buffer because it's marked as dynamic.
+		This allow us to use batch rendering, therefore minimize the draw call.
+		The buffer it's filled at the geometry creation function.
+		Here we setup the layout of the buffer, the indicies.
+		*/
 
+		// Create vertex array based on the graphics API we are using.
+		s_Data.QuadVertexArray	= VertexArray::Create();
+
+		// Create vertex buffer based on the graphics API we are using.
 		s_Data.QuadVertexBuffer = VertexBuffer::Create(s_Data.MaxVerticies * sizeof(QuadVertex));
+
+		// Set the layout of the buffer. The data type must be in the proper order.
 		s_Data.QuadVertexBuffer->SetLayout({
-			{ ShaderDataType::Float3, "a_Position" },
-			{ ShaderDataType::Float4, "a_Color" },
-			{ ShaderDataType::Float2, "a_TexCoord" }
+			{ ShaderDataType::Float3,	"a_Position" },
+			{ ShaderDataType::Float4,	"a_Color" },
+			{ ShaderDataType::Float2,	"a_TexCoord" },
+			{ ShaderDataType::Float,	"a_TexIndex" },
+			{ ShaderDataType::Float,	"a_TilingFactor" }
 		});
+
+		// Add vertex buffer to the list o vertex buffer.
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
 		s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.MaxVerticies];
 
+		///////////////////////////////////////////////////////////////////////////////////////
+		// Begin quad indicies ////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////
+
 		uint32_t* quadIndicies = new uint32_t[s_Data.MaxIndicies];
 
+		// Vertex offset
 		uint32_t offset = 0;
-		for (uint32_t i = 0; i < s_Data.MaxIndicies; i += 6)
+
+		for (uint32_t i = 0; i < s_Data.MaxIndicies; i += 6)	// Must be multiple of 6.
 		{
 			quadIndicies[i + 0] = offset + 0;
 			quadIndicies[i + 1] = offset + 1;
@@ -71,17 +108,38 @@ namespace Hare
 			offset += 4;
 		}
 
+		// Create index buffer based on the graphics API we are using.
 		Ref<IndexBuffer> quadIB = IndexBuffer::Create(quadIndicies, s_Data.MaxIndicies);
+
+		// Set index buffer.
 		s_Data.QuadVertexArray->AddIndexBuffer(quadIB);
+
 		delete[] quadIndicies;
 
+		///////////////////////////////////////////////////////////////////////////////////////
+		// End quad indicies //////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////
+
+		// Create texture based on the graphics API we are using.
 		s_Data.WhiteTexture = Texture2D::Create(1, 1);
+
+		// Set it as white
 		uint32_t whiteTextureData = 0xffffffff;
 		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
+		// Set samplers
+		int32_t samplers[s_Data.MaxTextureSlots];
+		for (size_t i = 0; i < s_Data.MaxTextureSlots; i++)	samplers[i] = i;
+
+		// Create shader based on the graphics API we are using.
 		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
 		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetInt("u_Texture", 0);	// Set texture slot to be 0.
+
+		// Set texture slot to be 0.
+		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
+
+		// Set all texture slots to zero.
+		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
 	}
 
 	void Renderer2D::ShutDown()
@@ -100,6 +158,8 @@ namespace Hare
 
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+		s_Data.TextureSlotIndex = 1;
 	}
 
 	void Renderer2D::EndScene()
@@ -115,9 +175,16 @@ namespace Hare
 		Flush();
 	}
 
-
+	/*
+	Draw all data passed in. As soon as some limit exceed such as texture slots or verticies,
+	we flush instanlty the current data and we start a new batch. The new batch contains the 
+	exceeded data.
+	*/
 	void Renderer2D::Flush()
 	{
+		// Bind textures
+		for (size_t i = 0; i < s_Data.TextureSlotIndex; i++) s_Data.TextureSlots[i]->Bind(i);
+
 		RenderCommand::DrawIndex(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 	}
 
@@ -130,27 +197,44 @@ namespace Hare
 	{
 		HR_PROFILE_FUNCTION();
 
-		// set every vertex's properties of the quad.
-		s_Data.QuadVertexBufferPtr->Position	= position;
-		s_Data.QuadVertexBufferPtr->Color		= color;
-		s_Data.QuadVertexBufferPtr->TexCoord	= vec2(0.0f, 0.0f);
+		const float textureIndex = 0.0f;	// White texture.
+		const float tilingFactor = 1.0f;
+
+		// Set every vertex's properties of the quad...
+
+		// Bottom-left vertex
+		s_Data.QuadVertexBufferPtr->Position		= position;
+		s_Data.QuadVertexBufferPtr->Color			= color;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(0.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
-		s_Data.QuadVertexBufferPtr->Position	= vec3(position.x + size.x, position.y, 0.0f);
-		s_Data.QuadVertexBufferPtr->Color		= color;
-		s_Data.QuadVertexBufferPtr->TexCoord	= vec2(1.0f, 0.0f);
+		// Bottom-right vertex
+		s_Data.QuadVertexBufferPtr->Position		= vec3(position.x + size.x, position.y, 0.0f);
+		s_Data.QuadVertexBufferPtr->Color			= color;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(1.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
-		s_Data.QuadVertexBufferPtr->Position	= vec3(position.x + size.x, position.y + size.y, 0.0f);
-		s_Data.QuadVertexBufferPtr->Color		= color;
-		s_Data.QuadVertexBufferPtr->TexCoord	= vec2(1.0f, 1.0f);
+		// Top-right vertex
+		s_Data.QuadVertexBufferPtr->Position		= vec3(position.x + size.x, position.y + size.y, 0.0f);
+		s_Data.QuadVertexBufferPtr->Color			= color;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(1.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
-		s_Data.QuadVertexBufferPtr->Position	= vec3(position.x, position.y + size.y, 0.0f);
-		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(0.0f, 1.0f);
+		// Top-left vertex
+		s_Data.QuadVertexBufferPtr->Position		= vec3(position.x, position.y + size.y, 0.0f);
+		s_Data.QuadVertexBufferPtr->Color			= color;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(0.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
+		// Number of element to draw. In a single quad there are 6 indicies.
 		s_Data.QuadIndexCount += 6;
 
 		//s_Data.TextureShader->SetFloat("u_TilingFactor", 1.0f);
@@ -175,6 +259,66 @@ namespace Hare
 	{
 		HR_PROFILE_FUNCTION();
 
+		const vec4 color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+		float textureIndex = 0.0f;
+
+		for (size_t i = 1; i < s_Data.TextureSlotIndex; i++)
+		{
+			// We already submitted this texture?
+			if (*s_Data.TextureSlots[i].get() == *texture.get())
+			{
+				textureIndex = (float)i;
+				break;
+			}
+		}
+
+		// Find a texture index for this particular texture.
+		if (textureIndex == 0.0f)
+		{
+			textureIndex = (float)s_Data.TextureSlotIndex;
+			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+			s_Data.TextureSlotIndex++;
+		}
+
+		// Set every vertex's properties of the quad...
+
+		// Bottom-left vertex
+		s_Data.QuadVertexBufferPtr->Position		= position;
+		s_Data.QuadVertexBufferPtr->Color			= color;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(0.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
+
+		// Bottom-right vertex
+		s_Data.QuadVertexBufferPtr->Position		= vec3(position.x + size.x, position.y, 0.0f);
+		s_Data.QuadVertexBufferPtr->Color			= color;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(1.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
+
+		// Top-right vertex
+		s_Data.QuadVertexBufferPtr->Position		= vec3(position.x + size.x, position.y + size.y, 0.0f);
+		s_Data.QuadVertexBufferPtr->Color			= color;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(1.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
+
+		// Top-left vertex
+		s_Data.QuadVertexBufferPtr->Position		= vec3(position.x, position.y + size.y, 0.0f);
+		s_Data.QuadVertexBufferPtr->Color			= color;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(0.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
+
+		// Number of element to draw. In a single quad there are 6 indicies.
+		s_Data.QuadIndexCount += 6;
+
+#if OLD_PATH
 		s_Data.TextureShader->SetFloat4("u_Color", tintColor);
 		s_Data.TextureShader->SetFloat("u_TilingFactor", tilingFactor);
 		texture->Bind();
@@ -187,6 +331,7 @@ namespace Hare
 		s_Data.QuadVertexArray->Bind();
 
 		RenderCommand::DrawIndex(s_Data.QuadVertexArray);
+#endif
 	}
 
 	void Renderer2D::DrawRotatedQuad(const vec2& position, const vec2& size, float rotationInRad, const vec4& color)
@@ -197,7 +342,7 @@ namespace Hare
 	void Renderer2D::DrawRotatedQuad(const vec3& position, const vec2& size, float rotationInRad, const vec4& color)
 	{
 		HR_PROFILE_FUNCTION();
-
+	
 		s_Data.TextureShader->SetFloat4("u_Color", color);
 		s_Data.TextureShader->SetFloat("u_TilingFactor", 1.0f);
 		s_Data.WhiteTexture->Bind();

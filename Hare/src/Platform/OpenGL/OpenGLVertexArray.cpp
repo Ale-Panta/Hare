@@ -68,12 +68,14 @@ namespace Hare
 		for (const auto& element : vertexBuffer->GetLayout())
 		{
 			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index,
+			glVertexAttribPointer(
+				index,
 				element.GetComponentCount(),
 				ShaderDataTypeToOpenGLBaseType(element.Type),
 				element.Normalized ? GL_TRUE : GL_FALSE,
 				vertexBuffer->GetLayout().GetStride(),
-				(const void*)element.Offset);
+				(const void*)element.Offset
+			);
 			index++;
 		}
 

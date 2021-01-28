@@ -235,6 +235,13 @@ namespace Hare
 		UploadUniformInt(name, value);
 	}
 
+	void OpenGLShader::SetIntArray(const std::string& name, int* values, uint32_t count)
+	{
+		HR_PROFILE_FUNCTION();
+
+		UploadUniformIntArray(name, values, count);
+	}
+
 	void OpenGLShader::SetFloat(const string& name, float value)
 	{
 		HR_PROFILE_FUNCTION();
@@ -269,7 +276,13 @@ namespace Hare
 		glUniform1i(location, value);
 	}
 
-	void OpenGLShader::UploadUniformFloat(const string & name, const float & value)
+	void OpenGLShader::UploadUniformIntArray(const std::string& name, const int* values, uint32_t count)
+	{
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform1iv(location, count, values);
+	}
+
+	void OpenGLShader::UploadUniformFloat(const string& name, const float& value)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1f(location, value);
