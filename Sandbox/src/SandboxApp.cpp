@@ -34,8 +34,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f
 		};
 
-		Hare::Ref<Hare::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(Hare::VertexBuffer::Create(verticies, sizeof(verticies)));
+		Hare::Ref<Hare::VertexBuffer> vertexBuffer = Hare::VertexBuffer::Create(verticies, sizeof(verticies));
 
 		Hare::BufferLayout layout = {
 			{ Hare::ShaderDataType::Float3, "a_Position" },
@@ -46,8 +45,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indicies[3] = { 0, 1, 2 };
-		Hare::Ref<Hare::IndexBuffer> indexBuffer;
-		indexBuffer.reset(Hare::IndexBuffer::Create(indicies, sizeof(indicies) / sizeof(uint32_t)));
+		Hare::Ref<Hare::IndexBuffer> indexBuffer = Hare::IndexBuffer::Create(indicies, sizeof(indicies) / sizeof(uint32_t));
 		m_VertexArray->AddIndexBuffer(indexBuffer);
 
 		/////////////////////////////////////////////////////////////////////////////////////////
@@ -62,8 +60,7 @@ public:
 			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
 		};
 
-		Hare::Ref<Hare::VertexBuffer> squareVB;
-		squareVB.reset(Hare::VertexBuffer::Create(squareVerticies, sizeof(squareVerticies)));
+		Hare::Ref<Hare::VertexBuffer> squareVB = Hare::VertexBuffer::Create(squareVerticies, sizeof(squareVerticies));
 
 		squareVB->SetLayout({ 
 			{ Hare::ShaderDataType::Float3, "a_Position" },
@@ -72,8 +69,7 @@ public:
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndicies[6] = { 0, 1, 2, 2, 3, 0 };
-		Hare::Ref<Hare::IndexBuffer> squareIB;
-		squareIB.reset(Hare::IndexBuffer::Create(squareIndicies, sizeof(squareIndicies) / sizeof(uint32_t)));
+		Hare::Ref<Hare::IndexBuffer> squareIB = Hare::IndexBuffer::Create(squareIndicies, sizeof(squareIndicies) / sizeof(uint32_t));
 
 		m_SquareVA->AddIndexBuffer(squareIB);
 

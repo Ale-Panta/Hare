@@ -10,17 +10,24 @@ namespace Hare
 {
 #pragma region Vertex
 
-	VertexBuffer* VertexBuffer::Create(float* verticies, uint32_t size)
+	Ref<VertexBuffer> VertexBuffer::Create(uint32_t size)
 	{
 		switch (Renderer::GetAPI())
 		{
-		// #if HR_PLATFORM_WINDOWS
 		case RendererAPI::API::None:	HR_CORE_ASSERT(false, "RendererAPI::None is currently not supported");  return nullptr;
-		// #elseif ...
-		case RendererAPI::API::OpenGL:	return new OpenGLVertexBuffer(verticies, size);
-		// #endif
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexBuffer>(size);
+		}
 
-		default: break;
+		HR_CORE_ASSERT(false, "Unknown RendererAPI");
+		return nullptr;
+	}
+
+	Ref<VertexBuffer> VertexBuffer::Create(float* verticies, uint32_t size)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:	HR_CORE_ASSERT(false, "RendererAPI::None is currently not supported");  return nullptr;
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexBuffer>(verticies, size);
 		}
 
 		HR_CORE_ASSERT(false, "Unknown RendererAPI");
@@ -31,14 +38,12 @@ namespace Hare
 
 #pragma region Vertex
 
-	IndexBuffer* IndexBuffer::Create(uint32_t* indicies, uint32_t size)
+	Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indicies, uint32_t size)
 	{
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:	HR_CORE_ASSERT(false, "RendererAPI::None is currently not supported");  return nullptr;
-		case RendererAPI::API::OpenGL:	return new OpenGLIndexBuffer(indicies, size);
-
-		default: break;
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLIndexBuffer>(indicies, size);
 		}
 
 		HR_CORE_ASSERT(false, "Unknown RendererAPI");
