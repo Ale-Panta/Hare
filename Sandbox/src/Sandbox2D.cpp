@@ -32,6 +32,9 @@ void Sandbox2D::OnUpdate(Hare::TimeStep ts)
 	// Update
 	m_CameraController.OnUpdate(ts);
 
+	// Reset stats here.
+	Hare::Renderer2D::ResetStats();
+
 	// Renderer
 	{
 		HR_PROFILE_SCOPE("Render Preparation");
@@ -54,6 +57,17 @@ void Sandbox2D::OnUpdate(Hare::TimeStep ts)
 		Hare::Renderer2D::DrawRotatedQuad(vec3(-1.0f, -1.0f, 0.2f), vec2(2.0f, 2.0f), 37.0f, m_Texture, 10.0f, vec4(0.8f, 0.8f, 0.8f, 1.0f));
 		Hare::Renderer2D::DrawRotatedQuad(vec3(1.0f, 0.0f, 0.3f), vec2(2.0f, 2.0f), rotation, vec4(0.8f, 0.8f, 0.8f, 1.0f));
 		Hare::Renderer2D::EndScene();
+
+		Hare::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		for (float y = -5.0f; y < 5.0f; y += 0.5f)
+		{
+			for (float x = -5.0f; x < 5.0f; x += 0.5f)
+			{
+				vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.5f };
+				Hare::Renderer2D::DrawQuad(vec3(x, y, 0.1f), vec2(0.45f, 0.45f), color);
+			}
+		}
+		Hare::Renderer2D::EndScene();
 	}
 }
 
@@ -62,6 +76,14 @@ void Sandbox2D::OnImGuiRender()
 	HR_PROFILE_FUNCTION();
 
 	ImGui::Begin("Setting");
+
+	auto stats = Hare::Renderer2D::GetStats();
+	ImGui::Text("Renderer2D stats:");
+	ImGui::Text("Draw calls: %d", stats.Drawcalls);
+	ImGui::Text("Quads: %d", stats.QuadCount);
+	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
+	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
 	ImGui::ColorEdit4("SquareColor", value_ptr(m_Color));
 	ImGui::End();
 }

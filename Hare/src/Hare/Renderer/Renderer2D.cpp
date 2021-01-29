@@ -34,9 +34,9 @@ namespace Hare
 	struct Renderer2DData
 	{
 		// Maximum numbers for draw call.
-		const uint32_t MaxQuads			= 10000;
-		const uint32_t MaxVerticies		= MaxQuads * 4;
-		const uint32_t MaxIndicies		= MaxQuads * 6;
+		static const uint32_t MaxQuads			= 10000;
+		static const uint32_t MaxVerticies		= MaxQuads * 4;
+		static const uint32_t MaxIndicies		= MaxQuads * 6;
 		static const uint32_t MaxTextureSlots	= 32;
 
 		Ref<VertexArray> QuadVertexArray;
@@ -53,6 +53,8 @@ namespace Hare
 		uint32_t TextureSlotIndex = 1;	// Slot index 0 --> white texture
 
 		vec4 QuadvertexPositions[4];
+
+		Renderer2D::Statistics Stats;
 	};
 
 	static Renderer2DData s_Data;
@@ -193,6 +195,17 @@ namespace Hare
 		for (size_t i = 0; i < s_Data.TextureSlotIndex; i++) s_Data.TextureSlots[i]->Bind(i);
 
 		RenderCommand::DrawIndex(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
+		s_Data.Stats.Drawcalls++;
+	}
+
+	void Renderer2D::FlushAndReset()
+	{
+		EndScene();
+
+		s_Data.QuadIndexCount = 0;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+		s_Data.TextureSlotIndex = 1;
 	}
 
 	void Renderer2D::DrawQuad(const vec2& position, const vec2& size, const vec4& color)
@@ -203,6 +216,12 @@ namespace Hare
 	void Renderer2D::DrawQuad(const vec3& position, const vec2& size, const vec4& color)
 	{
 		HR_PROFILE_FUNCTION();
+
+		// Check batch limit. If the values exceed then flush the data and start new batch.
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndicies)
+		{
+			FlushAndReset();
+		}
 
 		const float textureIndex = 0.0f;	// White texture.
 		const float tilingFactor = 1.0f;
@@ -247,6 +266,8 @@ namespace Hare
 
 		// Number of element to draw. In a single quad there are 6 indicies.
 		s_Data.QuadIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawQuad(const vec2& position, const vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const vec4& tintColor)
@@ -258,9 +279,15 @@ namespace Hare
 	{
 		HR_PROFILE_FUNCTION();
 
+		// Check batch limit. If the values exceed then flush the data and start new batch.
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndicies)
+		{
+			FlushAndReset();
+		}
+
 		float textureIndex = 0.0f;
 
-		for (size_t i = 1; i < s_Data.TextureSlotIndex; i++)
+		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
 		{
 			// We already submitted this texture?
 			if (*s_Data.TextureSlots[i].get() == *texture.get())
@@ -318,6 +345,8 @@ namespace Hare
 
 		// Number of element to draw. In a single quad there are 6 indicies.
 		s_Data.QuadIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawRotatedQuad(const vec2& position, const vec2& size, float rotationInDegree, const vec4& color)
@@ -328,6 +357,12 @@ namespace Hare
 	void Renderer2D::DrawRotatedQuad(const vec3& position, const vec2& size, float rotationInDegree, const vec4& color)
 	{
 		HR_PROFILE_FUNCTION();
+
+		// Check batch limit. If the values exceed then flush the data and start new batch.
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndicies)
+		{
+			FlushAndReset();
+		}
 
 		const float textureIndex = 0.0f;	// White texture.
 		const float tilingFactor = 1.0f;
@@ -373,6 +408,8 @@ namespace Hare
 
 		// Number of element to draw. In a single quad there are 6 indicies.
 		s_Data.QuadIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawRotatedQuad(const vec2& position, const vec2& size, float rotationInDegree, const Ref<Texture2D>& texture, float tilingFactor, const vec4& tintColor)
@@ -384,9 +421,15 @@ namespace Hare
 	{
 		HR_PROFILE_FUNCTION();
 
+		// Check batch limit. If the values exceed then flush the data and start new batch.
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndicies)
+		{
+			FlushAndReset();
+		}
+
 		float textureIndex = 0.0f;
 
-		for (size_t i = 1; i < s_Data.TextureSlotIndex; i++)
+		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
 		{
 			// We already submitted this texture?
 			if (*s_Data.TextureSlots[i].get() == *texture.get())
@@ -445,5 +488,17 @@ namespace Hare
 
 		// Number of element to draw. In a single quad there are 6 indicies.
 		s_Data.QuadIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
+	}
+
+	void Renderer2D::ResetStats()
+	{
+		memset(&s_Data.Stats, 0, sizeof(Statistics));
+	}
+
+	Renderer2D::Statistics Renderer2D::GetStats()
+	{
+		return s_Data.Stats;
 	}
 }
