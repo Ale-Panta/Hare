@@ -51,6 +51,8 @@ namespace Hare
 
 		array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1;	// Slot index 0 --> white texture
+
+		vec4 QuadvertexPositions[4];
 	};
 
 	static Renderer2DData s_Data;
@@ -140,6 +142,11 @@ namespace Hare
 
 		// Set all texture slots to zero.
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
+
+		s_Data.QuadvertexPositions[0] = vec4(-0.5f, -0.5f, 0.0f, 1.0f);
+		s_Data.QuadvertexPositions[1] = vec4( 0.5f, -0.5f, 0.0f, 1.0f);
+		s_Data.QuadvertexPositions[2] = vec4( 0.5f,  0.5f, 0.0f, 1.0f);
+		s_Data.QuadvertexPositions[3] = vec4(-0.5f,  0.5f, 0.0f, 1.0f);
 	}
 
 	void Renderer2D::ShutDown()
@@ -200,10 +207,14 @@ namespace Hare
 		const float textureIndex = 0.0f;	// White texture.
 		const float tilingFactor = 1.0f;
 
+		mat4 transform =
+			translate(mat4(1.0f), position) *
+			scale(mat4(1.0f), vec3(size.x, size.y, 1.0f));
+
 		// Set every vertex's properties of the quad...
 
 		// Bottom-left vertex
-		s_Data.QuadVertexBufferPtr->Position		= position;
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[0];
 		s_Data.QuadVertexBufferPtr->Color			= color;
 		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(0.0f, 0.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
@@ -211,7 +222,7 @@ namespace Hare
 		s_Data.QuadVertexBufferPtr++;
 
 		// Bottom-right vertex
-		s_Data.QuadVertexBufferPtr->Position		= vec3(position.x + size.x, position.y, 0.0f);
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[1];
 		s_Data.QuadVertexBufferPtr->Color			= color;
 		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(1.0f, 0.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
@@ -219,7 +230,7 @@ namespace Hare
 		s_Data.QuadVertexBufferPtr++;
 
 		// Top-right vertex
-		s_Data.QuadVertexBufferPtr->Position		= vec3(position.x + size.x, position.y + size.y, 0.0f);
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[2];
 		s_Data.QuadVertexBufferPtr->Color			= color;
 		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(1.0f, 1.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
@@ -227,7 +238,7 @@ namespace Hare
 		s_Data.QuadVertexBufferPtr++;
 
 		// Top-left vertex
-		s_Data.QuadVertexBufferPtr->Position		= vec3(position.x, position.y + size.y, 0.0f);
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[3];
 		s_Data.QuadVertexBufferPtr->Color			= color;
 		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(0.0f, 1.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
@@ -236,18 +247,6 @@ namespace Hare
 
 		// Number of element to draw. In a single quad there are 6 indicies.
 		s_Data.QuadIndexCount += 6;
-
-		//s_Data.TextureShader->SetFloat("u_TilingFactor", 1.0f);
-		//s_Data.WhiteTexture->Bind();
-
-		//mat4 transform = 
-		//	translate(mat4(1.0f), position) * 
-		//	scale(mat4(1.0f), vec3(size.x, size.y, 1.0f));
-
-		//s_Data.TextureShader->SetMat4("u_Transform", transform);
-		//s_Data.QuadVertexArray->Bind();
-
-		//RenderCommand::DrawIndex(s_Data.QuadVertexArray);
 	}
 
 	void Renderer2D::DrawQuad(const vec2& position, const vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const vec4& tintColor)
@@ -258,8 +257,6 @@ namespace Hare
 	void Renderer2D::DrawQuad(const vec3& position, const vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const vec4& tintColor)
 	{
 		HR_PROFILE_FUNCTION();
-
-		const vec4 color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 		float textureIndex = 0.0f;
 
@@ -281,10 +278,69 @@ namespace Hare
 			s_Data.TextureSlotIndex++;
 		}
 
+		mat4 transform =
+			translate(mat4(1.0f), position) *
+			scale(mat4(1.0f), vec3(size.x, size.y, 1.0f));
+
 		// Set every vertex's properties of the quad...
 
 		// Bottom-left vertex
-		s_Data.QuadVertexBufferPtr->Position		= position;
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[0];
+		s_Data.QuadVertexBufferPtr->Color			= tintColor;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(0.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
+
+		// Bottom-right vertex
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[1];
+		s_Data.QuadVertexBufferPtr->Color			= tintColor;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(1.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
+
+		// Top-right vertex
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[2];
+		s_Data.QuadVertexBufferPtr->Color			= tintColor;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(1.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
+
+		// Top-left vertex
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[3];
+		s_Data.QuadVertexBufferPtr->Color			= tintColor;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(0.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
+
+		// Number of element to draw. In a single quad there are 6 indicies.
+		s_Data.QuadIndexCount += 6;
+	}
+
+	void Renderer2D::DrawRotatedQuad(const vec2& position, const vec2& size, float rotationInDegree, const vec4& color)
+	{
+		DrawRotatedQuad(vec3(position.x, position.y, 0.0f), size, rotationInDegree, color);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const vec3& position, const vec2& size, float rotationInDegree, const vec4& color)
+	{
+		HR_PROFILE_FUNCTION();
+
+		const float textureIndex = 0.0f;	// White texture.
+		const float tilingFactor = 1.0f;
+
+		mat4 transform =
+			translate(mat4(1.0f), position) *
+			rotate(mat4(1.0f), radians(rotationInDegree), vec3(0.0f, 0.0f, 1.0f)) *
+			scale(mat4(1.0f), vec3(size.x, size.y, 1.0f));
+
+		// Set every vertex's properties of the quad...
+
+		// Bottom-left vertex
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[0];
 		s_Data.QuadVertexBufferPtr->Color			= color;
 		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(0.0f, 0.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
@@ -292,7 +348,7 @@ namespace Hare
 		s_Data.QuadVertexBufferPtr++;
 
 		// Bottom-right vertex
-		s_Data.QuadVertexBufferPtr->Position		= vec3(position.x + size.x, position.y, 0.0f);
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[1];
 		s_Data.QuadVertexBufferPtr->Color			= color;
 		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(1.0f, 0.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
@@ -300,7 +356,7 @@ namespace Hare
 		s_Data.QuadVertexBufferPtr++;
 
 		// Top-right vertex
-		s_Data.QuadVertexBufferPtr->Position		= vec3(position.x + size.x, position.y + size.y, 0.0f);
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[2];
 		s_Data.QuadVertexBufferPtr->Color			= color;
 		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(1.0f, 1.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
@@ -308,7 +364,7 @@ namespace Hare
 		s_Data.QuadVertexBufferPtr++;
 
 		// Top-left vertex
-		s_Data.QuadVertexBufferPtr->Position		= vec3(position.x, position.y + size.y, 0.0f);
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[3];
 		s_Data.QuadVertexBufferPtr->Color			= color;
 		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(0.0f, 1.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
@@ -317,66 +373,77 @@ namespace Hare
 
 		// Number of element to draw. In a single quad there are 6 indicies.
 		s_Data.QuadIndexCount += 6;
+	}
 
-#if OLD_PATH
-		s_Data.TextureShader->SetFloat4("u_Color", tintColor);
-		s_Data.TextureShader->SetFloat("u_TilingFactor", tilingFactor);
-		texture->Bind();
+	void Renderer2D::DrawRotatedQuad(const vec2& position, const vec2& size, float rotationInDegree, const Ref<Texture2D>& texture, float tilingFactor, const vec4& tintColor)
+	{
+		DrawRotatedQuad(vec3(position.x, position.y, 0.0f), size, rotationInDegree, texture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const vec3& position, const vec2& size, float rotationInDegree, const Ref<Texture2D>& texture, float tilingFactor, const vec4& tintColor)
+	{
+		HR_PROFILE_FUNCTION();
+
+		float textureIndex = 0.0f;
+
+		for (size_t i = 1; i < s_Data.TextureSlotIndex; i++)
+		{
+			// We already submitted this texture?
+			if (*s_Data.TextureSlots[i].get() == *texture.get())
+			{
+				textureIndex = (float)i;
+				break;
+			}
+		}
+
+		// Find a texture index for this particular texture.
+		if (textureIndex == 0.0f)
+		{
+			textureIndex = (float)s_Data.TextureSlotIndex;
+			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+			s_Data.TextureSlotIndex++;
+		}
 
 		mat4 transform = 
 			translate(mat4(1.0f), position) * 
+			rotate(mat4(1.0f), radians(rotationInDegree), vec3(0.0f, 0.0f, 1.0f)) * 
 			scale(mat4(1.0f), vec3(size.x, size.y, 1.0f));
 
-		s_Data.TextureShader->SetMat4("u_Transform", transform);
-		s_Data.QuadVertexArray->Bind();
+		// Set every vertex's properties of the quad...
 
-		RenderCommand::DrawIndex(s_Data.QuadVertexArray);
-#endif
-	}
+		// Bottom-left vertex
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[0];
+		s_Data.QuadVertexBufferPtr->Color			= tintColor;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(0.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
 
-	void Renderer2D::DrawRotatedQuad(const vec2& position, const vec2& size, float rotationInRad, const vec4& color)
-	{
-		DrawRotatedQuad(vec3(position.x, position.y, 0.0f), size, rotationInRad, color);
-	}
+		// Bottom-right vertex
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[1];
+		s_Data.QuadVertexBufferPtr->Color			= tintColor;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(1.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
 
-	void Renderer2D::DrawRotatedQuad(const vec3& position, const vec2& size, float rotationInRad, const vec4& color)
-	{
-		HR_PROFILE_FUNCTION();
-	
-		s_Data.TextureShader->SetFloat4("u_Color", color);
-		s_Data.TextureShader->SetFloat("u_TilingFactor", 1.0f);
-		s_Data.WhiteTexture->Bind();
+		// Top-right vertex
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[2];
+		s_Data.QuadVertexBufferPtr->Color			= tintColor;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(1.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
 
-		mat4 transform =
-			translate(mat4(1.0f), position) *
-			rotate(mat4(1.0f), rotationInRad, vec3(0.0f, 0.0f, 1.0f)) *
-			scale(mat4(1.0f), vec3(size.x, size.y, 1.0f));
+		// Top-left vertex
+		s_Data.QuadVertexBufferPtr->Position		= transform * s_Data.QuadvertexPositions[3];
+		s_Data.QuadVertexBufferPtr->Color			= tintColor;
+		s_Data.QuadVertexBufferPtr->TexCoord		= vec2(0.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexIndex		= textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor	= tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
 
-		s_Data.TextureShader->SetMat4("u_Transform", transform);
-		s_Data.QuadVertexArray->Bind();
-
-		RenderCommand::DrawIndex(s_Data.QuadVertexArray);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const vec2& position, const vec2& size, float rotationInRad, const Ref<Texture2D>& texture, float tilingFactor, const vec4& tintColor)
-	{
-		DrawRotatedQuad(vec3(position.x, position.y, 0.0f), size, rotationInRad, texture, tilingFactor, tintColor);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const vec3& position, const vec2& size, float rotationInRad, const Ref<Texture2D>& texture, float tilingFactor, const vec4& tintColor)
-	{
-		s_Data.TextureShader->SetFloat4("u_Color", tintColor);
-		s_Data.TextureShader->SetFloat("u_TilingFactor", tilingFactor);
-		texture->Bind();
-
-		mat4 transform =
-			translate(mat4(1.0f), position) *
-			rotate(mat4(1.0f), rotationInRad, vec3(0.0f, 0.0f, 1.0f)) *
-			scale(mat4(1.0f), vec3(size.x, size.y, 1.0f));
-
-		s_Data.TextureShader->SetMat4("u_Transform", transform);
-		s_Data.QuadVertexArray->Bind();
-
-		RenderCommand::DrawIndex(s_Data.QuadVertexArray);
+		// Number of element to draw. In a single quad there are 6 indicies.
+		s_Data.QuadIndexCount += 6;
 	}
 }
