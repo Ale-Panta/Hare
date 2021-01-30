@@ -1,5 +1,6 @@
 #pragma once
 #include "Texture.h"
+#include "SubTexture2D.h"
 #include "OrthographicCamera.h"
 
 namespace Hare
@@ -11,22 +12,25 @@ namespace Hare
 		static void Init();
 		static void ShutDown();
 		static void BeginScene(const OrthographicCamera& camera);
-		/// <summary>
-		/// Upload data to the GPU.
-		/// </summary>
 		static void EndScene();
 		static void Flush();
 
 		// Primitives
+		static void DrawQuad(const glm::mat4& transfrom, const glm::vec4& color);
+		static void DrawQuad(const glm::mat4& transfrom, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor);
+		static void DrawQuad(const glm::mat4& transfrom, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor);
+
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
 
-		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotationInDegree, const glm::vec4& color);
-		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotationInDegree, const glm::vec4& color);
-		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotationInDegree, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
-		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotationInDegree, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float angleRad, const glm::vec4& color);
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float angleRad, const glm::vec4& color);
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float angleRad, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float angleRad, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float angleRad, const Ref<SubTexture2D>& subTexture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
 
 		// Stats
 		struct Statistics
@@ -42,6 +46,7 @@ namespace Hare
 		static Statistics GetStats();
 
 	private:
-		static void FlushAndReset();
+		static void StartBatch();
+		static void NextBatch();
 	};
 }

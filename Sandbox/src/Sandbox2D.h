@@ -1,5 +1,6 @@
 #pragma once
 #include "Hare.h"
+#include "ParticleSystem.h"
 
 class Sandbox2D : public Hare::Layer
 {
@@ -22,4 +23,13 @@ private:
 	Hare::Ref<Hare::VertexArray> m_SquareVA;
 	glm::vec4 m_Color = glm::vec4(0.2f, 0.3f, 0.8f, 1.0f);
 	Hare::Ref<Hare::Texture2D> m_Texture;
+	Hare::Ref<Hare::Texture2D> m_SpreadSheet;
+
+	// Sheet
+	Hare::Ref<Hare::SubTexture2D> m_TextureStair;
+	Hare::Ref<Hare::SubTexture2D> m_TextureBarrel;
+	Hare::Ref<Hare::SubTexture2D> m_TextureTree;
+
+	ParticleSystem m_ParticleSystem;
+	ParticleProps m_Particle;
 };

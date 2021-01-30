@@ -7,6 +7,15 @@
 
 namespace Hare
 {
+	struct OrthographicCameraBounds
+	{
+		float Left, Right;
+		float Bottom, Top;
+
+		float GetWidth() { return Right - Left; }
+		float GetHeight() { return Top - Bottom; }
+	};
+
 	class OrthographicCameraController
 	{
 	public:
@@ -19,6 +28,7 @@ namespace Hare
 		//inline float GetZoomLevel() const { return m_ZoomLevel; }
 		inline OrthographicCamera& GetCamera() { return m_Camera; }
 		inline const OrthographicCamera& GetCamera() const { return m_Camera; }
+		inline const OrthographicCameraBounds& GetBounds() const { return m_Bounds; }
 
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
@@ -27,6 +37,8 @@ namespace Hare
 	private:
 		float m_AspectRatio;
 		float m_ZoomLevel = 1.0f;
+
+		OrthographicCameraBounds m_Bounds;
 
 		glm::vec3 m_CameraPosition = glm::vec3(0.0f);
 		float m_CameraTranslationSpeed = 4.0f;

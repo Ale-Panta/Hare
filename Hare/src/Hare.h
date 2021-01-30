@@ -26,6 +26,7 @@ For use by Hare applications.
 #include "Hare/Renderer/Buffer.h"
 #include "Hare/Renderer/Shader.h"
 #include "Hare/Renderer/Texture.h"
+#include "Hare/Renderer/SubTexture2D.h"
 #include "Hare/Renderer/VertexArray.h"
 
 #include "Hare/Renderer/OrthographicCamera.h"

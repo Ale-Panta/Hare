@@ -65,7 +65,7 @@ namespace Hare
 		m_InternalFormat = internalFormat;
 		m_DataFormat = dataFormat;
 
-		HR_CORE_ASSERT(dataFormat & internalFormat, "Format not supported!");
+		HR_CORE_ASSERT(internalFormat & dataFormat, "Format not supported!");
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);	// Allocate memory in the GPU. How openGL is going to store our texture.
