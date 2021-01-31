@@ -31,6 +31,12 @@ namespace Hare
 		fbSpecification.Height = 720.0f;
 		m_Framebuffer = Framebuffer::Create(fbSpecification);
 
+		m_ActiveScene = CreateRef<Scene>();
+
+		m_SquareEntity = m_ActiveScene->CreateEntity();
+		m_ActiveScene->GetRegistry().emplace<TransformComponent>(m_SquareEntity);
+		m_ActiveScene->GetRegistry().emplace<SpriteRendererComponent>(m_SquareEntity, vec4(1.0f));
+
 #if PARTICLE
 		// Init here
 		m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
@@ -56,42 +62,22 @@ namespace Hare
 		if (m_ViewportFocused)
 			m_CameraController.OnUpdate(ts);
 
+
 		// Reset stats here.
 		Renderer2D::ResetStats();
 
 		// Renderer
-		{
-			HR_PROFILE_SCOPE("Render Preparation");
-			m_Framebuffer->Bind();
-			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
-			RenderCommand::Clear();
-		}
+		m_Framebuffer->Bind();
+		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+		RenderCommand::Clear();
 
-		{
-			static float rotation = 0.0f;
-			rotation += ts * 20;
 
-			HR_PROFILE_SCOPE("Render Draw");
-			Renderer2D::BeginScene(m_CameraController.GetCamera());
-			for (float y = -5.0f; y < 5.0f; y += 0.5f)
-			{
-				for (float x = -5.0f; x < 5.0f; x += 0.5f)
-				{
-					vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.5f };
-					Renderer2D::DrawQuad(vec3(x, y, 0.1f), vec2(0.45f, 0.45f), color);
-				}
-			}
-			Renderer2D::EndScene();
+		Renderer2D::BeginScene(m_CameraController.GetCamera());
+		// Update Scene. All renderer will be submitted here.
+		m_ActiveScene->OnUpdate(ts);
+		Renderer2D::EndScene();
 
-			Renderer2D::BeginScene(m_CameraController.GetCamera());
-			Renderer2D::DrawQuad(vec3(0.0f, 0.0f, 0.2f), vec2(1.0f, 1.0f), m_TextureStair);
-			Renderer2D::DrawQuad(vec3(1.0f, 0.0f, 0.2f), vec2(1.0f, 1.0f), m_TextureBarrel);
-			Renderer2D::DrawQuad(vec3(-1.5f, 0.0f, 0.2f), vec2(1.0f, 2.0f), m_TextureTree);
-			Renderer2D::EndScene();
-			
-			m_Framebuffer->Unbind();
-		}
-
+		m_Framebuffer->Unbind();
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -149,20 +135,23 @@ namespace Hare
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
 
+
 		if (ImGui::BeginMenuBar())
 		{
 			if (ImGui::BeginMenu("File"))
 			{
+				if (ImGui::MenuItem("Exit")) 
+					Application::Get().Close();
 
-				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 				ImGui::EndMenu();
 			}
 
 			ImGui::EndMenuBar();
 		}
 
-		ImGui::Begin("Setting");
 
+		ImGui::Begin("Setting");
+		// Display stats.
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D stats:");
 		ImGui::Text("Draw calls: %d", stats.Drawcalls);
@@ -170,16 +159,25 @@ namespace Hare
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-		ImGui::ColorEdit4("SquareColor", value_ptr(m_Color));
+		// Get the color property from the SpriteRendererComponent of our square.
+		auto& squareColor = m_ActiveScene->GetRegistry().get<SpriteRendererComponent>(m_SquareEntity).Color;
 
-		ImGui::End();	// End setting
+		// Set the color of the square.
+		ImGui::ColorEdit4("SquareColor", value_ptr(squareColor));
+		ImGui::End();	// End ImGui::Begin("Setting")
 
+
+		// Customize window style. Push...
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
-		
+
 		ImGui::Begin("Viewport");
+		// Is viewport focused...
 		m_ViewportFocused = ImGui::IsWindowFocused();
+
+		// Is viewport hovered...
 		m_ViewportHovered = ImGui::IsWindowHovered();
+
 		Application::Get().GetImGuiLayer()->SetBLockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
@@ -192,10 +190,15 @@ namespace Hare
 		}
 
 		uint32_t id = m_Framebuffer->GetColorAttachmentRenderID();
+
+		// Display or color the viewport onto the texture.
 		ImGui::Image((void*)id, ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::End();	// End viewport
 		
+
+		// Customize window style. Pop...
 		ImGui::PopStyleVar(ImGuiStyleVar_WindowPadding);
+
 
 		ImGui::End();	// End dock space
 	}
