@@ -8,3 +8,6 @@ bin-int/
 **.vcxproj
 **.filters
 *.sln
+Hare-Editor/HareProfile-Runtime.json
+Hare-Editor/HareProfile-Shutdown.json
+Hare-Editor/HareProfile-Startup.json
