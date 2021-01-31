@@ -18,6 +18,7 @@ IncludeDir["Glad"] = "Hare/vendor/Glad/include"
 IncludeDir["ImGui"] = "Hare/vendor/imgui"
 IncludeDir["glm"] = "Hare/vendor/glm"
 IncludeDir["stb_image"] = "Hare/vendor/stb_image"
+IncludeDir["entt"] = "Hare/vendor/entt/include"
 
 group "Dependecies"
 	include "Hare/vendor/GLFW"
@@ -61,7 +62,8 @@ project "Hare"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -118,7 +120,8 @@ project "Sandbox"
 		"Hare/vendor/spdlog/include",
 		"Hare/src",
 		"Hare/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -170,7 +173,8 @@ project "Hare-Editor"
 		"Hare/vendor/spdlog/include",
 		"Hare/src",
 		"Hare/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
