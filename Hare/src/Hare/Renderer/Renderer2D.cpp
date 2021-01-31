@@ -372,6 +372,10 @@ namespace Hare
 		DrawQuad(transform, texture, tilingFactor, tintColor);
 	}
 
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor /*= 1.0f*/, const glm::vec4& tintColor /*= glm::vec4(1.0f)*/)
+	{
+		DrawQuad(vec3(position.x, position.y, 0.0f), size, subTexture, tilingFactor, tintColor);
+	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor /*= 1.0f*/, const glm::vec4& tintColor /*= glm::vec4(1.0f)*/)
 	{
@@ -418,6 +422,11 @@ namespace Hare
 		DrawQuad(transform, texture, tilingFactor, tintColor);
 	}
 
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float angleRad, const Ref<SubTexture2D>& subTexture, float tilingFactor /*= 1.0f*/, const glm::vec4& tintColor /*= glm::vec4(1.0f)*/)
+	{
+		DrawRotatedQuad(vec3(position.x, position.y, 0.0f), size, angleRad, subTexture, tilingFactor, tintColor);
+	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float angleRad, const Ref<SubTexture2D>& subTexture, float tilingFactor /*= 1.0f*/, const glm::vec4& tintColor /*= glm::vec4(1.0f)*/)
 	{
