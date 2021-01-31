@@ -1,6 +1,6 @@
 workspace "Hare"
 	architecture "x64"
-	startproject "Sandbox"
+	startproject "Hare-Editor"
 
 	configurations
 	{
@@ -19,10 +19,11 @@ IncludeDir["ImGui"] = "Hare/vendor/imgui"
 IncludeDir["glm"] = "Hare/vendor/glm"
 IncludeDir["stb_image"] = "Hare/vendor/stb_image"
 
-include "Hare/vendor/GLFW"
-include "Hare/vendor/Glad"
-include "Hare/vendor/imgui"
-
+group "Dependecies"
+	include "Hare/vendor/GLFW"
+	include "Hare/vendor/Glad"
+	include "Hare/vendor/imgui"
+group ""
 
 project "Hare"
 	location "Hare"
@@ -98,6 +99,58 @@ project "Hare"
 
 project "Sandbox"
 	location "Sandbox"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir  ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir  ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"Hare/vendor/spdlog/include",
+		"Hare/src",
+		"Hare/vendor",
+		"%{IncludeDir.glm}"
+	}
+
+	links
+	{
+		"Hare"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+		defines
+		{
+			"HR_PLATFORM_WINDOWS",
+		}
+
+	filter "configurations:Debug"
+		defines "HR_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "HR_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "HR_DIST"
+		runtime "Release"
+		optimize "on"
+
+project "Hare-Editor"
+	location "Hare-Editor"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"

@@ -17,12 +17,12 @@ void Sandbox2D::OnAttach()
 {
 	HR_PROFILE_FUNCTION();
 
-	m_Texture = Hare::Texture2D::Create("assets/textures/Blood.png");
 	m_SpreadSheet = Hare::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
 	m_TextureStair = Hare::SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(7, 6), vec2(128.0f, 128.0f));
 	m_TextureBarrel = Hare::SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(8, 2), vec2(128.0f, 128.0f));
 	m_TextureTree = Hare::SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(2, 1), vec2(128.0f, 128.0f), vec2(1, 2));
 
+#if PARTICLE
 	// Init here
 	m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
@@ -31,6 +31,7 @@ void Sandbox2D::OnAttach()
 	m_Particle.Velocity = { 0.0f, 0.0f };
 	m_Particle.VelocityVariation = { 3.0f, 1.0f };
 	m_Particle.Position = { 0.0f, 0.0f };
+#endif
 }
 
 void Sandbox2D::OnDetach()
@@ -85,7 +86,7 @@ void Sandbox2D::OnUpdate(Hare::TimeStep ts)
 	}
 #endif
 
-
+#if PARTICLE
 	if (Hare::Input::IsMouseButtonPressed(HR_MOUSE_BUTTON_LEFT))
 	{
 		auto [x, y] = Hare::Input::GetMousePosition();
@@ -103,6 +104,7 @@ void Sandbox2D::OnUpdate(Hare::TimeStep ts)
 
 	m_ParticleSystem.OnUpdate(ts);
 	m_ParticleSystem.OnRender(m_CameraController.GetCamera());
+#endif
 
 	Hare::Renderer2D::BeginScene(m_CameraController.GetCamera());
 	Hare::Renderer2D::DrawQuad(vec3(0.0f, 0.0f, 0.6f), vec2(1.0f, 1.0f), m_TextureStair);
@@ -125,6 +127,7 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
 	ImGui::ColorEdit4("SquareColor", value_ptr(m_Color));
+
 	ImGui::End();
 }
 

@@ -24,6 +24,7 @@ namespace Hare
 	public:
 		void OnUpdate(TimeStep ts);
 		void OnEvent(Event& e);
+		void OnResize(float width, float height);
 		//inline void SetZoomLevel(float zoomLevel) { m_ZoomLevel = zoomLevel; }
 		//inline float GetZoomLevel() const { return m_ZoomLevel; }
 		inline OrthographicCamera& GetCamera() { return m_Camera; }

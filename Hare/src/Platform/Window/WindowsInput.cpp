@@ -1,5 +1,5 @@
 #include "hrpch.h"
-#include "WindowsInput.h"
+#include "Hare/Core/Input.h"
 #include "Hare/Core/Application.h"
 
 #include <GLFW/glfw3.h>
@@ -8,14 +8,7 @@ using namespace std;
 
 namespace Hare
 {
-	// Since the project works only on windows we can create the singleton instance here.
-	Input* Input::s_Instance = new WindowsInput();
-
-	/*
-	Those methods dispatch the inputs. For now they handle inputs using GLFW
-	*/
-
-	bool WindowsInput::IsKeyPressedImpl(int keycode)
+	bool Input::IsKeyPressed(int keycode)
 	{
 		// We want a GLFWwindow, this is the reason of static cast.
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
@@ -25,7 +18,7 @@ namespace Hare
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool WindowsInput::IsMouseButtonPressedImpl(int button)
+	bool Input::IsMouseButtonPressed(int button)
 	{
 		// We want a GLFWwindow, this is the reason of static cast.
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
@@ -35,7 +28,7 @@ namespace Hare
 		return state == GLFW_PRESS;
 	}
 
-	pair<float, float> WindowsInput::GetMousePositionImpl()
+	pair<float, float> Input::GetMousePosition()
 	{
 		// We want a GLFWwindow, this is the reason of static cast.
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
@@ -49,16 +42,16 @@ namespace Hare
 		return { (float)xPos, (float)yPos };
 	}
 
-	float WindowsInput::GetMouseXImpl()
+	float Input::GetMouseX()
 	{
-		auto[x, y] = GetMousePositionImpl();
+		auto[x, y] = GetMousePosition();
 
 		return x;
 	}
 
-	float WindowsInput::GetMouseYImpl()
+	float Input::GetMouseY()
 	{
-		auto[x, y] = GetMousePositionImpl();
+		auto[x, y] = GetMousePosition();
 
 		return y;
 	}

@@ -55,7 +55,16 @@ namespace Hare
 		dispatcher.Dispatch<WindowResizeEvent>(HR_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
 	}
 
-	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent & e)
+	void OrthographicCameraController::OnResize(float width, float height)
+	{
+		HR_PROFILE_FUNCTION();
+
+		m_AspectRatio = width / height;
+		m_Bounds = OrthographicCameraBounds{ -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
+		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
+	}
+
+	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
 		HR_PROFILE_FUNCTION();
 
@@ -71,9 +80,7 @@ namespace Hare
 	{
 		HR_PROFILE_FUNCTION();
 
-		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeigth();
-		m_Bounds = OrthographicCameraBounds{ -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
-		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
+		OnResize((float)e.GetWidth(), (float)e.GetHeigth());
 
 		return false;
 	}

@@ -17,18 +17,18 @@ namespace Hare
 	class HARE_API Application 
 	{
 	public:
-		Application();
+		Application(const std::string& name = "Hare App");
 		virtual ~Application();
 
-		/// <summary>
-		/// Run the application.
-		/// </summary>
 		void Run();
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
 
+		void Close();
+
+		inline ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 		inline static Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
 
@@ -37,7 +37,7 @@ namespace Hare
 		bool OnWindowResize(WindowResizeEvent& e);
 
 	private:
-		std::unique_ptr<Window> m_Window;
+		Scope<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 
 		bool m_IsRunning = true;
