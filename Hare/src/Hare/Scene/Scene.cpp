@@ -49,7 +49,7 @@ namespace Hare
 		for (auto ent : view)
 		{
 			// Get the reference to transfrom component
-			TransformComponent& transformRef = m_Registry.get<TransformComponent>(entity);
+			TransformComponent& transformRef = view.get<TransformComponent>(entity);
 		}
 
 		// Search multiple component inside the registry.
@@ -57,7 +57,7 @@ namespace Hare
 		for (auto ent : group)
 		{
 			// Get the reference to transfrom component
-			auto&[transfromRef, spriteRef] = m_Registry.get<TransformComponent, SpriteComponent>(entity);
+			group.get<TransformComponent, SpriteComponent>(entity);
 		}
 	}
 
