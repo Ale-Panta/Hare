@@ -204,7 +204,7 @@ namespace Hare
 	{
 		if (width == 0 || height == 0 || width > s_MaxFramebufferSize || height > s_MaxFramebufferSize)
 		{
-			HR_CORE_ASSERT("Attempted to resize framebuffer to {0}, {1}", width, height);
+			HR_CORE_WARN("Attempted to resize framebuffer to {0}, {1}", width, height);
 			return;
 		}
 

@@ -8,7 +8,7 @@ using namespace std;
 
 namespace Hare
 {
-	bool Input::IsKeyPressed(int keycode)
+	bool Input::IsKeyPressed(const KeyCode keycode)
 	{
 		// We want a GLFWwindow, this is the reason of static cast.
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
@@ -18,7 +18,7 @@ namespace Hare
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool Input::IsMouseButtonPressed(int button)
+	bool Input::IsMouseButtonPressed(const MouseCode button)
 	{
 		// We want a GLFWwindow, this is the reason of static cast.
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());

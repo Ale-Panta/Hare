@@ -4,7 +4,8 @@
 
 #ifdef HR_PLATFORM_WINDOWS
 	#if HR_DYNAMIC_LINK
-		
+
+		// We don't use dynamic libraries anymore...
 		#ifdef HR_BUILD_DLL
 			// https://docs.microsoft.com/en-us/cpp/cpp/dllexport-dllimport?view=msvc-160
 			// This macro should be active when build Hare library.

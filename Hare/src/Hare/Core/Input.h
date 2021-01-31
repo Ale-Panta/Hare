@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Hare/Core/Core.h"
+#include "KeyCodes.h"
+#include "MouseButtonCodes.h"
 
 namespace Hare
 {
@@ -12,9 +14,9 @@ namespace Hare
 	class HARE_API Input 
 	{
 	public:
-		static bool IsKeyPressed(int keycode);
+		static bool IsKeyPressed(KeyCode keycode);
 
-		static bool IsMouseButtonPressed(int button);
+		static bool IsMouseButtonPressed(MouseCode button);
 		static std::pair<float, float> GetMousePosition();
 		static float GetMouseX();
 		static float GetMouseY();

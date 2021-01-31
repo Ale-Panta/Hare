@@ -11,7 +11,9 @@ using namespace glm;
 namespace Hare
 {
 	EditorLayer::EditorLayer()
-		: Layer("Sandbox2D"), m_CameraController(1200.0f / 720.0f, true)
+		: Layer("Sandbox2D"), 
+		m_CameraController(1280.0f / 720.0f, true), 
+		m_ViewportSize(1280.0f, 720.0f)
 	{
 	}
 
@@ -19,10 +21,10 @@ namespace Hare
 	{
 		HR_PROFILE_FUNCTION();
 
-		m_SpreadSheet = Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
-		m_TextureStair = SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(7, 6), vec2(128.0f, 128.0f));
-		m_TextureBarrel = SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(8, 2), vec2(128.0f, 128.0f));
-		m_TextureTree = SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(2, 1), vec2(128.0f, 128.0f), vec2(1, 2));
+		m_SpreadSheet	= Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
+		m_TextureStair	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(7, 6), vec2(128.0f, 128.0f));
+		m_TextureBarrel	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(8, 2), vec2(128.0f, 128.0f));
+		m_TextureTree	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(2, 1), vec2(128.0f, 128.0f), vec2(1, 2));
 
 		FramebufferSpecification fbSpecification;
 		fbSpecification.Width = 1280.0f;
@@ -60,29 +62,16 @@ namespace Hare
 		// Renderer
 		{
 			HR_PROFILE_SCOPE("Render Preparation");
-
 			m_Framebuffer->Bind();
-
 			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 			RenderCommand::Clear();
 		}
 
-#if 0
 		{
 			static float rotation = 0.0f;
 			rotation += ts * 20;
 
 			HR_PROFILE_SCOPE("Render Draw");
-
-			Renderer2D::BeginScene(m_CameraController.GetCamera());
-			Renderer2D::DrawQuad(vec2(0.0f, -0.5f), vec2(0.5f, 0.75f), vec4(0.7f, 0.4f, 0.5f, 1.0f));
-			Renderer2D::DrawQuad(vec2(0.5f, -0.5f), vec2(0.5f, 0.75f), vec4(0.7f, 0.1f, 0.8f, 1.0f));
-			Renderer2D::DrawQuad(vec3(0.0f), vec2(10.0f, 10.0f), m_Texture, 5.0f, vec4(0.3f, 0.2f, 0.5f, 1.0f));
-			Renderer2D::DrawQuad(vec3(0.0f, 0.0f, 0.1f), vec2(5.0f, 5.0f), m_Texture, 10.0f, vec4(0.8f, 0.8f, 0.8f, 1.0f));
-			Renderer2D::DrawRotatedQuad(vec3(-1.0f, -1.0f, 0.2f), vec2(2.0f, 2.0f), radians(37.0f), m_Texture, 10.0f, vec4(0.8f, 0.8f, 0.8f, 1.0f));
-			Renderer2D::DrawRotatedQuad(vec3(1.0f, 0.0f, 0.3f), vec2(2.0f, 2.0f), radians(rotation), vec4(0.8f, 0.8f, 0.8f, 1.0f));
-			Renderer2D::EndScene();
-
 			Renderer2D::BeginScene(m_CameraController.GetCamera());
 			for (float y = -5.0f; y < 5.0f; y += 0.5f)
 			{
@@ -93,36 +82,16 @@ namespace Hare
 				}
 			}
 			Renderer2D::EndScene();
-		}
-#endif
 
-#if PARTICLE
-		if (Input::IsMouseButtonPressed(HR_MOUSE_BUTTON_LEFT))
-		{
-			auto [x, y] = Input::GetMousePosition();
-			auto width = Application::Get().GetWindow().GetWidth();
-			auto height = Application::Get().GetWindow().GetHeight();
-
-			auto bounds = m_CameraController.GetBounds();
-			auto pos = m_CameraController.GetCamera().GetPosition();
-			x = (x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
-			y = bounds.GetHeight() * 0.5f - (y / height) * bounds.GetHeight();
-			m_Particle.Position = { x + pos.x, y + pos.y };
-			for (int i = 0; i < 5; i++)
-				m_ParticleSystem.Emit(m_Particle);
+			Renderer2D::BeginScene(m_CameraController.GetCamera());
+			Renderer2D::DrawQuad(vec3(0.0f, 0.0f, 0.2f), vec2(1.0f, 1.0f), m_TextureStair);
+			Renderer2D::DrawQuad(vec3(1.0f, 0.0f, 0.2f), vec2(1.0f, 1.0f), m_TextureBarrel);
+			Renderer2D::DrawQuad(vec3(-1.5f, 0.0f, 0.2f), vec2(1.0f, 2.0f), m_TextureTree);
+			Renderer2D::EndScene();
+			
+			m_Framebuffer->Unbind();
 		}
 
-		m_ParticleSystem.OnUpdate(ts);
-		m_ParticleSystem.OnRender(m_CameraController.GetCamera());
-#endif
-
-		Renderer2D::BeginScene(m_CameraController.GetCamera());
-		Renderer2D::DrawQuad(vec3(0.0f, 0.0f, 0.6f), vec2(1.0f, 1.0f), m_TextureStair);
-		Renderer2D::DrawQuad(vec3(1.0f, 0.0f, 0.6f), vec2(1.0f, 1.0f), m_TextureBarrel);
-		Renderer2D::DrawQuad(vec3(-1.5f, 0.0f, 0.6f), vec2(1.0f, 2.0f), m_TextureTree);
-		Renderer2D::EndScene();
-
-		m_Framebuffer->Unbind();
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -203,7 +172,7 @@ namespace Hare
 
 		ImGui::ColorEdit4("SquareColor", value_ptr(m_Color));
 
-		ImGui::End();
+		ImGui::End();	// End setting
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
@@ -214,7 +183,7 @@ namespace Hare
 		Application::Get().GetImGuiLayer()->SetBLockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-		if (m_ViewportSize != *(vec2*)&viewportPanelSize)
+		if (m_ViewportSize != *((vec2*)&viewportPanelSize) && m_ViewportSize.x > 0 && m_ViewportSize.y > 0)
 		{
 			m_ViewportSize = vec2(viewportPanelSize.x, viewportPanelSize.y);
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
@@ -222,14 +191,13 @@ namespace Hare
 			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
 		}
 
-		HR_WARN("Viewport Size: {0}, {1}", viewportPanelSize.x, viewportPanelSize.y);
 		uint32_t id = m_Framebuffer->GetColorAttachmentRenderID();
 		ImGui::Image((void*)id, ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::End();
+		ImGui::End();	// End viewport
 		
 		ImGui::PopStyleVar(ImGuiStyleVar_WindowPadding);
 
-		ImGui::End();
+		ImGui::End();	// End dock space
 	}
 
 	void EditorLayer::OnEvent(Event& e)
