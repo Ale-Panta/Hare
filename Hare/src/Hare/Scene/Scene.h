@@ -1,4 +1,5 @@
 #pragma once
+#include "Hare/Core/TimeStep.h"
 #include "entt.hpp"
 
 namespace Hare
@@ -8,6 +9,13 @@ namespace Hare
 	public:
 		Scene();
 		~Scene();
+
+	public:
+		entt::entity CreateEntity();
+		void OnUpdate(TimeStep ts);
+
+		// Temp
+		inline entt::registry& GetRegistry() { return m_Registry; }
 
 	private:
 		/*

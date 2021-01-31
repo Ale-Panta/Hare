@@ -18,6 +18,9 @@ For use by Hare applications.
 
 #include "Hare/ImGui/ImGuiLayer.h"
 
+#include "Hare/Scene/Scene.h"
+#include "Hare/Scene/Components.h"
+
 // --- Renderer ----------------
 #include "Hare/Renderer/Renderer.h"
 #include "Hare/Renderer/Renderer2D.h"

@@ -1,5 +1,7 @@
 #include "hrpch.h"
 #include "Scene.h"
+#include "Components.h"
+#include "Hare/Renderer/Renderer2D.h"
 
 #include <glm/glm.hpp>
 
@@ -9,23 +11,7 @@ namespace Hare
 {
 	Scene::Scene()
 	{
-		// Below is a demonstration of how to create a component
-		struct TransformComponent
-		{
-			TransformComponent() = default;
-			TransformComponent(const TransformComponent&) = default;
-			TransformComponent(const mat4& transfrom)
-				: Transfrom(transfrom) { }
-
-
-			mat4 Transfrom;
-
-			operator mat4&() { return Transfrom; }
-			operator const mat4&() const { return Transfrom; }
-		};
-
-		struct SpriteComponent {};
-
+#if ENTT_EXAMPLE_CODE
 		TransformComponent transform;
 
 		// Create an entity
@@ -57,12 +43,33 @@ namespace Hare
 		for (auto ent : group)
 		{
 			// Get the reference to transfrom component
-			group.get<TransformComponent, SpriteComponent>(entity);
+			auto&[transfromRef, spriteRef] = group.get<TransformComponent, SpriteComponent>(entity);
 		}
+#endif
 	}
 
 	Scene::~Scene()
 	{
 
 	}
+
+
+	entt::entity Scene::CreateEntity()
+	{
+		return m_Registry.create();
+	}
+
+	void Scene::OnUpdate(TimeStep ts)
+	{
+		// Search multiple component inside the registry.
+		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+		for (auto entity : group)
+		{
+			// Get the reference to transfrom component
+			auto& [transfromRef, spriteRef] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+			Renderer2D::DrawQuad(transfromRef, spriteRef.Color);
+		}
+	}
+
 }
