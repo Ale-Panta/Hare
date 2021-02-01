@@ -12,6 +12,15 @@ namespace Hare
 	Operator overloads are only syntactic sugar.
 	*/
 
+	struct TagComponent
+	{
+		TagComponent() = default;
+		TagComponent(const TagComponent&) = default;
+		TagComponent(const std::string& tag) : Tag(tag) { }
+
+		std::string Tag;
+	};
+
 	struct TransformComponent
 	{
 		TransformComponent() = default;
