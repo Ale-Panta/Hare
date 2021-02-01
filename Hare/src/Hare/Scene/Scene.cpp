@@ -1,5 +1,6 @@
 #include "hrpch.h"
 #include "Scene.h"
+#include "Entity.h"
 #include "Components.h"
 #include "Hare/Renderer/Renderer2D.h"
 
@@ -54,9 +55,14 @@ namespace Hare
 	}
 
 
-	entt::entity Scene::CreateEntity()
+	Entity Scene::CreateEntity(const std::string& name)
 	{
-		return m_Registry.create();
+		// All entities we are gonna create have by default a transform component.
+		Entity entity = Entity(m_Registry.create(), this);
+		entity.AddComponent<TransformComponent>();
+		auto& tag = entity.AddComponent<TagComponent>(name);
+		tag.Tag = name.empty() ? "Entity" : name;
+		return entity;
 	}
 
 	void Scene::OnUpdate(TimeStep ts)
