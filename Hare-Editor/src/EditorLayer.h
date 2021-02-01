@@ -31,7 +31,7 @@ namespace Hare
 		Ref<SubTexture2D> m_TextureTree;
 
 		Ref<Scene> m_ActiveScene;
-		entt::entity m_SquareEntity;
+		Entity m_SquareEntity;
 
 		bool m_ViewportFocused = false;
 		bool m_ViewportHovered = false;

@@ -33,9 +33,10 @@ namespace Hare
 
 		m_ActiveScene = CreateRef<Scene>();
 
-		m_SquareEntity = m_ActiveScene->CreateEntity();
-		m_ActiveScene->GetRegistry().emplace<TransformComponent>(m_SquareEntity);
-		m_ActiveScene->GetRegistry().emplace<SpriteRendererComponent>(m_SquareEntity, vec4(1.0f));
+		// Entity
+		auto square = m_ActiveScene->CreateEntity("Marco");
+		square.AddComponent<SpriteRendererComponent>(vec4(1.0f));
+		m_SquareEntity = square;
 
 #if PARTICLE
 		// Init here
@@ -159,11 +160,19 @@ namespace Hare
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-		// Get the color property from the SpriteRendererComponent of our square.
-		auto& squareColor = m_ActiveScene->GetRegistry().get<SpriteRendererComponent>(m_SquareEntity).Color;
+		if (m_SquareEntity)
+		{
+			ImGui::Separator();
+			auto& tag = m_SquareEntity.GetComponent<TagComponent>().Tag;
+			ImGui::Text("%s", tag.c_str());
 
-		// Set the color of the square.
-		ImGui::ColorEdit4("SquareColor", value_ptr(squareColor));
+			// Get the color property from the SpriteRendererComponent of our square.
+			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
+
+			// Set the color of the square.
+			ImGui::ColorEdit4("SquareColor", value_ptr(squareColor));
+			ImGui::Separator();
+		}
 		ImGui::End();	// End ImGui::Begin("Setting")
 
 
