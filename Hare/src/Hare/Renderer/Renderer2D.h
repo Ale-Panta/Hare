@@ -1,7 +1,8 @@
 #pragma once
-#include "Texture.h"
-#include "SubTexture2D.h"
-#include "OrthographicCamera.h"
+#include "Hare/Renderer/Camera.h"
+#include "Hare/Renderer/Texture.h"
+#include "Hare/Renderer/SubTexture2D.h"
+#include "Hare/Renderer/OrthographicCamera.h"
 
 namespace Hare
 {
@@ -12,6 +13,7 @@ namespace Hare
 		static void Init();
 		static void ShutDown();
 		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		static void EndScene();
 		static void Flush();
 

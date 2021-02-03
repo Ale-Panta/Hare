@@ -67,14 +67,38 @@ namespace Hare
 
 	void Scene::OnUpdate(TimeStep ts)
 	{
-		// Search multiple component inside the registry.
-		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-		for (auto entity : group)
+		Camera* mainCamera = nullptr;
+		glm::mat4* mainCameraTransform = nullptr;
 		{
-			// Get the reference to transfrom component
-			auto& [transfromRef, spriteRef] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+			auto group = m_Registry.view<TransformComponent, CameraComponent>();
+			for (auto entity : group)
+			{
+				auto& [transformRef, cameraRef] = group.get<TransformComponent, CameraComponent>(entity);
 
-			Renderer2D::DrawQuad(transfromRef, spriteRef.Color);
+				if (cameraRef.Primary)
+				{
+					mainCamera = &cameraRef.Camera;
+					mainCameraTransform = &transformRef.Transform;
+					break;
+				}
+			}
+		}
+
+		if (mainCamera)
+		{
+			Renderer2D::BeginScene(mainCamera->GetProjection(), *mainCameraTransform);
+
+			// Search multiple component inside the registry.
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			for (auto entity : group)
+			{
+				// Get the reference to transfrom component
+				auto& [transfromRef, spriteRef] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+				Renderer2D::DrawQuad(transfromRef, spriteRef.Color);
+			}
+
+			Renderer2D::EndScene();
 		}
 	}
 

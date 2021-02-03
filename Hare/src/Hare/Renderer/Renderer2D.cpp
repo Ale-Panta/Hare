@@ -160,12 +160,25 @@ namespace Hare
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		HR_PROFILE_FUNCTION();
+		
 
 		// Set view projection matrix reference to all shaders.
 
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		StartBatch();
+	}
+
+
+	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
+	{
+		HR_PROFILE_FUNCTION();
+
+		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
+
+		s_Data.TextureShader->Bind();
+		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
 
 		StartBatch();
 	}

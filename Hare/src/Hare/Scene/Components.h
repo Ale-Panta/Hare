@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Hare/Renderer/Camera.h"
+
 #include <glm/glm.hpp>
 
 namespace Hare
@@ -25,13 +27,12 @@ namespace Hare
 	{
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
-		TransformComponent(const glm::mat4 & transfrom) : Transfrom(transfrom) { }
+		TransformComponent(const glm::mat4 & transfrom) : Transform(transfrom) { }
 
+		glm::mat4 Transform = glm::mat4(1.0f);
 
-		glm::mat4 Transfrom = glm::mat4(1.0f);
-
-		operator glm::mat4& () { return Transfrom; }
-		operator const glm::mat4& () const { return Transfrom; }
+		operator glm::mat4& () { return Transform; }
+		operator const glm::mat4& () const { return Transform; }
 	};
 
 	struct SpriteRendererComponent
@@ -40,7 +41,18 @@ namespace Hare
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}
 
-
 		glm::vec4 Color = glm::vec4(1.0f);
+	};
+
+	struct CameraComponent
+	{
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+
+		// Can be constructed as ortho or perspective projection.
+		CameraComponent(const glm::mat4& projection) : Camera(projection) {}
+
+		Hare::Camera Camera;
+		bool Primary = true;	// #TODO: think about move to scene.
 	};
 }
