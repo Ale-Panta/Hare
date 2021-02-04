@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hare/Renderer/Camera.h"
+#include "Hare/Scene/SceneCamera.h"
 
 #include <glm/glm.hpp>
 
@@ -49,10 +50,8 @@ namespace Hare
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
 
-		// Can be constructed as ortho or perspective projection.
-		CameraComponent(const glm::mat4& projection) : Camera(projection) {}
-
-		Hare::Camera Camera;
+		SceneCamera Camera;
 		bool Primary = true;	// #TODO: think about move to scene.
+		bool FixedAspectRatio = false;
 	};
 }

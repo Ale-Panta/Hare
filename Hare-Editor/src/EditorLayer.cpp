@@ -39,10 +39,10 @@ namespace Hare
 		m_SquareEntity = square;
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera");
-		m_CameraEntity.AddComponent<CameraComponent>(glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+		m_CameraEntity.AddComponent<CameraComponent>();
 
 		m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Camera");
-		auto& cc = m_SecondCamera.AddComponent<CameraComponent>(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f));
+		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
 		cc.Primary = false;
 
 #if PARTICLE
@@ -66,10 +66,19 @@ namespace Hare
 	{
 		HR_PROFILE_FUNCTION();
 
+		FramebufferSpecification spec = m_Framebuffer->GetSpecification();
+		if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && 
+			spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y)
+		{
+			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		}
+
 		// Update
 		if (m_ViewportFocused)
 			m_CameraController.OnUpdate(ts);
-
 
 		// Reset stats here.
 		Renderer2D::ResetStats();
@@ -108,10 +117,6 @@ namespace Hare
 			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 		}
-		else
-		{
-			dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
-		}
 
 		// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
 		// and handle the pass-thru hole, so we ask Begin() to not render a background.
@@ -123,11 +128,9 @@ namespace Hare
 		// all active windows docked into it will lose their parent and become undocked.
 		// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
 		// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
-		if (!opt_padding)
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 		ImGui::Begin("DockSpace Demo", &dockSpaceOpen, window_flags);
-		if (!opt_padding)
-			ImGui::PopStyleVar();
+		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
 			ImGui::PopStyleVar(2);
@@ -145,6 +148,10 @@ namespace Hare
 		{
 			if (ImGui::BeginMenu("File"))
 			{
+				// Disabling fullscreen would allow the window to be moved to the fronbt of other windows, 
+				// which we can't undo at the moment without finer window depth/z control.
+				// ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistent);
+
 				if (ImGui::MenuItem("Exit")) 
 					Application::Get().Close();
 
@@ -184,6 +191,13 @@ namespace Hare
 			m_CameraEntity.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
 			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
 		}
+		{
+			auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
+			float orthosize = camera.GetOrthographicSize();
+			if (ImGui::DragFloat("Second Camera Ortho Size", &orthosize))
+				camera.SetOrthographicSize(orthosize);
+		}
+
 		ImGui::End();	// End ImGui::Begin("Setting")
 
 
@@ -201,13 +215,7 @@ namespace Hare
 		Application::Get().GetImGuiLayer()->SetBLockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-		if (m_ViewportSize != *((vec2*)&viewportPanelSize) && m_ViewportSize.x > 0 && m_ViewportSize.y > 0)
-		{
-			m_ViewportSize = vec2(viewportPanelSize.x, viewportPanelSize.y);
-			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-
-			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
-		}
+		m_ViewportSize = vec2(viewportPanelSize.x, viewportPanelSize.y);
 
 		uint32_t id = m_Framebuffer->GetColorAttachmentRenderID();
 

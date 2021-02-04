@@ -70,10 +70,10 @@ namespace Hare
 		Camera* mainCamera = nullptr;
 		glm::mat4* mainCameraTransform = nullptr;
 		{
-			auto group = m_Registry.view<TransformComponent, CameraComponent>();
-			for (auto entity : group)
+			auto view = m_Registry.view<TransformComponent, CameraComponent>();
+			for (auto entity : view)
 			{
-				auto& [transformRef, cameraRef] = group.get<TransformComponent, CameraComponent>(entity);
+				auto& [transformRef, cameraRef] = view.get<TransformComponent, CameraComponent>(entity);
 
 				if (cameraRef.Primary)
 				{
@@ -102,4 +102,20 @@ namespace Hare
 		}
 	}
 
+	void Scene::OnViewportResize(uint32_t width, uint32_t height)
+	{
+		m_ViewportWidth = width;
+		m_ViewportHeight = height;
+
+		auto view = m_Registry.view<CameraComponent>();
+		for (auto entity : view)
+		{
+			auto& cameraComponent = view.get<CameraComponent>(entity);
+
+			if (!cameraComponent.FixedAspectRatio)
+			{
+				cameraComponent.Camera.SetViewportSize(width, height);
+			}
+		}
+	}
 }
