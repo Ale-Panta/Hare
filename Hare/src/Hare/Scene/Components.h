@@ -2,6 +2,7 @@
 
 #include "Hare/Renderer/Camera.h"
 #include "Hare/Scene/SceneCamera.h"
+#include "Hare/Scene/ScriptableEntity.h"
 
 #include <glm/glm.hpp>
 
@@ -53,5 +54,20 @@ namespace Hare
 		SceneCamera Camera;
 		bool Primary = true;	// #TODO: think about move to scene.
 		bool FixedAspectRatio = false;
+	};
+
+	struct NativeScriptComponent
+	{
+		ScriptableEntity* Instance = nullptr;
+
+		ScriptableEntity*(*InstantiateScript)();
+		void (*DestroyScript)(NativeScriptComponent*);
+
+		template<typename T>
+		void Bind()
+		{
+			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
+			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
+		}
 	};
 }

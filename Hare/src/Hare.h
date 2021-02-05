@@ -20,6 +20,7 @@ For use by Hare applications.
 
 #include "Hare/Scene/Scene.h"
 #include "Hare/Scene/Entity.h"
+#include "Hare/Scene/ScriptableEntity.h"
 #include "Hare/Scene/Components.h"
 
 // --- Renderer ----------------

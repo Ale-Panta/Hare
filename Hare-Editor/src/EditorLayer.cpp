@@ -1,6 +1,5 @@
 #include "EditorLayer.h"
 #include "imgui/imgui.h"
-
 #include "Platform/OpenGL/OpenGLShader.h"
 
 #include <glm/gtc/type_ptr.hpp>
@@ -27,8 +26,8 @@ namespace Hare
 		m_TextureTree	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(2, 1), vec2(128.0f, 128.0f), vec2(1, 2));
 
 		FramebufferSpecification fbSpecification;
-		fbSpecification.Width = 1280.0f;
-		fbSpecification.Height = 720.0f;
+		fbSpecification.Width = 1280;
+		fbSpecification.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpecification);
 
 		m_ActiveScene = CreateRef<Scene>();
@@ -44,6 +43,45 @@ namespace Hare
 		m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Camera");
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
 		cc.Primary = false;
+
+		class CameraController : public ScriptableEntity
+		{
+		public:
+			void OnCreate()
+			{
+
+			}
+
+			void OnDestroy()
+			{
+
+			}
+
+			void OnUpdate(TimeStep ts)
+			{
+				auto& transform = GetComponent<TransformComponent>().Transform;
+				float speed = 5.0f;
+
+				if (Input::IsKeyPressed(Key::A))
+				{
+					transform[3][0] -= speed * ts;
+				}
+				if (Input::IsKeyPressed(Key::D))
+				{
+					transform[3][0] += speed * ts;
+				}
+				if (Input::IsKeyPressed(Key::W))
+				{
+					transform[3][1] += speed * ts;
+				}
+				if (Input::IsKeyPressed(Key::S))
+				{
+					transform[3][1] -= speed * ts;
+				}
+			}
+		};
+
+		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
 #if PARTICLE
 		// Init here
