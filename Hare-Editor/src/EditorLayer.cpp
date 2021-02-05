@@ -33,9 +33,12 @@ namespace Hare
 		m_ActiveScene = CreateRef<Scene>();
 
 		// Entity
-		auto square = m_ActiveScene->CreateEntity("Marco");
-		square.AddComponent<SpriteRendererComponent>(vec4(1.0f));
-		m_SquareEntity = square;
+		auto squareOne = m_ActiveScene->CreateEntity("Square One");
+		squareOne.AddComponent<SpriteRendererComponent>(vec4(1.0f));
+		m_SquareEntity = squareOne;
+
+		auto squareTwo = m_ActiveScene->CreateEntity("Square Two");
+		squareTwo.AddComponent<SpriteRendererComponent>(vec4(1.0f));
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera");
 		m_CameraEntity.AddComponent<CameraComponent>();
@@ -224,19 +227,6 @@ namespace Hare
 			// Set the color of the square.
 			ImGui::ColorEdit4("SquareColor", value_ptr(squareColor));
 			ImGui::Separator();
-		}
-
-		ImGui::DragFloat3("Camera Transform", glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Transform[3]));
-		if (ImGui::Checkbox("Use Primary Camera", &m_PrimaryCamera))
-		{
-			m_CameraEntity.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
-			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
-		}
-		{
-			auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
-			float orthosize = camera.GetOrthographicSize();
-			if (ImGui::DragFloat("Second Camera Ortho Size", &orthosize))
-				camera.SetOrthographicSize(orthosize);
 		}
 
 		ImGui::End();	// End ImGui::Begin("Setting")
