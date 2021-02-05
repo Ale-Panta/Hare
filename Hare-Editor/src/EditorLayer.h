@@ -1,5 +1,6 @@
 #pragma once
 #include "Hare.h"
+#include "Panels/SceneHierarchyPanel.h"
 
 namespace Hare
 {
@@ -42,5 +43,8 @@ namespace Hare
 
 		// Framebuffer
 		Ref<Framebuffer> m_Framebuffer;
+
+		// Panels
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 	};
 }

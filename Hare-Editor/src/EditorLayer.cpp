@@ -83,6 +83,8 @@ namespace Hare
 
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
 #if PARTICLE
 		// Init here
 		m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
@@ -199,6 +201,7 @@ namespace Hare
 			ImGui::EndMenuBar();
 		}
 
+		m_SceneHierarchyPanel.OnImGuiRender();
 
 		ImGui::Begin("Setting");
 		// Display stats.
@@ -241,7 +244,6 @@ namespace Hare
 
 		// Customize window style. Push...
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-
 
 		ImGui::Begin("Viewport");
 		// Is viewport focused...
