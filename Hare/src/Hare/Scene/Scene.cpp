@@ -49,7 +49,7 @@ namespace Hare
 
 		// Render
 		Camera* mainCamera = nullptr;
-		glm::mat4* mainCameraTransform = nullptr;
+		glm::mat4 mainCameraTransform;
 		{
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view)
@@ -59,7 +59,7 @@ namespace Hare
 				if (cameraRef.Primary)
 				{
 					mainCamera = &cameraRef.Camera;
-					mainCameraTransform = &transformRef.Transform;
+					mainCameraTransform = transformRef.GetTransform();
 					break;
 				}
 			}
@@ -67,7 +67,7 @@ namespace Hare
 
 		if (mainCamera)
 		{
-			Renderer2D::BeginScene(mainCamera->GetProjection(), *mainCameraTransform);
+			Renderer2D::BeginScene(mainCamera->GetProjection(), mainCameraTransform);
 
 			// Search multiple component inside the registry.
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
@@ -76,7 +76,7 @@ namespace Hare
 				// Get the reference to transfrom component
 				auto [transfromRef, spriteRef] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-				Renderer2D::DrawQuad(transfromRef, spriteRef.Color);
+				Renderer2D::DrawQuad(transfromRef.GetTransform(), spriteRef.Color);
 			}
 
 			Renderer2D::EndScene();

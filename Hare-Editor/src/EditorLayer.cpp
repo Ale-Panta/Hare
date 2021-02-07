@@ -40,10 +40,10 @@ namespace Hare
 		auto squareTwo = m_ActiveScene->CreateEntity("Square Two");
 		squareTwo.AddComponent<SpriteRendererComponent>(vec4(1.0f));
 
-		m_CameraEntity = m_ActiveScene->CreateEntity("Camera");
+		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
 		m_CameraEntity.AddComponent<CameraComponent>();
 
-		m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Camera");
+		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
 		cc.Primary = false;
 
@@ -62,24 +62,24 @@ namespace Hare
 
 			void OnUpdate(TimeStep ts)
 			{
-				auto& transform = GetComponent<TransformComponent>().Transform;
+				auto& translation = GetComponent<TransformComponent>().Translation;
 				float speed = 5.0f;
 
 				if (Input::IsKeyPressed(Key::A))
 				{
-					transform[3][0] -= speed * ts;
+					translation.x -= speed * ts;
 				}
 				if (Input::IsKeyPressed(Key::D))
 				{
-					transform[3][0] += speed * ts;
+					translation.x += speed * ts;
 				}
 				if (Input::IsKeyPressed(Key::W))
 				{
-					transform[3][1] += speed * ts;
+					translation.y += speed * ts;
 				}
 				if (Input::IsKeyPressed(Key::S))
 				{
-					transform[3][1] -= speed * ts;
+					translation.y -= speed * ts;
 				}
 			}
 		};
@@ -206,7 +206,7 @@ namespace Hare
 
 		m_SceneHierarchyPanel.OnImGuiRender();
 
-		ImGui::Begin("Setting");
+		ImGui::Begin("Stats");
 		// Display stats.
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D stats:");
@@ -214,20 +214,6 @@ namespace Hare
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-
-		if (m_SquareEntity)
-		{
-			ImGui::Separator();
-			auto& tag = m_SquareEntity.GetComponent<TagComponent>().Tag;
-			ImGui::Text("%s", tag.c_str());
-
-			// Get the color property from the SpriteRendererComponent of our square.
-			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
-
-			// Set the color of the square.
-			ImGui::ColorEdit4("SquareColor", value_ptr(squareColor));
-			ImGui::Separator();
-		}
 
 		ImGui::End();	// End ImGui::Begin("Setting")
 
