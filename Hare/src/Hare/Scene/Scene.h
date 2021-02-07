@@ -2,7 +2,6 @@
 #include "entt.hpp"
 #include "Hare/Core/TimeStep.h"
 
-
 namespace Hare
 {
 	class Entity;
@@ -17,12 +16,25 @@ namespace Hare
 		~Scene();
 
 	public:
+		/// <summary>
+		/// Create a new entity with default 
+		/// transform component and tag component.
+		/// </summary>
 		Entity CreateEntity(const std::string& name = std::string());
+
+		/// <summary>
+		/// Destroy the entity from the registry.
+		/// </summary>
+		void DestroyEntity(Entity entity);
 		void OnUpdate(TimeStep ts);
 		void OnViewportResize(uint32_t width, uint32_t height);
 
 		// Temp
 		inline entt::registry& GetRegistry() { return m_Registry; }
+
+	private:
+		template<typename T>	// Template implementation in .cpp file...
+		void OnComponentAdded(Entity entity, T& component);
 
 	private:
 

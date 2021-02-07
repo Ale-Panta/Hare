@@ -33,11 +33,10 @@ namespace Hare
 		m_ActiveScene = CreateRef<Scene>();
 
 		// Entity
-		auto squareOne = m_ActiveScene->CreateEntity("Square One");
+		auto squareOne = m_ActiveScene->CreateEntity("PinkSquare");
 		squareOne.AddComponent<SpriteRendererComponent>(vec4(1.0f));
-		m_SquareEntity = squareOne;
 
-		auto squareTwo = m_ActiveScene->CreateEntity("Square Two");
+		auto squareTwo = m_ActiveScene->CreateEntity("AldoSquare");
 		squareTwo.AddComponent<SpriteRendererComponent>(vec4(1.0f));
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
