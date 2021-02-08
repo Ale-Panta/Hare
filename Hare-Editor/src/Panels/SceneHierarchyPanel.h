@@ -15,6 +15,7 @@ namespace Hare
 	public:
 		void SetContext(const Ref<Scene>& context);
 		void OnImGuiRender();
+		Entity m_SelectionContext;
 
 	private:
 		void DrawEntityNode(Entity entity);
@@ -22,6 +23,5 @@ namespace Hare
 
 	private:
 		Ref<Scene> m_Context;
-		Entity m_SelectionContext;
 	};
 }

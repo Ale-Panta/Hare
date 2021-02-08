@@ -39,7 +39,7 @@ namespace Hare
 		void RemoveComponent()
 		{
 			HR_CORE_ASSERT(HasComponent<T>(), "Entity does not have component!");
-			m_Scene->m_Registry.remove<T>(m_EntityHandle);
+			m_Scene->m_Registry.remove_if_exists<T>(m_EntityHandle);
 		}
 
 		operator bool() const { return m_EntityHandle != entt::null; }
@@ -51,6 +51,6 @@ namespace Hare
 
 	private:
 		entt::entity m_EntityHandle = entt::null;
-		Scene* m_Scene = nullptr;	// 12 bytes on x64 platform
+		Scene* m_Scene = nullptr;
 	};
 }

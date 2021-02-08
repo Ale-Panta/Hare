@@ -73,13 +73,13 @@ namespace Hare
 
 		if (mainCamera)
 		{
-			Renderer2D::BeginScene(mainCamera->GetProjection(), mainCameraTransform);
+			Renderer2D::BeginScene(*mainCamera, mainCameraTransform);
 
 			// Search multiple component inside the registry.
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 			for (auto entity : group)
 			{
-				// Get the reference to transfrom component
+				// Get the reference to transform component
 				auto [transfromRef, spriteRef] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
 				Renderer2D::DrawQuad(transfromRef.GetTransform(), spriteRef.Color);

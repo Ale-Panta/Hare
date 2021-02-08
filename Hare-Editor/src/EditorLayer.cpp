@@ -46,44 +46,44 @@ namespace Hare
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
 		cc.Primary = false;
 
-		class CameraController : public ScriptableEntity
-		{
-		public:
-			void OnCreate()
-			{
+		//class CameraController : public ScriptableEntity
+		//{
+		//public:
+		//	void OnCreate()
+		//	{
 
-			}
+		//	}
 
-			void OnDestroy()
-			{
+		//	void OnDestroy()
+		//	{
 
-			}
+		//	}
 
-			void OnUpdate(TimeStep ts)
-			{
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				float speed = 5.0f;
+		//	void OnUpdate(TimeStep ts)
+		//	{
+		//		auto& translation = GetComponent<TransformComponent>().Translation;
+		//		float speed = 5.0f;
 
-				if (Input::IsKeyPressed(Key::A))
-				{
-					translation.x -= speed * ts;
-				}
-				if (Input::IsKeyPressed(Key::D))
-				{
-					translation.x += speed * ts;
-				}
-				if (Input::IsKeyPressed(Key::W))
-				{
-					translation.y += speed * ts;
-				}
-				if (Input::IsKeyPressed(Key::S))
-				{
-					translation.y -= speed * ts;
-				}
-			}
-		};
+		//		if (Input::IsKeyPressed(Key::A))
+		//		{
+		//			translation.x -= speed * ts;
+		//		}
+		//		if (Input::IsKeyPressed(Key::D))
+		//		{
+		//			translation.x += speed * ts;
+		//		}
+		//		if (Input::IsKeyPressed(Key::W))
+		//		{
+		//			translation.y += speed * ts;
+		//		}
+		//		if (Input::IsKeyPressed(Key::S))
+		//		{
+		//			translation.y -= speed * ts;
+		//		}
+		//	}
+		//};
 
-		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		//m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
@@ -179,12 +179,16 @@ namespace Hare
 
 		// DockSpace
 		ImGuiIO& io = ImGui::GetIO();
+		ImGuiStyle& style = ImGui::GetStyle();
+		float minWidthsizeX = style.WindowMinSize.x;
+		style.WindowMinSize.x = 370.0f;
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
 			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
 
+		style.WindowMinSize.x = minWidthsizeX;
 
 		if (ImGui::BeginMenuBar())
 		{
@@ -216,26 +220,23 @@ namespace Hare
 
 		ImGui::End();	// End ImGui::Begin("Setting")
 
-
 		// Customize window style. Push...
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
 		ImGui::Begin("Viewport");
 		// Is viewport focused...
 		m_ViewportFocused = ImGui::IsWindowFocused();
-
 		// Is viewport hovered...
 		m_ViewportHovered = ImGui::IsWindowHovered();
-
-		Application::Get().GetImGuiLayer()->SetBLockEvents(!m_ViewportFocused || !m_ViewportHovered);
+		Application::Get().GetImGuiLayer()->SetBLockEvents(!m_ViewportFocused && !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = vec2(viewportPanelSize.x, viewportPanelSize.y);
 
-		uint32_t id = m_Framebuffer->GetColorAttachmentRenderID();
+		uint64_t textureID = m_Framebuffer->GetColorAttachmentRenderID();
 
 		// Display or color the viewport onto the texture.
-		ImGui::Image((void*)id, ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::End();	// End viewport
 		
 

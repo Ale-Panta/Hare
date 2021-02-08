@@ -22,6 +22,8 @@ namespace Hare
 
 		inline void SetBLockEvents(bool block) { m_BlockEvents = block; }
 
+		void SetDarkThemeColor();
+
 	private:
 		bool m_BlockEvents = true;
 		float m_Time = .0f;

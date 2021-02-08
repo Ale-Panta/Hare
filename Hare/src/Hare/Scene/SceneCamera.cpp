@@ -48,10 +48,10 @@ namespace Hare
 		}
 		else
 		{
-			float orthoLeft = -m_OrthographicSize * 0.5 * m_AspectRatio;
-			float orthoRight = m_OrthographicSize * 0.5 * m_AspectRatio;
-			float orthoBottom = -m_OrthographicSize * 0.5;
-			float orthoTop = m_OrthographicSize * 0.5;
+			float orthoLeft = -m_OrthographicSize * 0.5f * m_AspectRatio;
+			float orthoRight = m_OrthographicSize * 0.5f * m_AspectRatio;
+			float orthoBottom = -m_OrthographicSize * 0.5f;
+			float orthoTop = m_OrthographicSize * 0.5f;
 
 			m_ProjectionMatrix = glm::ortho(orthoLeft, orthoRight, orthoBottom, orthoTop, m_OrthographicNear, m_OrthographicFar);
 		}

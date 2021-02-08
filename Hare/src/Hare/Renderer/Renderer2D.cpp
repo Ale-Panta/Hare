@@ -133,7 +133,7 @@ namespace Hare
 
 		// Set samplers
 		int32_t samplers[s_Data.MaxTextureSlots];
-		for (size_t i = 0; i < s_Data.MaxTextureSlots; i++)	samplers[i] = i;
+		for (int32_t i = 0; i < s_Data.MaxTextureSlots; i++) samplers[i] = i;
 
 		// Create shader based on the graphics API we are using.
 		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
@@ -207,7 +207,7 @@ namespace Hare
 		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
 		// Bind textures
-		for (size_t i = 0; i < s_Data.TextureSlotIndex; i++) s_Data.TextureSlots[i]->Bind(i);
+		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++) s_Data.TextureSlots[i]->Bind(i);
 
 		RenderCommand::DrawIndex(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 		s_Data.Stats.Drawcalls++;
