@@ -10,8 +10,6 @@ using namespace std;
 
 namespace Hare
 {
-#define BIND_EVENT_FN(x) bind(&Application::x, this, placeholders::_1)
-
 	Application* Application::s_Instance = nullptr;
 
 	Application::Application(const std::string& name)
@@ -21,7 +19,7 @@ namespace Hare
 		HR_CORE_ASSERT(!s_Instance, "Application already exist!")
 		s_Instance = this;
 		m_Window = Window::Create(WindowProps(name));
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		m_Window->SetEventCallback(HR_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
 
@@ -64,8 +62,8 @@ namespace Hare
 
 		EventDispatcher dispatcher(e);
 
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
-		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
+		dispatcher.Dispatch<WindowCloseEvent>(HR_BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(HR_BIND_EVENT_FN(Application::OnWindowResize));
 
 
 		// Iterate the layers backwards, because we want the latest layer 
