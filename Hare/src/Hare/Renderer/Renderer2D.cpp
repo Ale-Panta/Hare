@@ -1,8 +1,8 @@
 #include "hrpch.h"
-#include "Shader.h"
-#include "Renderer2D.h"
-#include "VertexArray.h"
-#include "RenderCommand.h"
+#include "Hare/Renderer/Shader.h"
+#include "Hare/Renderer/Renderer2D.h"
+#include "Hare/Renderer/VertexArray.h"
+#include "Hare/Renderer/RenderCommand.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 

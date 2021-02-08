@@ -7,79 +7,79 @@ namespace Hare
 {
 	static const uint32_t s_MaxFramebufferSize = 8192;
 
-	namespace Utils
-	{
-		static GLenum TextureTarget(bool multisampled)
-		{
-			return multisampled ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
-		}
+	//namespace Utils
+	//{
+	//	static GLenum TextureTarget(bool multisampled)
+	//	{
+	//		return multisampled ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
+	//	}
 
-		static void CreateTextures(bool multisampled, uint32_t* outID, uint32_t count)
-		{
-			glCreateTextures(TextureTarget(multisampled), count, outID);
-		}
+	//	static void CreateTextures(bool multisampled, uint32_t* outID, uint32_t count)
+	//	{
+	//		glCreateTextures(TextureTarget(multisampled), count, outID);
+	//	}
 
-		static void BindTexture(bool multisampled, uint32_t id)
-		{
-			glBindTexture(TextureTarget(multisampled), id);
-		}
+	//	static void BindTexture(bool multisampled, uint32_t id)
+	//	{
+	//		glBindTexture(TextureTarget(multisampled), id);
+	//	}
 
-		static void AttachColorTexture(uint32_t id, int samples, GLenum format, uint32_t width, uint32_t height, int index)
-		{
-			bool multisampled = samples > 1;
+	//	static void AttachColorTexture(uint32_t id, int samples, GLenum format, uint32_t width, uint32_t height, int index)
+	//	{
+	//		bool multisampled = samples > 1;
 
-			if (multisampled)
-			{
-				glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, format, width, height, GL_FALSE);
-			}
-			else
-			{
-				glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);	// Imply that we want to sample it.
+	//		if (multisampled)
+	//		{
+	//			glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, format, width, height, GL_FALSE);
+	//		}
+	//		else
+	//		{
+	//			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);	// Imply that we want to sample it.
 
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			}
+	//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	//		}
 
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + index, TextureTarget(multisampled), id, 0);
-		}
+	//		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + index, TextureTarget(multisampled), id, 0);
+	//	}
 
-		static void AttachDepthTexture(uint32_t id, int samples, GLenum format, GLenum attachmentType, uint32_t width, uint32_t height)
-		{
-			bool multisampled = samples > 1;
+	//	static void AttachDepthTexture(uint32_t id, int samples, GLenum format, GLenum attachmentType, uint32_t width, uint32_t height)
+	//	{
+	//		bool multisampled = samples > 1;
 
-			if (multisampled)
-			{
-				glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, format, width, height, GL_FALSE);
-			}
-			else
-			{
-				glTexStorage2D(GL_TEXTURE_2D, 1, format, width, height);	// Cannot be sampled in a shader.
+	//		if (multisampled)
+	//		{
+	//			glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, format, width, height, GL_FALSE);
+	//		}
+	//		else
+	//		{
+	//			glTexStorage2D(GL_TEXTURE_2D, 1, format, width, height);	// Cannot be sampled in a shader.
 
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			}
+	//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	//		}
 
-			glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, TextureTarget(multisampled), id, 0);
-		}
+	//		glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, TextureTarget(multisampled), id, 0);
+	//	}
 
-		static bool IsDepthFormat(FramebufferTextureFormat format)
-		{
-			switch (format)
-			{
-			//case Hare::FramebufferTextureFormat::None:
-			//case Hare::FramebufferTextureFormat::RGBA8:
-			case Hare::FramebufferTextureFormat::DEPTH24STENCIL8: return true;
-			}
+	//	static bool IsDepthFormat(FramebufferTextureFormat format)
+	//	{
+	//		switch (format)
+	//		{
+	//		//case Hare::FramebufferTextureFormat::None:
+	//		//case Hare::FramebufferTextureFormat::RGBA8:
+	//		case Hare::FramebufferTextureFormat::DEPTH24STENCIL8: return true;
+	//		}
 
-			return false;
-		}
-	}
+	//		return false;
+	//	}
+	//}
 
 	OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& specification)
 		: m_Specification(specification)
@@ -97,13 +97,10 @@ namespace Hare
 
 	OpenGLFramebuffer::~OpenGLFramebuffer()
 	{
-		if (m_RendererID)
-		{
-			glDeleteFramebuffers(1, &m_RendererID);
-			glDeleteFramebuffers(1, &m_ColorAttachment);
-			//glDeleteTextures(m_ColorAttachments.size(), m_ColorAttachments.data());
-			glDeleteTextures(1, &m_DepthAttachment);
-		}
+		glDeleteFramebuffers(1, &m_RendererID);
+		glDeleteFramebuffers(1, &m_ColorAttachment);
+		//glDeleteTextures(m_ColorAttachments.size(), m_ColorAttachments.data());
+		glDeleteTextures(1, &m_DepthAttachment);
 	}
 
 	void OpenGLFramebuffer::Invalidate()

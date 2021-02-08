@@ -1,6 +1,7 @@
 #include "hrpch.h"
-#include "Input.h"
-#include "Application.h"
+#include "Hare/Core/Log.h"
+#include "Hare/Core/Input.h"
+#include "Hare/Core/Application.h"
 #include "Hare/Renderer/Renderer.h"
 
 #include <glfw/glfw3.h>
@@ -19,7 +20,6 @@ namespace Hare
 
 		HR_CORE_ASSERT(!s_Instance, "Application already exist!")
 		s_Instance = this;
-
 		m_Window = Window::Create(WindowProps(name));
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
@@ -70,12 +70,12 @@ namespace Hare
 
 		// Iterate the layers backwards, because we want the latest layer 
 		// to blocks input first (if it handle it).
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{
-			(*--it)->OnEvent(e);
-
 			if (e.Handled)
 				break;			// Break as soon the event is handled by the layer.
+
+			(*it)->OnEvent(e);
 		}
 	}
 
@@ -113,7 +113,6 @@ namespace Hare
 				m_ImGuiLayer->End();
 				// ------ End ImGui render ---------
 			}
-
 
 			m_Window->OnUpdate();
 		}

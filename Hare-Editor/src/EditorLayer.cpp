@@ -10,9 +10,8 @@ using namespace glm;
 namespace Hare
 {
 	EditorLayer::EditorLayer()
-		: Layer("Sandbox2D"), 
-		m_CameraController(1280.0f / 720.0f, true), 
-		m_ViewportSize(1280.0f, 720.0f)
+		: Layer("EditorLayer"), 
+		m_CameraController(1280.0f / 720.0f, true)
 	{
 	}
 
@@ -33,53 +32,53 @@ namespace Hare
 		m_ActiveScene = CreateRef<Scene>();
 
 		// Entity
-		auto squareOne = m_ActiveScene->CreateEntity("Pink Square");
-		squareOne.AddComponent<SpriteRendererComponent>(vec4(0.5f, 0.8f, 0.5f, 1.0f));
+		auto square = m_ActiveScene->CreateEntity("Green Square");
+		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
 
-		auto squareTwo = m_ActiveScene->CreateEntity("Aldo Square");
-		squareTwo.AddComponent<SpriteRendererComponent>(vec4(1.0f, 0.4f, 0.5f, 1.0f));
+		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
+		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+
+		m_Square = square;
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
 		m_CameraEntity.AddComponent<CameraComponent>();
 
-		//class CameraController : public ScriptableEntity
-		//{
-		//public:
-		//	void OnCreate()
-		//	{
+		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
+		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
+		cc.Primary = false;
 
-		//	}
+		class CameraController : public ScriptableEntity
+		{
+		public:
+			virtual void OnCreate() override
+			{
+				auto& translation = GetComponent<TransformComponent>().Translation;
+				translation.x = rand() % 10 - 5.0f;
+			}
 
-		//	void OnDestroy()
-		//	{
+			virtual void OnDestroy() override
+			{
+			}
 
-		//	}
+			virtual void OnUpdate(TimeStep ts) override
+			{
+				auto& translation = GetComponent<TransformComponent>().Translation;
 
-		//	void OnUpdate(TimeStep ts)
-		//	{
-		//		auto& translation = GetComponent<TransformComponent>().Translation;
-		//		float speed = 5.0f;
+				float speed = 5.0f;
 
-		//		if (Input::IsKeyPressed(Key::A))
-		//		{
-		//			translation.x -= speed * ts;
-		//		}
-		//		if (Input::IsKeyPressed(Key::D))
-		//		{
-		//			translation.x += speed * ts;
-		//		}
-		//		if (Input::IsKeyPressed(Key::W))
-		//		{
-		//			translation.y += speed * ts;
-		//		}
-		//		if (Input::IsKeyPressed(Key::S))
-		//		{
-		//			translation.y -= speed * ts;
-		//		}
-		//	}
-		//};
+				if (Input::IsKeyPressed(Key::A))
+					translation.x -= speed * ts;
+				if (Input::IsKeyPressed(Key::D))
+					translation.x += speed * ts;
+				if (Input::IsKeyPressed(Key::W))
+					translation.y += speed * ts;
+				if (Input::IsKeyPressed(Key::S))
+					translation.y -= speed * ts;
+			}
+		};
 
-		//m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
@@ -106,7 +105,7 @@ namespace Hare
 
 		if (FramebufferSpecification spec = m_Framebuffer->GetSpecification(); 
 			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
-			spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y)
+			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
 		{
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
@@ -123,7 +122,7 @@ namespace Hare
 
 		// Renderer
 		m_Framebuffer->Bind();
-		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		RenderCommand::Clear();
 
 		// Update scene.

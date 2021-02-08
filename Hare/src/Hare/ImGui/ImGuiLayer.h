@@ -11,7 +11,7 @@ namespace Hare
 	{
 	public:
 		ImGuiLayer();
-		~ImGuiLayer();
+		~ImGuiLayer() = default;
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
@@ -26,6 +26,6 @@ namespace Hare
 
 	private:
 		bool m_BlockEvents = true;
-		float m_Time = .0f;
+		float m_Time = 0.0f;
 	};
 }

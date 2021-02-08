@@ -18,17 +18,13 @@ namespace Hare
 	{
 	}
 
-	ImGuiLayer::~ImGuiLayer()
-	{
-	}
-
 	void ImGuiLayer::OnAttach()
 	{
 		HR_PROFILE_FUNCTION();
 
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
-		CreateContext();
+		ImGui::CreateContext();
 		ImGuiIO& io = GetIO(); (void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -41,7 +37,7 @@ namespace Hare
 		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/roboto/Roboto-Regular.ttf", 16.0f);
 
 		// Setup Dear ImGui style
-		StyleColorsDark();
+		ImGui::StyleColorsDark();
 		//StyleColorsClassic();
 
 		// When viewport are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
@@ -54,7 +50,8 @@ namespace Hare
 
 		SetDarkThemeColor();
 
-		GLFWwindow* window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+		Application& app = Application::Get();
+		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
 
 		// Setup Platform/Renderer bindings
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -67,7 +64,7 @@ namespace Hare
 
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
-		DestroyContext();
+		ImGui::DestroyContext();
 	}
 
 
@@ -99,14 +96,14 @@ namespace Hare
 		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
 
 		// Rendering
-		Render();
-		ImGui_ImplOpenGL3_RenderDrawData(GetDrawData());
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			GLFWwindow* backup_current_context = glfwGetCurrentContext();
-			UpdatePlatformWindows();
-			RenderPlatformWindowsDefault();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backup_current_context);
 		}
 	}

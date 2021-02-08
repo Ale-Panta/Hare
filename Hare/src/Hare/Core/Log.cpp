@@ -1,5 +1,7 @@
 #include "hrpch.h"
-#include "spdlog/sinks/stdout_color_sinks.h"
+#include "Hare/Core/Log.h"
+
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 using namespace std;
 using namespace spdlog;
@@ -20,6 +22,6 @@ namespace Hare
 
 		// Create Client console
 		s_ClientLogger = stdout_color_mt("APP");
-		s_ClientLogger->set_level(level::trace);
+		s_ClientLogger->set_level(spdlog::level::trace);
 	}
 }

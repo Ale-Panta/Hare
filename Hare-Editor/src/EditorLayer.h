@@ -23,10 +23,10 @@ namespace Hare
 		// Temp
 		Ref<Shader> m_FlatColorShader;
 		Ref<VertexArray> m_SquareVA;
-		Ref<Texture2D> m_SpreadSheet;
-		glm::vec4 m_Color = glm::vec4(0.2f, 0.3f, 0.8f, 1.0f);
+		Ref<Framebuffer> m_Framebuffer;
 
 		// Sheet
+		Ref<Texture2D> m_SpreadSheet;
 		Ref<SubTexture2D> m_TextureStair;
 		Ref<SubTexture2D> m_TextureBarrel;
 		Ref<SubTexture2D> m_TextureTree;
@@ -39,10 +39,7 @@ namespace Hare
 
 		bool m_ViewportFocused = false;
 		bool m_ViewportHovered = false;
-		glm::vec2 m_ViewportSize;
-
-		// Framebuffer
-		Ref<Framebuffer> m_Framebuffer;
+		glm::vec2 m_ViewportSize = glm::vec2(0.0f, 0.0f);
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;

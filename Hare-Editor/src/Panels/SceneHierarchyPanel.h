@@ -1,6 +1,5 @@
 #pragma once
 #include "Hare/Core/Core.h"
-#include "Hare/Core/Log.h"
 #include "Hare/Scene/Scene.h"
 #include "Hare/Scene/Entity.h"
 
@@ -21,7 +20,7 @@ namespace Hare
 		void DrawComponents(Entity entity);
 
 	private:
-		Entity m_SelectionContext;
 		Ref<Scene> m_Context;
+		Entity m_SelectionContext;
 	};
 }

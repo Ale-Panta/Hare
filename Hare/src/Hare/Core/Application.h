@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Core.h"
-#include "Window.h"
+#include "Hare/Core/Window.h"
 #include "Hare/Events/Event.h"
 #include "Hare/Core/TimeStep.h"
 #include "Hare/Core/LayerStack.h"
 #include "Hare/ImGui/ImGuiLayer.h"
 #include "Hare/Events/ApplicationEvent.h"
-#include "Hare/Renderer/OrthographicCamera.h"
+
+int main(int argc, char** argv);
 
 namespace Hare
 {
@@ -16,11 +17,12 @@ namespace Hare
 	/// </summary>
 	class Application 
 	{
+		friend int ::main(int argc, char** argv);
+
 	public:
 		Application(const std::string& name = "Hare App");
 		virtual ~Application();
 
-		void Run();
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
@@ -33,6 +35,7 @@ namespace Hare
 		inline Window& GetWindow() { return *m_Window; }
 
 	private:
+		void Run();
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);
 

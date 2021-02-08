@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Hare/Renderer/Camera.h"
 #include "Hare/Scene/SceneCamera.h"
 #include "Hare/Scene/ScriptableEntity.h"
 
@@ -19,22 +18,22 @@ namespace Hare
 
 	struct TagComponent
 	{
+		std::string Tag;
+
 		TagComponent() = default;
 		TagComponent(const TagComponent&) = default;
 		TagComponent(const std::string& tag) : Tag(tag) { }
-
-		std::string Tag;
 	};
 
 	struct TransformComponent
 	{
-		TransformComponent() = default;
-		TransformComponent(const TransformComponent&) = default;
-		TransformComponent(const glm::vec3& translation) : Translation(translation) { }
-
 		glm::vec3 Translation = glm::vec3(0.0f, 0.0f, 0.0f);
 		glm::vec3 Rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 		glm::vec3 Scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+		TransformComponent() = default;
+		TransformComponent(const TransformComponent&) = default;
+		TransformComponent(const glm::vec3& translation) : Translation(translation) { }
 
 		glm::mat4 GetTransform() const
 		{
@@ -52,21 +51,21 @@ namespace Hare
 
 	struct SpriteRendererComponent
 	{
+		glm::vec4 Color = glm::vec4(1.0f);
+
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}
-
-		glm::vec4 Color = glm::vec4(1.0f);
 	};
 
 	struct CameraComponent
 	{
-		CameraComponent() = default;
-		CameraComponent(const CameraComponent&) = default;
-
 		SceneCamera Camera;
 		bool Primary = true;	// #TODO: think about move to scene.
 		bool FixedAspectRatio = false;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
 	};
 
 	struct NativeScriptComponent
