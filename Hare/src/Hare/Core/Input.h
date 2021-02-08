@@ -11,7 +11,7 @@ namespace Hare
 	to process inputs per window. It's a Singleton.
 	Inputs are implemented per platform, so we declare here a sort of interface.
 	*/
-	class HARE_API Input 
+	class Input 
 	{
 	public:
 		static bool IsKeyPressed(KeyCode keycode);

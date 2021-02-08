@@ -7,6 +7,5 @@ namespace Hare
 		: m_EntityHandle(handle),
 		m_Scene(scene)
 	{
-
 	}
 }

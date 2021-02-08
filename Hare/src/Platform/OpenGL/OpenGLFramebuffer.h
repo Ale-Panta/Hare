@@ -6,7 +6,7 @@ namespace Hare
 	class OpenGLFramebuffer : public Framebuffer
 	{
 	public:
-		OpenGLFramebuffer(FramebufferSpecification specification);
+		OpenGLFramebuffer(const FramebufferSpecification& specification);
 		virtual ~OpenGLFramebuffer();
 
 	public:
@@ -16,7 +16,7 @@ namespace Hare
 		virtual void Unbind() override;
 		virtual void Resize(uint32_t width, uint32_t height) override;
 		//inline virtual uint32_t GetColorAttachmentRenderID(uint32_t index = 0) const override { HR_CORE_ASSERT(index < m_ColorAttachments.size()); return m_ColorAttachments[index]; }
-		inline virtual uint32_t GetColorAttachmentRenderID(uint32_t index = 0) const override { return m_ColorAttachment; }
+		inline virtual uint32_t GetColorAttachmentRenderID() const override { return m_ColorAttachment; }
 		inline virtual const FramebufferSpecification& GetSpecification() const override { return m_Specification; }
 
 	private:
@@ -27,7 +27,7 @@ namespace Hare
 		FramebufferTextureSpecification m_DepthAttachmentSpecification = FramebufferTextureSpecification(FramebufferTextureFormat::None);
 
 		//std::vector<uint32_t> m_ColorAttachments;
-		uint32_t m_ColorAttachment;
+		uint32_t m_ColorAttachment = 0;
 		uint32_t m_DepthAttachment = 0;
 	};
 }

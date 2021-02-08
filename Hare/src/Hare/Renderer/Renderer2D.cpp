@@ -272,7 +272,7 @@ namespace Hare
 		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
 		{
 			// We already submitted this texture?
-			if (*s_Data.TextureSlots[i].get() == *texture.get())
+			if (*s_Data.TextureSlots[i] == *texture)
 			{
 				textureIndex = (float)i;
 				break;
@@ -319,7 +319,7 @@ namespace Hare
 		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
 		{
 			// We already submitted this texture?
-			if (*s_Data.TextureSlots[i].get() == *texture.get())
+			if (*s_Data.TextureSlots[i] == *texture)
 			{
 				textureIndex = (float)i;
 				break;

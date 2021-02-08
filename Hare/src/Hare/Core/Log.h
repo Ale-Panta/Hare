@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.h"
+#include "Hare/Core/Core.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 
@@ -10,7 +10,7 @@ namespace Hare
 	/// Wrapper class of spdlog
 	/// </summary>
 	/// <see cref="$(SolutionDir)Hare/vendor/spdlog/"/>
-	class HARE_API Log 
+	class Log 
 	{
 	private:
 		// Two consoles:

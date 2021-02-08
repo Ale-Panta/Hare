@@ -39,7 +39,7 @@ namespace Hare
 		void RemoveComponent()
 		{
 			HR_CORE_ASSERT(HasComponent<T>(), "Entity does not have component!");
-			m_Scene->m_Registry.remove_if_exists<T>(m_EntityHandle);
+			m_Scene->m_Registry.remove<T>(m_EntityHandle);
 		}
 
 		operator bool() const { return m_EntityHandle != entt::null; }
@@ -50,7 +50,7 @@ namespace Hare
 		bool operator!=(const Entity& other) const { return !(*this == other); }
 
 	private:
-		entt::entity m_EntityHandle = entt::null;
+		entt::entity m_EntityHandle{ entt::null };
 		Scene* m_Scene = nullptr;
 	};
 }

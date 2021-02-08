@@ -81,16 +81,16 @@ namespace Hare
 		}
 	}
 
-	OpenGLFramebuffer::OpenGLFramebuffer(FramebufferSpecification specification)
+	OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& specification)
 		: m_Specification(specification)
 	{
-		for (auto spec : m_Specification.Attachments.Attachments)
-		{
-			if (!Utils::IsDepthFormat(spec.TextureFormat))
-				m_ColorAttachmentSpecification.emplace_back(spec);
-			else
-				m_DepthAttachmentSpecification = spec;
-		}
+		//for (auto spec : m_Specification.Attachments.Attachments)
+		//{
+		//	if (!Utils::IsDepthFormat(spec.TextureFormat))
+		//		m_ColorAttachmentSpecification.emplace_back(spec);
+		//	else
+		//		m_DepthAttachmentSpecification = spec;
+		//}
 
 		Invalidate();
 	}
@@ -116,7 +116,7 @@ namespace Hare
 			glDeleteTextures(1, &m_DepthAttachment);
 
 			//m_ColorAttachments.clear();
-			m_DepthAttachment = 0;
+			//m_DepthAttachment = 0;
 		}
 
 		glCreateFramebuffers(1, &m_RendererID);

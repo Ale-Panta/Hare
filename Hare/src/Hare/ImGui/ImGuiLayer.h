@@ -7,7 +7,7 @@
 
 namespace Hare
 {
-	class HARE_API ImGuiLayer : public Layer 
+	class ImGuiLayer : public Layer 
 	{
 	public:
 		ImGuiLayer();

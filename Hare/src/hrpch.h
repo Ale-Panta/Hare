@@ -7,14 +7,21 @@ The purpose of the precompiled headers is to reduce the precompile time.
 Each .cpp file must include this file and it must be the first to include else it raise an error.
 */
 
-// ---Common Stuff---
+#include "Hare/Core/PlatformDetection.h"
+
+#ifdef HR_PLATFORM_WINDOWS
+#ifndef NOMINMAX
+// See github.com/skypjack/entt/wiki/Frequently-Asked-Questions#warning-c4003-the-min-the-max-and-the-macro
+#define NOMINMAX
+#endif
+#endif
+
+#include <iostream>
 #include <memory>
 #include <utility>
-#include <iostream>
 #include <algorithm>
 #include <functional>
 
-// ---Data Structure---
 #include <string>
 #include <sstream>
 #include <array>
@@ -22,10 +29,14 @@ Each .cpp file must include this file and it must be the first to include else i
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Hare/Core/Core.h"
+
 #include "Hare/Core/Log.h"
+
 #include "Hare/Debug/Instrumentation.h"
 
 #ifdef HR_PLATFORM_WINDOWS
-	#include <Hare/Core/Window.h>
+#include <Windows.h>
 #endif
+
 

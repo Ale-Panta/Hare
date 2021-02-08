@@ -21,9 +21,9 @@ namespace Hare
 		HR_PROFILE_FUNCTION();
 
 		m_SpreadSheet	= Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
-		m_TextureStair	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(7, 6), vec2(128.0f, 128.0f));
-		m_TextureBarrel	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(8, 2), vec2(128.0f, 128.0f));
-		m_TextureTree	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(2, 1), vec2(128.0f, 128.0f), vec2(1, 2));
+		//m_TextureStair	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(7, 6), vec2(128.0f, 128.0f));
+		//m_TextureBarrel	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(8, 2), vec2(128.0f, 128.0f));
+		//m_TextureTree	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(2, 1), vec2(128.0f, 128.0f), vec2(1, 2));
 
 		FramebufferSpecification fbSpecification;
 		fbSpecification.Width = 1280;
@@ -33,18 +33,14 @@ namespace Hare
 		m_ActiveScene = CreateRef<Scene>();
 
 		// Entity
-		auto squareOne = m_ActiveScene->CreateEntity("PinkSquare");
-		squareOne.AddComponent<SpriteRendererComponent>(vec4(1.0f));
+		auto squareOne = m_ActiveScene->CreateEntity("Pink Square");
+		squareOne.AddComponent<SpriteRendererComponent>(vec4(0.5f, 0.8f, 0.5f, 1.0f));
 
-		auto squareTwo = m_ActiveScene->CreateEntity("AldoSquare");
-		squareTwo.AddComponent<SpriteRendererComponent>(vec4(1.0f));
+		auto squareTwo = m_ActiveScene->CreateEntity("Aldo Square");
+		squareTwo.AddComponent<SpriteRendererComponent>(vec4(1.0f, 0.4f, 0.5f, 1.0f));
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
 		m_CameraEntity.AddComponent<CameraComponent>();
-
-		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
-		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
-		cc.Primary = false;
 
 		//class CameraController : public ScriptableEntity
 		//{
@@ -108,8 +104,8 @@ namespace Hare
 	{
 		HR_PROFILE_FUNCTION();
 
-		FramebufferSpecification spec = m_Framebuffer->GetSpecification();
-		if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && 
+		if (FramebufferSpecification spec = m_Framebuffer->GetSpecification(); 
+			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
 			spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y)
 		{
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
@@ -140,9 +136,9 @@ namespace Hare
 	{
 		HR_PROFILE_FUNCTION();
 
-		static bool dockSpaceOpen = true;
-		static bool opt_fullscreen = true;
-		static bool opt_padding = false;
+		static bool dockspaceOpen = true;
+		static bool opt_fullscreen_persistant = true;
+		bool opt_fullscreen = opt_fullscreen_persistant;
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
 		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
@@ -171,7 +167,7 @@ namespace Hare
 		// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
 		// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		ImGui::Begin("DockSpace Demo", &dockSpaceOpen, window_flags);
+		ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
 		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
@@ -228,7 +224,7 @@ namespace Hare
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		// Is viewport hovered...
 		m_ViewportHovered = ImGui::IsWindowHovered();
-		Application::Get().GetImGuiLayer()->SetBLockEvents(!m_ViewportFocused && !m_ViewportHovered);
+		Application::Get().GetImGuiLayer()->SetBLockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = vec2(viewportPanelSize.x, viewportPanelSize.y);

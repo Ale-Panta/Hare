@@ -14,7 +14,7 @@ namespace Hare
 	/// <summary>
 	/// Base application class (this will be inherited).
 	/// </summary>
-	class HARE_API Application 
+	class Application 
 	{
 	public:
 		Application(const std::string& name = "Hare App");

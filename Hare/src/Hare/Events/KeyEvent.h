@@ -4,7 +4,7 @@
 
 namespace Hare
 {
-	class HARE_API KeyEvent : public Event 
+	class KeyEvent : public Event 
 	{
 	public:
 		inline int GetKeyCode() const { return m_KeyCode; }
@@ -18,7 +18,7 @@ namespace Hare
 		int m_KeyCode;
 	};
 
-	class HARE_API KeyPressedEvent : public KeyEvent 
+	class KeyPressedEvent : public KeyEvent 
 	{
 	public:
 		KeyPressedEvent(int keyCode, int repeatCount)
@@ -40,7 +40,7 @@ namespace Hare
 		int m_RepeatCount;
 	};
 
-	class HARE_API KeyReleasedEvent : public KeyEvent
+	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keyCode)
@@ -56,7 +56,7 @@ namespace Hare
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
 
-	class HARE_API KeyTypedEvent : public KeyEvent {
+	class KeyTypedEvent : public KeyEvent {
 	public:
 		KeyTypedEvent(int keyCode)
 			: KeyEvent(keyCode)

@@ -1,5 +1,5 @@
 #include "hrpch.h"
-#include "OpenGLShader.h"
+#include "Platform/OpenGL/OpenGLShader.h"
 
 #include <fstream>
 #include <glad/glad.h>
@@ -73,9 +73,8 @@ namespace Hare
 			if (size != -1)
 			{
 				result.resize(size);			// Tell us were the actual pointer is.
-				in.seekg(0, ios::beg);		// Bring us back to the start.
+				in.seekg(0, ios::beg);			// Bring us back to the start.
 				in.read(&result[0], size);		// And read the file.
-				in.close();
 			}
 			else
 			{
@@ -113,7 +112,7 @@ namespace Hare
 			pos = source.find(typeToken, nextLinePos);
 
 			// Get the substring from the token to the end of file or until the next token is red.
-			shaderSources[ShaderTypeFromString(type)] = source.substr(nextLinePos, pos - (nextLinePos == string::npos ? source.size() - 1 : nextLinePos));
+			shaderSources[ShaderTypeFromString(type)] = (pos == std::string::npos) ? source.substr(nextLinePos) : source.substr(nextLinePos, pos - nextLinePos);
 		}
 
 		return shaderSources;
@@ -210,7 +209,10 @@ namespace Hare
 
 		// Always detach shaders after a successful link.
 		for (auto id : glShadersIDs)
+		{
 			glDetachShader(program, id);
+			glDeleteShader(id);
+		}
 
 	}
 

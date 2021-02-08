@@ -5,7 +5,7 @@
 
 namespace Hare
 {
-	Hare::Ref<Hare::Framebuffer> Framebuffer::Create(const FramebufferSpecification specification)
+	Hare::Ref<Hare::Framebuffer> Framebuffer::Create(const FramebufferSpecification& specification)
 	{
 		switch (Renderer::GetAPI())
 		{

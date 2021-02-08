@@ -15,13 +15,13 @@ namespace Hare
 	public:
 		void SetContext(const Ref<Scene>& context);
 		void OnImGuiRender();
-		Entity m_SelectionContext;
 
 	private:
 		void DrawEntityNode(Entity entity);
 		void DrawComponents(Entity entity);
 
 	private:
+		Entity m_SelectionContext;
 		Ref<Scene> m_Context;
 	};
 }

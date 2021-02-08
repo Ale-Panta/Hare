@@ -15,7 +15,7 @@ namespace Hare
 	/// because if encautered any inputs it will be the first to blocks it.
 	/// </para>
 	/// </summary>
-	class HARE_API LayerStack 
+	class LayerStack 
 	{
 	public:
 		LayerStack();

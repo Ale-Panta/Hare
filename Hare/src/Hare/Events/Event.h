@@ -35,7 +35,7 @@ namespace Hare
 	Those wrappers has no logic inside itself but contains only
 	data utilized to ImGui (in this case, in this project).
 	*/
-	class HARE_API Event 
+	class Event 
 	{
 		friend class EventDispatcher;
 

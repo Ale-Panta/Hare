@@ -34,10 +34,10 @@ namespace Hare
 		inline void SetOrthographicFarClip(float farClip)	{ m_OrthographicFar = farClip; RecalculateProjection(); }
 
 		// Perspective
-		inline float GetPerspectiveVericalFOV()	const { return m_PerspectiveFOV; }
+		inline float GetPerspectiveVerticalFOV()	const { return m_PerspectiveFOV; }
 		inline float GetPerspectiveNearClip()	const { return m_PerspectiveNear; }
 		inline float GetPerspectiveFarClip()	const { return m_PerspectiveFar; }
-		inline void SetPerspectiveVericalFOV(float fov)		{ m_PerspectiveFOV = fov; RecalculateProjection(); }
+		inline void SetPerspectiveVerticalFOV(float fov)		{ m_PerspectiveFOV = fov; RecalculateProjection(); }
 		inline void SetPerspectiveNearClip(float nearClip)	{ m_PerspectiveNear = nearClip; RecalculateProjection(); }
 		inline void SetPerspectiveFarClip(float farClip)	{ m_PerspectiveFar = farClip; RecalculateProjection(); }
 

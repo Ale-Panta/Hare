@@ -4,7 +4,7 @@
 
 namespace Hare
 {
-	class HARE_API MouseMovedEvent : public Event 
+	class MouseMovedEvent : public Event 
 	{
 	public:
 		MouseMovedEvent(float x, float y)
@@ -27,7 +27,7 @@ namespace Hare
 		float m_MouseX, m_MouseY;
 	};
 
-	class HARE_API MouseScrolledEvent : public Event 
+	class MouseScrolledEvent : public Event 
 	{
 	public:
 		MouseScrolledEvent(float xOffset, float yOffset)
@@ -50,7 +50,7 @@ namespace Hare
 		float m_XOffset, m_YOffset;
 	};
 
-	class HARE_API MouseButtonEvent : public Event 
+	class MouseButtonEvent : public Event 
 	{
 	public:
 		inline int GetMouseButton() const { return m_Button; }
@@ -64,7 +64,7 @@ namespace Hare
 		int m_Button;
 	};
 
-	class HARE_API MouseButtonPressedEvent : public MouseButtonEvent
+	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(int button)
@@ -80,7 +80,7 @@ namespace Hare
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
-	class HARE_API MouseButtonReleasedEvent : public MouseButtonEvent 
+	class MouseButtonReleasedEvent : public MouseButtonEvent 
 	{
 	public:
 		MouseButtonReleasedEvent(int button)
