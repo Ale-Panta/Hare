@@ -98,7 +98,7 @@ namespace Hare
 	OpenGLFramebuffer::~OpenGLFramebuffer()
 	{
 		glDeleteFramebuffers(1, &m_RendererID);
-		glDeleteFramebuffers(1, &m_ColorAttachment);
+		glDeleteTextures(1, &m_ColorAttachment);
 		//glDeleteTextures(m_ColorAttachments.size(), m_ColorAttachments.data());
 		glDeleteTextures(1, &m_DepthAttachment);
 	}
@@ -109,11 +109,11 @@ namespace Hare
 		{
 			glDeleteFramebuffers(1, &m_RendererID);
 			//glDeleteTextures(m_ColorAttachments.size(), m_ColorAttachments.data());
-			glDeleteFramebuffers(1, &m_ColorAttachment);
+			glDeleteTextures(1, &m_ColorAttachment);
 			glDeleteTextures(1, &m_DepthAttachment);
 
 			//m_ColorAttachments.clear();
-			//m_DepthAttachment = 0;
+			m_DepthAttachment = 0;
 		}
 
 		glCreateFramebuffers(1, &m_RendererID);

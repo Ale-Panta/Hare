@@ -19,7 +19,7 @@ namespace Hare
 	{
 		HR_PROFILE_FUNCTION();
 
-		m_SpreadSheet	= Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
+		m_SpreadSheet	= Texture2D::Create("assets/textures/Blood.png");
 		//m_TextureStair	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(7, 6), vec2(128.0f, 128.0f));
 		//m_TextureBarrel	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(8, 2), vec2(128.0f, 128.0f));
 		//m_TextureTree	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(2, 1), vec2(128.0f, 128.0f), vec2(1, 2));
@@ -217,27 +217,20 @@ namespace Hare
 
 		// Customize window style. Push...
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-
 		ImGui::Begin("Viewport");
-		// Is viewport focused...
+
 		m_ViewportFocused = ImGui::IsWindowFocused();
-		// Is viewport hovered...
 		m_ViewportHovered = ImGui::IsWindowHovered();
 		Application::Get().GetImGuiLayer()->SetBLockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = vec2(viewportPanelSize.x, viewportPanelSize.y);
 
-		uint64_t textureID = m_Framebuffer->GetColorAttachmentRenderID();
-
 		// Display or color the viewport onto the texture.
+		uint64_t textureID = m_Framebuffer->GetColorAttachmentRenderID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::End();	// End viewport
-		
-
-		// Customize window style. Pop...
-		ImGui::PopStyleVar(ImGuiStyleVar_WindowPadding);
-
+		ImGui::PopStyleVar();
 
 		ImGui::End();	// End dock space
 	}

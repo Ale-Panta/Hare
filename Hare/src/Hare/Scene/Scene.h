@@ -29,9 +29,6 @@ namespace Hare
 		void OnUpdate(TimeStep ts);
 		void OnViewportResize(uint32_t width, uint32_t height);
 
-		// Temp
-		inline entt::registry& GetRegistry() { return m_Registry; }
-
 	private:
 		template<typename T>	// Template implementation in .cpp file...
 		void OnComponentAdded(Entity entity, T& component);

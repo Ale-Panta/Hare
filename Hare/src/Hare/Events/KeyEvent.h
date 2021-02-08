@@ -1,30 +1,31 @@
 #pragma once
 
-#include "Event.h"
+#include "Hare/Events/Event.h"
+#include "Hare/Core/Keycodes.h"
 
 namespace Hare
 {
 	class KeyEvent : public Event 
 	{
 	public:
-		inline int GetKeyCode() const { return m_KeyCode; }
+		inline KeyCode GetKeyCode() const { return m_KeyCode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 
 	protected:
-		KeyEvent(int keyCode)
+		KeyEvent(const KeyCode keyCode)
 			: m_KeyCode(keyCode) { }
 
-		int m_KeyCode;
+		KeyCode m_KeyCode;
 	};
 
 	class KeyPressedEvent : public KeyEvent 
 	{
 	public:
-		KeyPressedEvent(int keyCode, int repeatCount)
+		KeyPressedEvent(const KeyCode keyCode, const uint16_t repeatCount)
 			: KeyEvent(keyCode), m_RepeatCount(repeatCount) { }
 
-		inline int GetRepeatCount() const { return m_RepeatCount; }
+		inline uint16_t GetRepeatCount() const { return m_RepeatCount; }
 
 		std::string ToString() const override
 		{
@@ -37,13 +38,13 @@ namespace Hare
 		EVENT_CLASS_TYPE(KeyPressed)
 
 	private:
-		int m_RepeatCount;
+		uint16_t m_RepeatCount;
 	};
 
 	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
-		KeyReleasedEvent(int keyCode)
+		KeyReleasedEvent(const KeyCode keyCode)
 			: KeyEvent(keyCode) { }
 
 		std::string ToString() const override
@@ -58,7 +59,7 @@ namespace Hare
 
 	class KeyTypedEvent : public KeyEvent {
 	public:
-		KeyTypedEvent(int keyCode)
+		KeyTypedEvent(const KeyCode keyCode)
 			: KeyEvent(keyCode)
 		{
 		}

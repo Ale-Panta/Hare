@@ -1,4 +1,4 @@
-project "Hare-Editor"
+project "HareInput"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"

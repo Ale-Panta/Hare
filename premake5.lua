@@ -2,7 +2,7 @@ include "./vendor/premake/premake_customization/solution_items.lua"
 
 workspace "Hare"
 	architecture "x86_64"
-	startproject "Hare-Editor"
+	startproject "HareInput"
 
 	configurations
 	{
@@ -41,4 +41,4 @@ group ""
 
 include "Hare"
 include "Sandbox"
-include "Hare-Editor"
+include "HareInput"

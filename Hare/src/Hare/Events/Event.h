@@ -5,10 +5,10 @@
 namespace Hare
 {
 	/* 
-	Events in Hare are currently blocking, meaning when an event occurs it
-	immediatly gets dispatched and must be dealt with right then an there.
-	For the future, a better strategy might be to buffer events in an event
-	bus and process them during the "event" part of the update stage.
+	* Events in Hare are currently blocking, meaning when an event occurs it
+	* immediatly gets dispatched and must be dealt with right then an there.
+	* For the future, a better strategy might be to buffer events in an event
+	* bus and process them during the "event" part of the update stage.
 	*/
 
 	enum class EventType {
@@ -37,9 +37,8 @@ namespace Hare
 	*/
 	class Event 
 	{
-		friend class EventDispatcher;
-
 	public:
+		virtual ~Event() = default;
 
 		bool Handled = false;
 
@@ -50,7 +49,7 @@ namespace Hare
 
 		inline bool IsInCategory(EventCategory category)
 		{
-			return GetCategoryFlags() & (int)category;
+			return GetCategoryFlags() & category;
 		}
 	};
 
@@ -63,7 +62,7 @@ namespace Hare
 	event type or whatever we don't need to have an instance of the key
 	pressed event class to actually see what type it is.
 	*/
-#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::##type; }\
+#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\
 								virtual EventType GetEventType() const override { return GetStaticType(); }\
 								virtual const char* GetName() const override { return #type; }
 
@@ -72,9 +71,6 @@ namespace Hare
 
 	class EventDispatcher 
 	{
-		template<typename T>
-		using EventFn = std::function<bool(T&)>;
-
 	public:
 		EventDispatcher(Event& event)
 			: m_Event(event) { }
@@ -84,12 +80,12 @@ namespace Hare
 		and we store the result in the Event.
 		@param func : std::function<bool(T&)>
 		*/
-		template<typename T>
-		bool Dispatch(EventFn<T> func)
+		template<typename T, typename F>
+		bool Dispatch(const F& func)
 		{
 			if (m_Event.GetEventType() == T::GetStaticType())
 			{
-				m_Event.Handled = func(*(T*)&m_Event);
+				m_Event.Handled |= func(static_cast<T&>(m_Event));
 				return true;
 			}
 			return false;
