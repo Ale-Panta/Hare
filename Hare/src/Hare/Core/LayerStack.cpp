@@ -3,10 +3,6 @@
 
 namespace Hare
 {
-	LayerStack::LayerStack() 
-	{
-	}
-
 	LayerStack::~LayerStack()
 	{
 		// For now the layers are allocated only when the application is 
@@ -15,7 +11,10 @@ namespace Hare
 		// the stack.
 
 		for (Layer* layer : m_Layers)
+		{
+			layer->OnDetach();
 			delete layer;
+		}
 	}
 
 	void LayerStack::PushLayer(Layer* layer)
