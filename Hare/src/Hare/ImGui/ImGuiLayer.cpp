@@ -117,8 +117,8 @@ namespace Hare
 
 		// Headers
 		colors[ImGuiCol_Header] = ImVec4(0.2f, 0.205f, 0.21f, 1.0f);
-		colors[ImGuiCol_HeaderHovered] = ImVec4(1.0f, 0.509f, 0.262f, 1.0f);
-		colors[ImGuiCol_HeaderActive] = ImVec4(1.0f, 0.1505f, 0.151f, 1.0f);
+		colors[ImGuiCol_HeaderHovered] = ImVec4(1.0f, 0.643f, 0.434f, 1.0f);
+		colors[ImGuiCol_HeaderActive] = ImVec4(0.15f, 0.1505f, 0.151f, 1.0f);
 
 		// Buttons
 		colors[ImGuiCol_Button] = ImVec4(0.2f, 0.205f, 0.21f, 1.0f);
