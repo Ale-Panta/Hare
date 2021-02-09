@@ -20,9 +20,6 @@ namespace Hare
 		HR_PROFILE_FUNCTION();
 
 		m_SpreadSheet	= Texture2D::Create("assets/textures/Blood.png");
-		//m_TextureStair	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(7, 6), vec2(128.0f, 128.0f));
-		//m_TextureBarrel	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(8, 2), vec2(128.0f, 128.0f));
-		//m_TextureTree	= SubTexture2D::CreateFromCoords(m_SpreadSheet, vec2(2, 1), vec2(128.0f, 128.0f), vec2(1, 2));
 
 		FramebufferSpecification fbSpecification;
 		fbSpecification.Width = 1280;
