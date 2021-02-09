@@ -38,8 +38,8 @@ namespace Hare
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4 transfrom)
 	{
 		shader->Bind();
-		dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);	// TODO: this should be run per shader.
-		dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_Transform", transfrom);	// This run per object.
+		shader->SetMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);	// TODO: this should be run per shader.
+		shader->SetMat4("u_Transform", transfrom);	// This run per object.
 
 		// mi->Bind();
 		vertexArray->Bind();
