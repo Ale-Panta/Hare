@@ -160,7 +160,7 @@ namespace Hare
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		
+		HR_PROFILE_FUNCTION();
 
 		// Set view projection matrix reference to all shaders.
 
@@ -201,7 +201,7 @@ namespace Hare
 		if (s_Data.QuadIndexCount == 0) return;
 
 		// Retrieve how many elements there are.
-		uint32_t dataSize = (int32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
+		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
 
 		// Setup the data.
 		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);

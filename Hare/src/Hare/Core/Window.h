@@ -32,7 +32,7 @@ namespace Hare
 		// All the stuff below are pure virtual because
 		// they has to be implemented per-platform.
 
-		virtual ~Window() { }
+		virtual ~Window() = default;
 
 		virtual void OnUpdate() = 0;
 

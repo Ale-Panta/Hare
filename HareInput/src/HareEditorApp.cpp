@@ -14,7 +14,7 @@ namespace Hare
 	{
 	public:
 		HareEditor()
-			: Application("Hare Editor")
+			: Application("HareInput")
 		{
 			// Uncomment the line below to see how react the custom layer in console.
 			// PushLayer(new ExampleLayer());
