@@ -61,7 +61,7 @@ namespace Hare
 		}
 
 		// Here we can choose what API to use.
-		m_Context = new OpenGLContext(m_Window);
+		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
