@@ -1,5 +1,5 @@
 #pragma once
-#include "Hare/Core/Core.h"
+#include "Hare/Core/Base.h"
 #include "Hare/Scene/Scene.h"
 #include "Hare/Scene/Entity.h"
 

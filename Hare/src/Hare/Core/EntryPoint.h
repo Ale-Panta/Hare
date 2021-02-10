@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Hare/Core/Core.h"
+#include "Hare/Core/Base.h"
 // This file must be #include only once in the .cpp file.
 
 #ifdef HR_PLATFORM_WINDOWS

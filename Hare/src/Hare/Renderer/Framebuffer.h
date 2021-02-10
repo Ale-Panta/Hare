@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Hare/Core/Core.h"
+#include "Hare/Core/Base.h"
 
 namespace Hare
 {

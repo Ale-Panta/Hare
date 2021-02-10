@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.h"
+#include "Base.h"
 #include "Hare/Core/Window.h"
 #include "Hare/Events/Event.h"
 #include "Hare/Core/TimeStep.h"

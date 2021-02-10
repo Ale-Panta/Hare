@@ -29,7 +29,7 @@ Each .cpp file must include this file and it must be the first to include else i
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Hare/Core/Core.h"
+#include "Hare/Core/Base.h"
 
 #include "Hare/Core/Log.h"
 
