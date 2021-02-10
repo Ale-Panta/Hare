@@ -1,6 +1,7 @@
 #include "EditorLayer.h"
 #include "imgui/imgui.h"
 #include "Platform/OpenGL/OpenGLShader.h"
+#include "Hare/Scene/SceneSerializer.h"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -28,6 +29,7 @@ namespace Hare
 
 		m_ActiveScene = CreateRef<Scene>();
 
+#if 0
 		// Entity
 		auto square = m_ActiveScene->CreateEntity("Green Square");
 		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
@@ -76,6 +78,7 @@ namespace Hare
 
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+#endif
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
@@ -190,8 +193,19 @@ namespace Hare
 				// which we can't undo at the moment without finer window depth/z control.
 				// ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistent);
 
-				if (ImGui::MenuItem("Exit")) 
-					Application::Get().Close();
+				if (ImGui::MenuItem("Serialize"))
+				{
+					SceneSerializer serializer(m_ActiveScene);
+					serializer.Serialize("assets/scenes/Example.hare");
+				}
+
+				if (ImGui::MenuItem("Deserialize"))
+				{
+					SceneSerializer serializer(m_ActiveScene);
+					serializer.Deserialize("assets/scenes/Example.hare");
+				}
+
+				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 
 				ImGui::EndMenu();
 			}

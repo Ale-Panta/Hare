@@ -10,3 +10,6 @@
 [submodule "Hare/vendor/glm"]
 	path = Hare/vendor/glm
 	url = https://github.com/g-truc/glm
+[submodule "Hare/vendor/yaml-cpp"]
+	path = Hare/vendor/yaml-cpp
+	url = https://github.com/TheCherno/yaml-cpp.git

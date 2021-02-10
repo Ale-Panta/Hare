@@ -9,6 +9,7 @@ namespace Hare
 	class Scene
 	{
 		friend class Entity;
+		friend class SceneSerializer;
 		friend class SceneHierarchyPanel;
 
 	public:
