@@ -1,11 +1,10 @@
 #include "SceneHierarchyPanel.h"
+#include "Hare/Scene/Components.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 
 #include <glm/gtc/type_ptr.hpp>
-
-#include "Hare/Scene/Components.h"
 
 namespace Hare
 {
@@ -18,7 +17,7 @@ namespace Hare
 	void SceneHierarchyPanel::SetContext(const Ref<Scene>& context)
 	{
 		m_Context = context;
-		//m_SelectionContext = {};
+		m_SelectionContext = {};
 	}
 
 	void SceneHierarchyPanel::OnImGuiRender()
@@ -226,13 +225,21 @@ namespace Hare
 		{
 			if (ImGui::MenuItem("Camera"))
 			{
-				m_SelectionContext.AddComponent<CameraComponent>();
+				if (!m_SelectionContext.HasComponent<CameraComponent>())
+					m_SelectionContext.AddComponent<CameraComponent>();
+				else
+					HR_CORE_WARN("This Entity already has a CameraComponent!");
+
 				ImGui::CloseCurrentPopup();
 			}
 
 			if (ImGui::MenuItem("Sprite Renderer"))
 			{
-				m_SelectionContext.AddComponent<SpriteRendererComponent>();
+				if (!m_SelectionContext.HasComponent<SpriteRendererComponent>())
+					m_SelectionContext.AddComponent<SpriteRendererComponent>();
+				else
+					HR_CORE_WARN("This Entity already has a SpriteRendererComponent!");
+
 				ImGui::CloseCurrentPopup();
 			}
 
