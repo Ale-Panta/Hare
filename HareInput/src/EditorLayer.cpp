@@ -3,11 +3,15 @@
 #include "Platform/OpenGL/OpenGLShader.h"
 #include "Hare/Scene/SceneSerializer.h"
 #include "Hare/Utils/PlatformUtils.h"
+#include "Hare/Math/Math.h"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <ImGuizmo.h>
+
 using namespace glm;
+using namespace ImGuizmo;
 
 namespace Hare
 {
@@ -236,7 +240,9 @@ namespace Hare
 
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
-		Application::Get().GetImGuiLayer()->SetBLockEvents(!m_ViewportFocused || !m_ViewportHovered);
+
+		// Gizmos will work only if you are overing the viewport.
+		Application::Get().GetImGuiLayer()->SetBlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = vec2(viewportPanelSize.x, viewportPanelSize.y);
@@ -244,6 +250,57 @@ namespace Hare
 		// Display or color the viewport onto the texture.
 		uint64_t textureID = m_Framebuffer->GetColorAttachmentRenderID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
+
+		// Gizmos
+		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		if (selectedEntity && m_GizmoType != -1)
+		{
+			SetOrthographic(false);
+			SetDrawlist();
+
+			float windowWidth = (float)ImGui::GetWindowWidth();
+			float windowHeight = (float)ImGui::GetWindowHeight();
+			SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+			// Retrieve the data needed to manipulate the gizmo.
+
+			// Camera
+			auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+			const glm::mat4& cameraProjection = camera.GetProjection();
+			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+			// Entity transform
+			auto& tc = selectedEntity.GetComponent<TransformComponent>();
+			glm::mat4 transform = tc.GetTransform();
+
+			// Snapping
+			bool snap = Input::IsKeyPressed(Key::LeftControl);
+			float actualSnapValue = m_GizmoType == OPERATION::ROTATE ? m_SnapRotationValue : m_SnapTranslationAndScaleValue;
+			float snapValues[3] = { actualSnapValue, actualSnapValue, actualSnapValue };
+
+			Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection), (OPERATION)m_GizmoType, LOCAL, 
+				glm::value_ptr(transform), nullptr, snap ? snapValues : nullptr);
+
+			if (IsUsing())
+			{
+				glm::vec3 translation;
+				glm::vec3 rotation;
+				glm::vec3 scale;
+
+				Math::DecomposeTransform(transform, translation, rotation, scale);
+
+				// Translation
+				tc.Translation = translation;
+
+				// Rotation. Avoid Gimbel lock.
+				tc.Rotation += (rotation - tc.Rotation);
+
+				// Scale
+				tc.Scale = scale;
+			}
+		}
+
 		ImGui::End();	// End viewport
 		ImGui::PopStyleVar();
 
@@ -284,6 +341,28 @@ namespace Hare
 			{
 				if (control && shift)
 					SaveSceneAs();
+				break;
+			}
+
+			// Gizmos
+			case Key::Q: 
+			{
+				m_GizmoType = -1;
+				break;
+			}
+			case Key::W:
+			{
+				m_GizmoType = OPERATION::TRANSLATE;
+				break;
+			}
+			case Key::E:
+			{
+				m_GizmoType = OPERATION::SCALE;
+				break;
+			}
+			case Key::R:
+			{
+				m_GizmoType = OPERATION::ROTATE;
 				break;
 			}
 		}

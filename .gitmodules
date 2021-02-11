@@ -13,3 +13,6 @@
 [submodule "Hare/vendor/yaml-cpp"]
 	path = Hare/vendor/yaml-cpp
 	url = https://github.com/TheCherno/yaml-cpp.git
+[submodule "Hare/vendor/ImGuizmo"]
+	path = Hare/vendor/ImGuizmo
+	url = https://github.com/TheCherno/ImGuizmo.git

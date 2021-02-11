@@ -5,11 +5,14 @@
 #include "examples/imgui_impl_glfw.h"
 #include "examples/imgui_impl_opengl3.h"
 
+#include <ImGuizmo.h>
+
 // TEMP
 #include <GLFW/glfw3.h>
 #include <Glad/glad.h>
 
 using namespace ImGui;
+using namespace ImGuizmo;
 
 namespace Hare
 {
@@ -85,6 +88,7 @@ namespace Hare
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		NewFrame();
+		BeginFrame();
 	}
 
 	void ImGuiLayer::End()

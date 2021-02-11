@@ -106,6 +106,19 @@ namespace Hare
 		}
 	}
 
+
+	Entity Scene::GetPrimaryCameraEntity()
+	{
+		auto view = m_Registry.view<CameraComponent>();
+		for (auto entity : view)
+		{
+			auto camera = view.get<CameraComponent>(entity);
+			if (camera.Primary)
+				return Entity(entity, this);
+		}
+		return {};	// Return empty entity.
+	}
+
 	/*
 	* #TEMP specialized template... in the future we will have a table or dictionary
 	* where to store the component ID and trigger ComponentAdded().

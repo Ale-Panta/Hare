@@ -19,7 +19,8 @@ project "HareInput"
 		"%{wks.location}/Hare/src",
 		"%{wks.location}/Hare/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links

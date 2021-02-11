@@ -20,7 +20,7 @@ namespace Hare
 		void Begin();	// Begin ImGui rendering
 		void End();		// End ImGui rendering
 
-		inline void SetBLockEvents(bool block) { m_BlockEvents = block; }
+		inline void SetBlockEvents(bool block) { m_BlockEvents = block; }
 
 		void SetDarkThemeColor();
 
