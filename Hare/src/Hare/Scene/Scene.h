@@ -1,6 +1,7 @@
 #pragma once
 #include "entt.hpp"
 #include "Hare/Core/TimeStep.h"
+#include "hare/Renderer/EditorCamera.h"
 
 namespace Hare
 {
@@ -27,7 +28,8 @@ namespace Hare
 		/// Destroy the entity from the registry.
 		/// </summary>
 		void DestroyEntity(Entity entity);
-		void OnUpdate(TimeStep ts);
+		void OnUpdateRuntime(TimeStep ts);
+		void OnUpdateEditor(TimeStep ts, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
 
 		Entity GetPrimaryCameraEntity();

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Hare/Core/Base.h"
+#include <glm/glm.hpp>
+
 #include "KeyCodes.h"
 #include "MouseButtonCodes.h"
 

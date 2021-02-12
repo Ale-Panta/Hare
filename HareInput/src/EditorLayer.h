@@ -1,6 +1,7 @@
 #pragma once
 #include "Hare.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Hare/Renderer/EditorCamera.h"
 
 namespace Hare
 {
@@ -42,6 +43,7 @@ namespace Hare
 		Entity m_Square;
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;
+		EditorCamera m_EditorCamera;
 		bool m_PrimaryCamera = true;
 
 		bool m_ViewportFocused = false;

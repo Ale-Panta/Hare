@@ -1,5 +1,8 @@
 #pragma once
 
+#include <functional>
+
+#include "Hare/Debug/Instrumentation.h"
 #include "Hare/Core/Base.h"
 
 namespace Hare
