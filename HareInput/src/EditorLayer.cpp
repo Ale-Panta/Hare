@@ -28,6 +28,7 @@ namespace Hare
 		m_SpreadSheet	= Texture2D::Create("assets/textures/Blood.png");
 
 		FramebufferSpecification fbSpecification;
+		fbSpecification.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::DEPTH24STENCIL8 };
 		fbSpecification.Width = 1280;
 		fbSpecification.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpecification);
