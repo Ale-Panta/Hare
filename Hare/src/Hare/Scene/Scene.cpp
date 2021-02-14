@@ -84,7 +84,7 @@ namespace Hare
 				// Get the reference to transform component
 				auto [transfromRef, spriteRef] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-				Renderer2D::DrawQuad(transfromRef.GetTransform(), spriteRef.Color);
+				Renderer2D::DrawSprite(transfromRef.GetTransform(), spriteRef, (int)entity);
 			}
 
 			Renderer2D::EndScene();
@@ -101,7 +101,7 @@ namespace Hare
 		{
 			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-			Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+			Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 		}
 
 		Renderer2D::EndScene();

@@ -28,6 +28,9 @@ namespace Hare
 		vec2 TexCoord;
 		float TexIndex;
 		float TilingFactor;
+
+		// Editor - Only
+		int EntityID;
 	};
 
 	// Rendering struct of the game. It depends on the game.
@@ -82,7 +85,8 @@ namespace Hare
 			{ ShaderDataType::Float4,	"a_Color" },
 			{ ShaderDataType::Float2,	"a_TexCoord" },
 			{ ShaderDataType::Float,	"a_TexIndex" },
-			{ ShaderDataType::Float,	"a_TilingFactor" }
+			{ ShaderDataType::Float,	"a_TilingFactor" },
+			{ ShaderDataType::Int,		"a_EntityID" }
 		});
 
 		// Add vertex buffer to the list o vertex buffer.
@@ -240,7 +244,7 @@ namespace Hare
 		StartBatch();
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transfrom, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::mat4& transfrom, const glm::vec4& color, int entityID)
 	{
 		constexpr size_t quadVertexCount = 4;
 		const float textureIndex = 0.0f;
@@ -259,6 +263,7 @@ namespace Hare
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -268,7 +273,7 @@ namespace Hare
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transfrom, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::mat4& transfrom, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
 	{
 		constexpr size_t quadVertexCount = 4;
 		constexpr vec2 textureCoords[] = { 
@@ -310,6 +315,7 @@ namespace Hare
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -464,6 +470,12 @@ namespace Hare
 			scale(mat4(1.0f), vec3(size.x, size.y, 1.0f));
 
 		DrawQuad(transform, subTexture, tilingFactor, tintColor);
+	}
+
+
+	void Renderer2D::DrawSprite(const glm::mat4& transfrom, SpriteRendererComponent& spriteRendererComponent, int entityID)
+	{
+		DrawQuad(transfrom, spriteRendererComponent.Color, entityID);
 	}
 
 	void Renderer2D::ResetStats()

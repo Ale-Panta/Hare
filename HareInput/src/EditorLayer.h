@@ -44,6 +44,7 @@ namespace Hare
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;
 		EditorCamera m_EditorCamera;
+		Entity m_HoveredEntity;
 		bool m_PrimaryCamera = true;
 
 		bool m_ViewportFocused = false;
