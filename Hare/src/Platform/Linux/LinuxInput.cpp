@@ -1,4 +1,9 @@
-#ifdef HR_PLATFORM_LINUX
+#ifndef HR_PLATFORM_LINUX
+	#ifndef __linux
+		#warn "Compiler reports that the current compilation target isn't Linux. This file should be excluded from a compilation target that isn't Linux, UNIX, or POSIX."
+	#endif
+	#error "HR_PLATFORM_LINUX is not defined. Linux or a POSIX system is required to compile this file. Please define macro before compiling!"
+#endif
 
 #include "hrpch.h"
 #include "Hare/Core/Input.h"
@@ -52,5 +57,3 @@ namespace Hare
 		return y;
 	}
 }
-
-#endif

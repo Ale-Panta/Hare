@@ -1,4 +1,9 @@
-#ifdef HR_PLATFORM_WINDOWS
+#ifndef HR_PLATFORM_WINDOWS
+	#ifndef _WIN64
+		#warn "Compiler reports that the current compilation target isn't Win64. This file should be excluded from a compilation target that isn't Win64."
+	#endif
+	#error "HR_PLATFORM_WINDOWS is not defined. Win64 system is required to compile this file. Please define macro before compiling!"
+#endif
 
 #pragma once
 
@@ -46,5 +51,3 @@ namespace  Hare
 		WindowData m_Data;
 	};
 }
-
-#endif

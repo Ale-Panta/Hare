@@ -54,6 +54,7 @@ project "Hare"
 	flags {"NoPCH"}
 
 	filter "system:linux"
+		removefiles { "src/Platform/Windows/*" }
 
 		links
 		{
@@ -71,6 +72,8 @@ project "Hare"
 
 	filter "system:windows"
 		systemversion "latest"
+
+		removefiles { "src/Platform/Linux/*" }
 
 		links
 		{
