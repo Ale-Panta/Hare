@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Hare/Core/Timestep.h"
+#include "Hare/Core/TimeStep.h"
 #include "Hare/Events/MouseEvent.h"
 #include "Hare/Events/ApplicationEvent.h"
 #include "Hare/Renderer/OrthographicCamera.h"

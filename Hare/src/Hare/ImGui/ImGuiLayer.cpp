@@ -9,7 +9,7 @@
 
 // TEMP
 #include <GLFW/glfw3.h>
-#include <Glad/glad.h>
+#include <glad/glad.h>
 
 using namespace ImGui;
 using namespace ImGuizmo;

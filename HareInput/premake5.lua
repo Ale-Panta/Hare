@@ -28,8 +28,35 @@ project "HareInput"
 		"Hare"
 	}
 
+	filter "system:linux"
+		links
+		{
+			"GLFW",
+			"Glad",
+			"ImGui",
+			"Xrandr",
+			"Xi",
+			"GLU",
+			"GL",
+			"X11",
+			"dl",
+			"pthread",
+			"stdc++fs",	--GCC versions 5.3 through 8.x need stdc++fs for std::filesystem
+			"yaml-cpp",
+		}
+
+		defines
+		{
+			"HR_PLATFORM_LINUX"
+		}
+
 	filter "system:windows"
 		systemversion "latest"
+
+		defines
+		{
+			"HR_PLATFORM_WINDOWS"
+		}
 
 	filter "configurations:Debug"
 		defines "HR_DEBUG"

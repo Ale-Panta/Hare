@@ -1,5 +1,5 @@
 #pragma once
-#include "HAre/Renderer/RendererAPI.h"
+#include "Hare/Renderer/RendererAPI.h"
 
 namespace Hare
 {

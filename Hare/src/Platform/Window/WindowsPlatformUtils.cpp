@@ -1,3 +1,5 @@
+#ifdef HR_PLATFORM_WINDOWS
+
 #include "hrpch.h"
 #include "Hare/Utils/PlatformUtils.h"
 #include "Hare/Core/Application.h"
@@ -55,3 +57,5 @@ namespace Hare
 	}
 
 }
+
+#endif

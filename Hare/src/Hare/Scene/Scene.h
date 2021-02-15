@@ -1,7 +1,7 @@
 #pragma once
 #include "entt.hpp"
 #include "Hare/Core/TimeStep.h"
-#include "hare/Renderer/EditorCamera.h"
+#include "Hare/Renderer/EditorCamera.h"
 
 namespace Hare
 {

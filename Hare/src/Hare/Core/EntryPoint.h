@@ -3,7 +3,7 @@
 #include "Hare/Core/Base.h"
 // This file must be #include only once in the .cpp file.
 
-#ifdef HR_PLATFORM_WINDOWS
+#if defined(HR_PLATFORM_WINDOWS) || defined(HR_PLATFORM_LINUX)
 
 /*
 Somewhere we're going to have something that return Hare application pointer.

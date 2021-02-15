@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Hare/Events/Event.h"
-#include "Hare/Core/Keycodes.h"
+#include "Hare/Core/KeyCodes.h"
 
 namespace Hare
 {

@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Entity.h"
 #include "Components.h"
+#include "Hare/Core/Definitions.h"
 #include "Hare/Renderer/Renderer2D.h"
 //#include "Hare/Renderer/EditorCamera.h"
 
@@ -145,7 +146,10 @@ namespace Hare
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
+		//TODO let this work on linux
+		#ifdef HR_PLATFORM_WINDOWS
 		static_assert(false);
+		#endif
 	}
 
 	template<>

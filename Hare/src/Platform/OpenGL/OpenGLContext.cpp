@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 // --- Must be included in this order ---
 #include <glad/glad.h>
-#include <GL/GL.h>
+#include <GL/gl.h>
 // --------------------------------------
 
 namespace Hare

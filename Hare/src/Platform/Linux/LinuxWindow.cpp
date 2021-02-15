@@ -1,7 +1,7 @@
-#ifdef HR_PLATFORM_WINDOWS
+#ifdef HR_PLATFORM_LINUX
 
 #include "hrpch.h"
-#include "WindowsWindow.h"
+#include "LinuxWindow.h"
 #include "Hare/Core/Input.h"
 #include "Hare/Events/KeyEvent.h"
 #include "Hare/Events/MouseEvent.h"
@@ -10,28 +10,28 @@
 
 namespace Hare
 {
-	static uint8_t s_GLFWWindowCount = 0;
+    static uint8_t s_GLFWWindowCount = 0;
 
 	static void GLFWErrorCallback(int error, const char* description)
 	{
 		HR_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
-	WindowsWindow::WindowsWindow(const WindowProps& props)
+	LinuxWindow::LinuxWindow(const WindowProps& props)
 	{
 		HR_PROFILE_FUNCTION();
 
 		Init(props);
 	}
 
-	WindowsWindow::~WindowsWindow()
+	LinuxWindow::~LinuxWindow()
 	{
 		HR_PROFILE_FUNCTION();
 
 		ShutDown();
 	}
 
-	void WindowsWindow::Init(const WindowProps& props)
+	void LinuxWindow::Init(const WindowProps& props)
 	{
 		HR_PROFILE_FUNCTION();
 
@@ -57,14 +57,12 @@ namespace Hare
 			++s_GLFWWindowCount;
 		}
 
-		// Here we can choose what API to use.
 		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
-		// Set GLFW Callbacks
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -81,7 +79,7 @@ namespace Hare
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
 			WindowCloseEvent event;
-			// Dispatch
+            
 			data.EventCallback(event);
 		});
 
@@ -162,7 +160,7 @@ namespace Hare
 		});
 	}
 
-	void WindowsWindow::ShutDown()
+	void LinuxWindow::ShutDown()
 	{
 		HR_PROFILE_FUNCTION();
 
@@ -176,7 +174,7 @@ namespace Hare
 
 	}
 
-	void WindowsWindow::OnUpdate()
+	void LinuxWindow::OnUpdate()
 	{
 		HR_PROFILE_FUNCTION();
 
@@ -184,7 +182,7 @@ namespace Hare
 		m_Context->SwapBuffers();
 	}
 
-	void WindowsWindow::SetVSync(bool enabled)
+	void LinuxWindow::SetVSync(bool enabled)
 	{
 		HR_PROFILE_FUNCTION();
 
@@ -196,7 +194,7 @@ namespace Hare
 		m_Data.VSync = enabled;
 	}
 
-	bool WindowsWindow::IsVSync() const
+	bool LinuxWindow::IsVSync() const
 	{
 		return m_Data.VSync;
 	}

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Camera.h"
-#include "Hare/Core/Timestep.h"
+#include "Hare/Core/TimeStep.h"
 #include "Hare/Events/Event.h"
 #include "Hare/Events/MouseEvent.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hare/Renderer/Buffer.h"
+#include "Hare/Renderer/Buffer.h"
 
 namespace Hare
 {

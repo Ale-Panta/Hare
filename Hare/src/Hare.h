@@ -4,7 +4,7 @@
 This .h file is only intended to be included by client applications. So Hare will never include this.
 For use by Hare applications.
 */
-
+#include "Hare/Core/Definitions.h"
 #include "Hare/Core/Log.h"
 #include "Hare/Core/Layer.h"
 #include "Hare/Core/Application.h"
@@ -12,7 +12,7 @@ For use by Hare applications.
 #include "Hare/Core/TimeStep.h"
 
 #include "Hare/Core/Input.h"
-#include "Hare/Core/Keycodes.h"
+#include "Hare/Core/KeyCodes.h"
 #include "Hare/Core/MouseButtonCodes.h"
 #include "Hare/Renderer/OrthographicCameraController.h"
 

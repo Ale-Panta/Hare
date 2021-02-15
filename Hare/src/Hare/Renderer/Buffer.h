@@ -53,7 +53,7 @@ namespace Hare
 		ShaderDataType Type;
 		std::string Name;
 		uint32_t Size;
-		UINT_PTR Offset;	// UINT_PTR avoid error C4312. We can also restore the type to uint32_t and in the double cast it when error occur.
+		uint64_t Offset;	// UINT_PTR avoid error C4312. We can also restore the type to uint32_t and in the double cast it when error occur.
 		bool Normalized;
 
 		BufferElement() = default;

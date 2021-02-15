@@ -1,3 +1,5 @@
+#ifdef HR_PLATFORM_WINDOWS
+
 #pragma once
 
 #include "Hare/Core/Window.h"
@@ -44,3 +46,5 @@ namespace  Hare
 		WindowData m_Data;
 	};
 }
+
+#endif

@@ -4,7 +4,7 @@
 #include "Hare/Core/Application.h"
 #include "Hare/Renderer/Renderer.h"
 
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 
 using namespace std;
 

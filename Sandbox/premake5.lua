@@ -27,8 +27,34 @@ project "Sandbox"
 		"Hare"
 	}
 
+	filter "system:linux"
+		links
+		{
+			"GLFW",
+			"Glad",
+			"ImGui",
+			"Xrandr",
+			"Xi",
+			"GLU",
+			"GL",
+			"X11",
+			"dl",
+			"pthread",
+			"stdc++fs"
+		}
+
+		defines
+		{
+			"HR_PLATFORM_LINUX"
+		}
+
 	filter "system:windows"
 		systemversion "latest"
+
+		defines
+		{
+			"HR_PLATFORM_WINDOWS"
+		}
 
 	filter "configurations:Debug"
 		defines "HR_DEBUG"

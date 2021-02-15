@@ -48,17 +48,38 @@ project "Hare"
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
-		"opengl32.lib"
 	}
 
 	filter "files:vendor/ImGuizmo/**.cpp"
 	flags {"NoPCH"}
 
-	filter "system:windows"
-		systemversion "latest"
+	filter "system:linux"
+
+		links
+		{
+			"Xrandr",
+			"Xi",
+			"GLU",
+			"GL",
+			"X11"
+		}
 
 		defines
 		{
+			"HR_PLATFORM_LINUX"
+		}
+
+	filter "system:windows"
+		systemversion "latest"
+
+		links
+		{
+			"opengl32.lib"
+		}
+
+		defines
+		{
+			"HR_PLATFORM_WINDOWS"
 		}
 
 	filter "configurations:Debug"

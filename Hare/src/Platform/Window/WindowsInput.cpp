@@ -1,3 +1,5 @@
+#ifdef HR_PLATFORM_WINDOWS
+
 #include "hrpch.h"
 #include "Hare/Core/Input.h"
 #include "Hare/Core/Application.h"
@@ -56,3 +58,5 @@ namespace Hare
 		return y;
 	}
 }
+
+#endif
