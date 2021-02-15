@@ -1,3 +1,5 @@
+//15-02-2021 Diego Cugno diego@cugno.org
+
 #ifndef HR_PLATFORM_LINUX
 	#ifndef __linux
 		#warn "Compiler reports that the current compilation target isn't Linux. This file should be excluded from a compilation target that isn't Linux, UNIX, or POSIX."
