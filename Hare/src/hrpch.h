@@ -1,11 +1,9 @@
 #pragma once
 
-/*
-hrpch stands for "Hare precompiled headers". 
-Infact this file contains the most used / common header files used in the engine solution. 
-The purpose of the precompiled headers is to reduce the precompile time.
-Each .cpp file must include this file and it must be the first to include else it raise an error.
-*/
+// hrpch stands for "Hare precompiled headers". 
+// Infact this file contains the most used / common header files used in the engine solution. 
+// The purpose of the precompiled headers is to reduce the precompile time.
+// Each .cpp file must include this file and it must be the first to include else it raise an error.
 
 #include "Hare/Core/PlatformDetection.h"
 

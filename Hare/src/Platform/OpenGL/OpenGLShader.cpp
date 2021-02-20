@@ -19,22 +19,17 @@ namespace Hare
 
 		// Extract name from filepath...
 
-		/*
-		Retrieve the name after the last slash, cut also the file extension
-		for example if we have: assets/shaders/Texture.glsl,
-		we retrieve "Texture".
-		*/
+		// Retrieve the name after the last slash, cut also the file extension
+		// for example if we have: assets/shaders/Texture.glsl,
+		// we retrieve "Texture".
 		auto lastSlash = filePath.find_last_of("/\\");
-		/*
-		We handle also the case were the file is positioned in the follow example
-		Texture.glsl. So it's not inside to any folder.
-		*/
+
+		// We handle also the case were the file is positioned in the follow example
+		// Texture.glsl. So it's not inside to any folder.
 		lastSlash = lastSlash == string::npos ? 0 : lastSlash + 1;
 
-		/*
-		Retrieve the name before the dot and after the slash. We handle 
-		the case were the extension do not exist.
-		*/
+		// Retrieve the name before the dot and after the slash. We handle 
+		// the case were the extension do not exist.
 		auto lastDot = filePath.rfind('.');
 		auto count = lastDot == string::npos ? filePath.size() - lastSlash : lastDot - lastSlash;
 		m_Name = filePath.substr(lastSlash, count);

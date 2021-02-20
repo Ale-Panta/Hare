@@ -1,9 +1,7 @@
 #pragma once
 
-/*
-This .h file is only intended to be included by client applications. So Hare will never include this.
-For use by Hare applications.
-*/
+// For use by Hare applications.
+// This .h file is only intended to be included by client applications. So Hare will never include this.
 #include "Hare/Core/Definitions.h"
 #include "Hare/Core/Log.h"
 #include "Hare/Core/Layer.h"

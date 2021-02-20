@@ -18,15 +18,11 @@ namespace Hare
 		~Scene();
 
 	public:
-		/// <summary>
 		/// Create a new entity with default 
 		/// transform component and tag component.
-		/// </summary>
 		Entity CreateEntity(const std::string& name = std::string());
 
-		/// <summary>
 		/// Destroy the entity from the registry.
-		/// </summary>
 		void DestroyEntity(Entity entity);
 		void OnUpdateRuntime(DeltaTime dt);
 		void OnUpdateEditor(DeltaTime dt, EditorCamera& camera);
@@ -40,11 +36,9 @@ namespace Hare
 
 	private:
 
-		/*
-		Contains the actual component data.
-		It's a container of Entities, and entity
-		is just an uint id that contains components.
-		*/
+		// Contains the actual component data.
+		// It's a container of Entities, and entity
+		// is just an uint id that contains components.
 		entt::registry m_Registry;
 
 		uint32_t m_ViewportWidth = 0;

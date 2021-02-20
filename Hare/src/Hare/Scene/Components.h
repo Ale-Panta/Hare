@@ -11,13 +11,11 @@
 
 namespace Hare
 {
-	/*
-	Every component must be a struct.
-	It must provides constructor, copy constructor
-	and eventually move constructor.
-	It must also provide at least one member variable.
-	Operator overloads are only syntactic sugar.
-	*/
+	// Every component must be a struct.
+	// It must provides constructor, copy constructor
+	// and eventually move constructor.
+	// It must also provide at least one member variable.
+	// Operator overloads are only syntactic sugar.
 
 	struct TagComponent
 	{
