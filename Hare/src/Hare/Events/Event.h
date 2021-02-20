@@ -7,12 +7,10 @@
 
 namespace Hare
 {
-	/* 
-	* Events in Hare are currently blocking, meaning when an event occurs it
-	* immediatly gets dispatched and must be dealt with right then an there.
-	* For the future, a better strategy might be to buffer events in an event
-	* bus and process them during the "event" part of the update stage.
-	*/
+	// Events in Hare are currently blocking, meaning when an event occurs it
+	// immediatly gets dispatched and must be dealt with right then an there.
+	// For the future, a better strategy might be to buffer events in an event
+	// bus and process them during the "event" part of the update stage.
 
 	enum class EventType {
 		None = 0,
@@ -32,12 +30,10 @@ namespace Hare
 		EventCategoryMouseButton	= BIT(4)
 	};
 
-	/*
-	It's purpose is to define a parent wrapper for all event's.
-	Then it will be specialized based on the event type.
-	Those wrappers has no logic inside itself but contains only
-	data utilized to ImGui (in this case, in this project).
-	*/
+	// It's purpose is to define a parent wrapper for all event's.
+	// Then it will be specialized based on the event type.
+	// Those wrappers has no logic inside itself but contains only
+	// data utilized to ImGui (in this case, in this project).
 	class Event 
 	{
 	public:
@@ -56,15 +52,13 @@ namespace Hare
 		}
 	};
 
-	/*
-	Those macros are used to override that functions in a cleaner way.
-	We want to be able to at runtime check to see which type this
-	key pressed event is, so obviously we need a function that return
-	which event type it is. This does not have to be a member function.
-	It can just be a static function because if we say: "key pressed
-	event type or whatever we don't need to have an instance of the key
-	pressed event class to actually see what type it is.
-	*/
+	// Those macros are used to override that functions in a cleaner way.
+	// We want to be able to at runtime check to see which type this
+	// key pressed event is, so obviously we need a function that return
+	// which event type it is. This does not have to be a member function.
+	// It can just be a static function because if we say: "key pressed
+	// event type or whatever we don't need to have an instance of the key
+	// pressed event class to actually see what type it is.
 #define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\
 								virtual EventType GetEventType() const override { return GetStaticType(); }\
 								virtual const char* GetName() const override { return #type; }
@@ -78,11 +72,8 @@ namespace Hare
 		EventDispatcher(Event& event)
 			: m_Event(event) { }
 
-		/* 
-		Passed a function with proper signature, we called it
-		and we store the result in the Event.
-		@param func : std::function<bool(T&)>
-		*/
+		// Passed a function with proper signature, we called it
+		// and we store the result in the Event.
 		template<typename T, typename F>
 		bool Dispatch(const F& func)
 		{

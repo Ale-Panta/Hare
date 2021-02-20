@@ -4,15 +4,6 @@
 
 namespace Hare
 {
-	/*
-	* 
-	*/
-
-	//---------------------------------------------
-	//--- Window Events ---
-	//---------------------------------------------
-	
-
 	class WindowResizeEvent : public Event
 	{
 	public:
@@ -36,6 +27,7 @@ namespace Hare
 		unsigned int m_Width, m_Height;
 	};
 
+
 	class WindowCloseEvent : public Event 
 	{
 	public:
@@ -55,6 +47,7 @@ namespace Hare
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
+
 	class AppUpdateEvent : public Event {
 	public:
 		AppUpdateEvent() = default;
@@ -62,6 +55,7 @@ namespace Hare
 		EVENT_CLASS_TYPE(AppUpdate)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
+
 
 	class AppRenderEvent : public Event {
 	public:

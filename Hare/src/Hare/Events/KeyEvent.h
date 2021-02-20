@@ -19,6 +19,7 @@ namespace Hare
 		KeyCode m_KeyCode;
 	};
 
+
 	class KeyPressedEvent : public KeyEvent 
 	{
 	public:
@@ -41,6 +42,7 @@ namespace Hare
 		uint16_t m_RepeatCount;
 	};
 
+
 	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
@@ -56,6 +58,7 @@ namespace Hare
 
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
+
 
 	class KeyTypedEvent : public KeyEvent {
 	public:

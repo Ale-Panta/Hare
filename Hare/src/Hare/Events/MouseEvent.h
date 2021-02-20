@@ -28,6 +28,7 @@ namespace Hare
 		float m_MouseX, m_MouseY;
 	};
 
+
 	class MouseScrolledEvent : public Event 
 	{
 	public:
@@ -51,6 +52,7 @@ namespace Hare
 		float m_XOffset, m_YOffset;
 	};
 
+
 	class MouseButtonEvent : public Event 
 	{
 	public:
@@ -64,6 +66,7 @@ namespace Hare
 
 		MouseCode m_Button;
 	};
+
 
 	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
@@ -80,6 +83,7 @@ namespace Hare
 
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
+
 
 	class MouseButtonReleasedEvent : public MouseButtonEvent 
 	{
