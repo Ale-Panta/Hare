@@ -1,5 +1,6 @@
 #include "SceneHierarchyPanel.h"
 #include "Hare/Scene/Components.h"
+#include "Hare/Utils/PlatformUtils.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
@@ -319,7 +320,21 @@ namespace Hare
 
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
 			{
-				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+				ImGui::Image(component.Texture ? (void*)component.Texture->GetRendererID() : (void*)0, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
+				if (ImGui::IsItemClicked())
+				{
+					std::string filename = FileDialogs::OpenFile("");
+					if (filename != "")
+					{
+						component.Texture = Texture2D::Create(filename);
+						component.IsUsingTexture = true;
+					}
+				}
+				ImGui::SameLine();
+				ImGui::BeginGroup();
+				ImGui::Checkbox("Use##Texture", &component.IsUsingTexture);
+				ImGui::EndGroup();
+				ImGui::ColorEdit3("Color", glm::value_ptr(component.Color));
 			});
 
 	}

@@ -2,6 +2,7 @@
 
 #include "Hare/Scene/SceneCamera.h"
 #include "Hare/Scene/ScriptableEntity.h"
+#include "Hare/Renderer/Texture.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
@@ -50,10 +51,12 @@ namespace Hare
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color = glm::vec4(1.0f);
+		Ref<Texture2D> Texture = nullptr;
+		bool IsUsingTexture = false;
 
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
-		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}
+		SpriteRendererComponent(const glm::vec4& color) : Color(color) { }
 	};
 
 	struct CameraComponent
