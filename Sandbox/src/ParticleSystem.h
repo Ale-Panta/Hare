@@ -18,7 +18,7 @@ class ParticleSystem
 public:
 	ParticleSystem(uint32_t maxParticlesInstances = 1000);
 
-	void OnUpdate(Hare::TimeStep ts);
+	void OnUpdate(Hare::DeltaTime dt);
 	void OnRender(Hare::OrthographicCamera& camera);
 
 	void Emit(const ParticleProps& particleProps);

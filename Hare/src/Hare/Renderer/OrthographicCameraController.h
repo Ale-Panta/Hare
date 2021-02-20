@@ -22,7 +22,7 @@ namespace Hare
 		OrthographicCameraController(float aspectRatio, bool enableRotation = false);
 
 	public:
-		void OnUpdate(TimeStep ts);
+		void OnUpdate(DeltaTime dt);
 		void OnEvent(Event& e);
 		void OnResize(float width, float height);
 		//inline void SetZoomLevel(float zoomLevel) { m_ZoomLevel = zoomLevel; }

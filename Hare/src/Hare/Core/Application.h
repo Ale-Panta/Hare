@@ -12,9 +12,7 @@ int main(int argc, char** argv);
 
 namespace Hare
 {
-	/// <summary>
-	/// Base application class (this will be inherited).
-	/// </summary>
+	/// Base application class, all specialized application such as HareINput and Sandbox inherit from it.
 	class Application 
 	{
 		friend int ::main(int argc, char** argv);
@@ -23,6 +21,8 @@ namespace Hare
 		Application(const std::string& name = "Hare App");
 		virtual ~Application();
 
+	public:
+		// All event are dispatched and processed here.
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
@@ -47,17 +47,13 @@ namespace Hare
 		bool m_Minimize = false;
 
 		LayerStack m_LayerStack;
-		float m_LastFrameTime = 0.0f;	// Time that took to render the last frame.
+		float m_LastFrameTime = 0.0f;
 
 		static Application* s_Instance;
 	};
 
 
-	/// <summary>
 	/// To be defined in the CLIENT
-	/// </summary>
-	/// <see cref="$(SolutionDir)Hare/src/Hare/EntryPoint.h"/>
-	/// <see cref="$(SolutionDir)Sandbox/src/SandboxApp.cpp"/>
 	Application* CreateApplication();
 }
 

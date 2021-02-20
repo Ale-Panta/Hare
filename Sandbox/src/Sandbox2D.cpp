@@ -39,7 +39,7 @@ void Sandbox2D::OnDetach()
 	HR_PROFILE_FUNCTION();
 }
 
-void Sandbox2D::OnUpdate(Hare::TimeStep ts)
+void Sandbox2D::OnUpdate(Hare::DeltaTime dt)
 {
 	HR_PROFILE_FUNCTION();
 

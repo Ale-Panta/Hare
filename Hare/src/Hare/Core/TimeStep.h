@@ -2,10 +2,10 @@
 
 namespace Hare
 {
-	class TimeStep
+	class DeltaTime
 	{
 	public:
-		TimeStep(float time = 0.0f)
+		DeltaTime(float time = 0.0f)
 			: m_Time(time)
 		{
 

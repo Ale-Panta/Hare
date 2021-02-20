@@ -106,7 +106,7 @@ namespace Hare
 		HR_PROFILE_FUNCTION();
 	}
 
-	void EditorLayer::OnUpdate(TimeStep ts)
+	void EditorLayer::OnUpdate(DeltaTime dt)
 	{
 		HR_PROFILE_FUNCTION();
 
@@ -123,9 +123,9 @@ namespace Hare
 
 		// Update
 		if (m_ViewportFocused)
-			m_CameraController.OnUpdate(ts);
+			m_CameraController.OnUpdate(dt);
 
-		m_EditorCamera.OnUpdate(ts);
+		m_EditorCamera.OnUpdate(dt);
 
 		// Reset stats here.
 		Renderer2D::ResetStats();
@@ -139,7 +139,7 @@ namespace Hare
 		m_Framebuffer->ClearAttachment(1, -1);
 
 		// Update scene.
-		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
+		m_ActiveScene->OnUpdateEditor(dt, m_EditorCamera);
 
 		auto [mx, my] = ImGui::GetMousePos();
 		mx -= m_ViewportBounds[0].x;

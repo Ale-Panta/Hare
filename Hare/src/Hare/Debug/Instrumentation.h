@@ -204,6 +204,7 @@ namespace Hare
 	}
 }
 
+// To enable profiling just change #define HR_PROFILE 0 to HR_PROFILE 1
 #define HR_PROFILE 0
 #if HR_PROFILE
 // Resolve which function signature macro will be used. Note that this only

@@ -1,7 +1,8 @@
 #pragma once
 
 // In this file are declared all types used inside the engine and client project. When it will be compiled, the right
-// variable type is defined per platform. 
+// variable type is defined per platform.
+// In progress...
 
 // --- boolean --------------------------------------------------------------------------------------------------------
 

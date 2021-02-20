@@ -87,7 +87,7 @@ namespace Hare
 
 			// Delta time calculation.
 			float time = (float)glfwGetTime();	// TODO: Platform::GetTime();
-			TimeStep timeStep = time - m_LastFrameTime;
+			DeltaTime timeStep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
 			if (!m_Minimize)

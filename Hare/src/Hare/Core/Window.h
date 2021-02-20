@@ -18,12 +18,10 @@ namespace Hare
 			: Title(title), Width(width), Height(height) { }
 	};
 
-	/// <summary>
-	/// Interface representing a desktop system based Window.
-	/// Mobiles instead of window has surface.
-	/// Abstract representation of a window.
-	/// It is platform indipendent.
-	/// </summary>
+	// Interface representing a desktop system based Window.
+	// Mobiles instead of window has surface.
+	// Abstract representation of a window.
+	// It is platform indipendent.
 	class Window 
 	{
 	public:
@@ -44,10 +42,8 @@ namespace Hare
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
 
-		/*
-		Expose our window instance (GLFW window for now) to the client. It is void pointer
-		because potentially it doesn't have to return GLFW window, it could be anything.
-		*/
+		// Expose our window instance (GLFW window for now) to the client. It is void pointer
+		// because potentially it doesn't have to return GLFW window, it could be anything.
 		virtual void* GetNativeWindow() const = 0;
 
 		static Scope<Window> Create(const WindowProps& props = WindowProps());

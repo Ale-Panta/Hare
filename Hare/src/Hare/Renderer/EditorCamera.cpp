@@ -60,7 +60,7 @@ namespace Hare
 		return speed;
 	}
 
-	void EditorCamera::OnUpdate(TimeStep ts)
+	void EditorCamera::OnUpdate(DeltaTime dt)
 	{
 		if (Input::IsKeyPressed(Key::LeftAlt))
 		{

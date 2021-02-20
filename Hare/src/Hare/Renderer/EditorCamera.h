@@ -17,7 +17,7 @@ namespace Hare
 		EditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
 
 	public:
-		void OnUpdate(TimeStep ts);
+		void OnUpdate(DeltaTime dt);
 		void OnEvent(Event& e);
 
 		inline float GetDistance() const { return m_Distance; }

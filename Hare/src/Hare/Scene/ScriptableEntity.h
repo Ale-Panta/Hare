@@ -20,7 +20,7 @@ namespace Hare
 	protected:
 		virtual void OnCreate() { }
 		virtual void OnDestroy() { }
-		virtual void OnUpdate(TimeStep ts) { }
+		virtual void OnUpdate(DeltaTime dt) { }
 
 	private:
 		Entity m_Entity;

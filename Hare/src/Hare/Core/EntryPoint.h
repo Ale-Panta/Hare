@@ -1,15 +1,12 @@
 #pragma once
 
 #include "Hare/Core/Base.h"
-// This file must be #include only once in the .cpp file.
 
 #if defined(HR_PLATFORM_WINDOWS) || defined(HR_PLATFORM_LINUX)
 
-/*
-Somewhere we're going to have something that return Hare application pointer.
-It's a function that we will define somewhere else which will actually return
-that application for us.
-*/
+// Somewhere we're going to have something that return Hare application pointer.
+// It's a function that we will define somewhere else which will actually return
+// that application for us.
 extern Hare::Application* Hare::CreateApplication();
 
 // Create our Hare application for us. Entry point for both engine and application.

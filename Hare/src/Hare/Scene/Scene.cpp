@@ -38,7 +38,7 @@ namespace Hare
 		m_Registry.destroy(entity);
 	}
 
-	void Scene::OnUpdateRuntime(TimeStep ts)
+	void Scene::OnUpdateRuntime(DeltaTime dt)
 	{
 		// Update scripts
 		{
@@ -52,7 +52,7 @@ namespace Hare
 						nsc.Instance->OnCreate();
 					}
 
-					nsc.Instance->OnUpdate(ts);
+					nsc.Instance->OnUpdate(dt);
 				});
 		}
 
@@ -93,7 +93,7 @@ namespace Hare
 	}
 
 
-	void Scene::OnUpdateEditor(TimeStep ts, EditorCamera& camera)
+	void Scene::OnUpdateEditor(DeltaTime dt, EditorCamera& camera)
 	{
 		Renderer2D::BeginScene(camera);
 

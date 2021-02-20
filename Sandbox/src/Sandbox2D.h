@@ -11,7 +11,7 @@ public:
 public:
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
-	virtual void OnUpdate(Hare::TimeStep ts) override;
+	virtual void OnUpdate(Hare::DeltaTime dt) override;
 	virtual void OnImGuiRender() override;
 	virtual void OnEvent(Hare::Event& e) override;
 

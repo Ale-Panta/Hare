@@ -14,7 +14,7 @@ namespace Hare
 
 		virtual void OnAttach() { }
 		virtual void OnDetach() { }
-		virtual void OnUpdate(TimeStep ts) { }
+		virtual void OnUpdate(DeltaTime dt) { }
 		virtual void OnImGuiRender() { }
 		virtual void OnEvent(Event& e) { }
 

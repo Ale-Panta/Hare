@@ -14,7 +14,7 @@ ParticleSystem::ParticleSystem(uint32_t maxParticlesInstances)
 	m_ParticlePool.resize(maxParticlesInstances);
 }
 
-void ParticleSystem::OnUpdate(Hare::TimeStep ts)
+void ParticleSystem::OnUpdate(Hare::DeltaTime dt)
 {
 	for (auto& particle : m_ParticlePool)
 	{
