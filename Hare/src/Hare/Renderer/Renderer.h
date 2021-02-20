@@ -6,10 +6,8 @@
 
 namespace Hare
 {
-	/*
-	By default Hare engine it's a 3D renderer. So When you read Renderer it means 3D.
-	We support also 2D but we need a different API. Renderer2D comes in to this job.
-	*/
+	// By default Hare engine it's a 3D renderer. So When you read Renderer it means 3D.
+	// We support also 2D but we need a different API. Renderer2D comes in to this job.
 
 	class Renderer
 	{

@@ -2,16 +2,14 @@
 
 namespace Hare
 {
-	/*
-	This file contains both vertex, index buffer and buffer layout just for the sake 
-	of readability.
-
-	Those class below represent the interfices that will be implemented for each
-	API such as DirectX and OpenGL. Since it's an interface they do not contain any
-	variables. Specific data are contained inside the API specification.
-	To retrieve some specific data you need to declare a virtual function that
-	return that type of data.
-	*/
+	// This file contains both vertex, index buffer and buffer layout just for the sake
+	// of readability.
+	//
+	// Those class below represent the interfices that will be implemented for each
+	// API such as DirectX and OpenGL. Since it's an interface they do not contain any
+	// variables. Specific data are contained inside the API specification.
+	// To retrieve some specific data you need to declare a virtual function that
+	// return that type of data.
 
 #pragma region Layout
 
@@ -151,9 +149,7 @@ namespace Hare
 
 #pragma region Index buffer
 
-	/*
-	Currently Hare only supports 32-bit index buffer.
-	*/
+	// Currently Hare only supports 32-bit index buffer.
 
 	class IndexBuffer
 	{

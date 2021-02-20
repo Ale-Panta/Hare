@@ -11,14 +11,12 @@ using namespace glm;
 
 namespace Hare
 {
-	/*
-	Batch renderer system.
-	It allow us to render multiple geometry 
-	in a single draw call.
-	The way it works is the follow:
-	pass all possible values to the vertex buffer 
-	such as position, color, texture.
-	*/
+	// Batch renderer system.
+	// It allow us to render multiple geometry 
+	// in a single draw call.
+	// The way it works is the follow:
+	// pass all possible values to the vertex buffer 
+	// such as position, color, texture.
 
 	// Single vertex properties.
 	struct QuadVertex
@@ -66,12 +64,10 @@ namespace Hare
 	{
 		HR_PROFILE_FUNCTION();
 
-		/*
-		We don't pass any data to the vertex buffer because it's marked as dynamic.
-		This allow us to use batch rendering, therefore minimize the draw call.
-		The buffer it's filled at the geometry creation function.
-		Here we setup the layout of the buffer, the indicies.
-		*/
+		// We don't pass any data to the vertex buffer because it's marked as dynamic.
+		// This allow us to use batch rendering, therefore minimize the draw call.
+		// The buffer it's filled at the geometry creation function.
+		// Here we setup the layout of the buffer, the indicies.
 
 		// Create vertex array based on the graphics API we are using.
 		s_Data.QuadVertexArray	= VertexArray::Create();
@@ -207,11 +203,9 @@ namespace Hare
 		Flush();
 	}
 
-	/*
-	Draw all data passed in. As soon as some limit exceed such as texture slots or verticies,
-	we flush instanlty the current data and we start a new batch. The new batch contains the 
-	exceeded data.
-	*/
+	// Draw all data passed in. As soon as some limit exceed such as texture slots or verticies,
+	// we flush instanlty the current data and we start a new batch. The new batch contains the 
+	// exceeded data.
 	void Renderer2D::Flush()
 	{
 		// Nothing to draw.

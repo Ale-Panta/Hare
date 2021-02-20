@@ -6,10 +6,8 @@
 
 namespace Hare
 {
-	/*
-	In the future the texture asset will be a custom Hare asset.
-	For now we remain with .png format.
-	*/
+	// In the future the texture asset will be a custom Hare asset.
+	// For now we remain with .png format.
 
 	class Texture
 	{
@@ -22,11 +20,7 @@ namespace Hare
 		virtual uint32_t GetRendererID() const = 0;
 		virtual void Bind(uint32_t slot = 0) const = 0;
 
-		/*
-		Get a pointer to block of memory and upload it in the GPU.
-		@param void* data.
-		@param uint32_t size: the size memory requested.
-		*/
+		// Get a pointer to block of memory and upload it in the GPU.
 		virtual void SetData(void* data, uint32_t size) = 0;
 		virtual bool operator==(const Texture& other) const = 0;
 	};
