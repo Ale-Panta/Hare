@@ -37,7 +37,7 @@ namespace Hare
 		{
 			return ofn.lpstrFile;
 		}
-		return nullptr;
+		return "";
 	}
 
 	std::string FileDialogs::SaveFile(const char* filter)
@@ -59,7 +59,7 @@ namespace Hare
 		{
 			return ofn.lpstrFile;
 		}
-		return nullptr;
+		return "";
 	}
 
 }
