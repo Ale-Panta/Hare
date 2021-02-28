@@ -16,7 +16,10 @@ namespace Hare
 		void OnImGuiRender();
 
 		void SetSelectedEntity(Entity entity);
-		Entity GetSelectedEntity() const { return m_SelectionContext; }
+		void AddSelectedEntity(Entity entity);
+		inline void ClearSelectionContexts() { m_SelectionContexts.clear(); }
+		inline Entity GetSelectedEntity() const { return m_SelectionContext; }
+		inline std::vector<Entity> GetSelectedEntities() const { return m_SelectionContexts; }
 
 	private:
 		void DrawEntityNode(Entity entity);
@@ -25,5 +28,6 @@ namespace Hare
 	private:
 		Ref<Scene> m_Context;
 		Entity m_SelectionContext;
+		std::vector<Entity> m_SelectionContexts;
 	};
 }

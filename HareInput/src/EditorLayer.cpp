@@ -327,14 +327,25 @@ namespace Hare
 
 				Math::DecomposeTransform(transform, translation, rotation, scale);
 
-				// Translation
+				glm::vec3 startTranslation = tc.Translation;
+				glm::vec3 startRotation = tc.Rotation;
+				glm::vec3 startScale = tc.Scale;
+
 				tc.Translation = translation;
-
-				// Rotation. Avoid Gimbel lock.
 				tc.Rotation += (rotation - tc.Rotation);
-
-				// Scale
 				tc.Scale = scale;
+
+				if (m_SceneHierarchyPanel.GetSelectedEntities().size() > 0)
+				{
+					for (Entity ent : m_SceneHierarchyPanel.GetSelectedEntities())
+					{
+						auto& otherTc = ent.GetComponent<TransformComponent>();
+
+						otherTc.Translation += translation - startTranslation;
+						otherTc.Rotation += (rotation - (otherTc.Rotation));
+						otherTc.Scale += scale - startScale;
+					}
+				}
 			}
 		}
 
@@ -416,10 +427,26 @@ namespace Hare
 
 	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
 	{
+		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+
 		if (e.GetMouseButton() == Mouse::ButtonLeft)
 		{
-			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
-				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+
+			if (control)
+			{
+				if (m_HoveredEntity != Entity())
+				{
+					m_SceneHierarchyPanel.AddSelectedEntity(m_HoveredEntity);
+				}
+			}
+			else
+			{
+				if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+					m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+
+				m_SceneHierarchyPanel.ClearSelectionContexts();
+			}
+
 		}
 		return false;
 	}

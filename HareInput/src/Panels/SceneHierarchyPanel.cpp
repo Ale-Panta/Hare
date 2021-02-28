@@ -1,10 +1,12 @@
 #include "SceneHierarchyPanel.h"
 #include "Hare/Scene/Components.h"
+#include "Hare/Utils/PlatformUtils.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 
 #include <glm/gtc/type_ptr.hpp>
+#include <algorithm>
 
 namespace Hare
 {
@@ -57,6 +59,23 @@ namespace Hare
 	void SceneHierarchyPanel::SetSelectedEntity(Entity entity)
 	{
 		m_SelectionContext = entity;
+	}
+
+
+	void SceneHierarchyPanel::AddSelectedEntity(Entity entity)
+	{
+		// Does contains...
+		if (std::find(m_SelectionContexts.begin(), m_SelectionContexts.end(), entity) != m_SelectionContexts.end())
+		{
+		}
+		else // Does not contains...
+		{
+			if (m_SelectionContext != entity)
+			{
+				HR_CORE_INFO("Adding entity...");
+				m_SelectionContexts.push_back(entity);
+			}
+		}
 	}
 
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
@@ -325,6 +344,20 @@ namespace Hare
 
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
 			{
+				ImGui::Image(component.Texture ? (void*)component.Texture->GetRendererID() : (void*)0, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
+				if (ImGui::IsItemClicked())
+				{
+					std::string filename = FileDialogs::OpenFile("");
+					if (!filename.empty())
+					{
+						component.Texture = Texture2D::Create(filename);
+						component.ToggleTexture = true;
+					}
+				}
+				ImGui::SameLine();
+				ImGui::BeginGroup();
+				ImGui::Checkbox("Use##Texture", &component.ToggleTexture);
+				ImGui::EndGroup();
 				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
 			});
 
