@@ -11,15 +11,14 @@
 
 // --- Integers -------------------------------------------------------------------------------------------------------
 
-#define HR_INT int
 #define HR_INT8 int8
 #define HR_INT16 int16
 #define HR_INT32 int32
 #define HR_INT64 int64
-#define HR_INT8 uint8_t
-#define HR_INT16 uint16_t
-#define HR_INT32 uint32_t
-#define HR_INT64 uint64_t
+#define HR_UINT8_PTR uint8_t
+#define HR_UINT16_PTR uint16_t
+#define HR_UINT32_PTR uint32_t
+#define HR_UINT64_PTR uint64_t
 
 // --- Floats -------------------------------------------------------------------------------------------------------
 
