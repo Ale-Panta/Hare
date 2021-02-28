@@ -469,7 +469,10 @@ namespace Hare
 
 	void Renderer2D::DrawSprite(const glm::mat4& transfrom, SpriteRendererComponent& spriteRendererComponent, int entityID)
 	{
-		DrawQuad(transfrom, spriteRendererComponent.Color, entityID);
+		if (spriteRendererComponent.ToggleTexture)
+			DrawQuad(transfrom, spriteRendererComponent.Texture, spriteRendererComponent.TilingFactor, spriteRendererComponent.Color, entityID);
+		else
+			DrawQuad(transfrom, spriteRendererComponent.Color, entityID);
 	}
 
 	void Renderer2D::ResetStats()
