@@ -26,12 +26,38 @@ namespace Hare
 	{
 		// All entities we are gonna create have by default a transform component.
 		Entity entity = Entity(m_Registry.create(), this);
+
+		auto& idComponent = entity.AddComponent<IDComponent>();
+		idComponent.ID = IDComponent().ID;
+
 		entity.AddComponent<TransformComponent>();
+
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
+
+		m_EntityMapID[idComponent.ID] = entity;
+
 		return entity;
 	}
 
+
+	Hare::Entity Scene::CreateEntityWithID(const uint64_t uuid, const std::string& name /*= std::string()*/)
+	{
+		// All entities we are gonna create have by default a transform component.
+		Entity entity = Entity(m_Registry.create(), this);
+
+		auto& idComponent = entity.AddComponent<IDComponent>(uuid);
+
+		entity.AddComponent<TransformComponent>();
+
+		auto& tag = entity.AddComponent<TagComponent>();
+		tag.Tag = name.empty() ? "Entity" : name;
+
+		HR_CORE_ASSERT(m_EntityMapID.find(idComponent.ID) == m_EntityMapID.end());
+		m_EntityMapID[idComponent.ID] = entity;
+
+		return entity;
+	}
 
 	void Scene::DestroyEntity(Entity entity)
 	{
@@ -147,9 +173,14 @@ namespace Hare
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
 		//TODO let this work on linux
-		#ifdef HR_PLATFORM_WINDOWS
+#ifdef HR_PLATFORM_WINDOWS
 		static_assert(false);
-		#endif
+#endif
+	}
+
+	template<>
+	void Scene::OnComponentAdded<IDComponent>(Entity entity, IDComponent& component)
+	{
 	}
 
 	template<>

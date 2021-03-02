@@ -3,6 +3,7 @@
 #include "Hare/Scene/SceneCamera.h"
 #include "Hare/Scene/ScriptableEntity.h"
 #include "Hare/Renderer/Texture.h"
+#include "Hare/Utils/UUID.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
@@ -17,6 +18,15 @@ namespace Hare
 	// and eventually move constructor.
 	// It must also provide at least one member variable.
 	// Operator overloads are only syntactic sugar.
+
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+		IDComponent(const uint64_t id) : ID(id) { }
+	};
 
 	struct TagComponent
 	{
@@ -51,12 +61,12 @@ namespace Hare
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color = glm::vec4(1.0f);
-		Ref<Texture2D> Texture;
+		Ref<Texture2D> Texture = nullptr;
 		float TilingFactor = 1.0f;
 		bool ToggleTexture = false;
 
 		SpriteRendererComponent() = default;
-		SpriteRendererComponent(const SpriteRendererComponent&) = default;
+		SpriteRendererComponent(const SpriteRendererComponent& other) = default;
 	};
 
 	struct CameraComponent

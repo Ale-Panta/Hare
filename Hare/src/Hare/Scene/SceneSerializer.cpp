@@ -86,8 +86,10 @@ namespace Hare
 
 	static void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
+		UUID uuid = entity.GetComponent<IDComponent>().ID;
 		out << YAML::BeginMap;	// Entity
-		out << YAML::Key << "Entity" << YAML::Value << "12837192831273"; // TODO: Entity ID
+		out << YAML::Key << "Entity";
+		out << YAML::Value << uuid;
 
 		if (entity.HasComponent<TagComponent>())
 		{
@@ -191,7 +193,7 @@ namespace Hare
 		{
 			for (auto entity : entities)
 			{
-				uint64_t uuid = entity["Entity"].as<uint64_t>();	// #TODO
+				uint64_t uuid = entity["Entity"].as<uint64_t>();
 
 				std::string name;
 				auto tagComponent = entity["TagComponent"];
@@ -200,7 +202,7 @@ namespace Hare
 
 				HR_CORE_TRACE("Deserializer entity with ID = {0}, name = {1}", uuid, name);
 
-				Entity deserializedEntity = m_Scene->CreateEntity(name);
+				Entity deserializedEntity = m_Scene->CreateEntityWithID(uuid, name);
 
 				auto transformComponent = entity["TransformComponent"];
 				if (transformComponent)

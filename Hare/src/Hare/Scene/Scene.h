@@ -19,8 +19,9 @@ namespace Hare
 
 	public:
 		/// Create a new entity with default 
-		/// transform component and tag component.
+		/// ID, Transform and Tag component.
 		Entity CreateEntity(const std::string& name = std::string());
+		Entity CreateEntityWithID(const uint64_t uuid, const std::string& name = std::string());
 
 		/// Destroy the entity from the registry.
 		void DestroyEntity(Entity entity);
@@ -40,6 +41,9 @@ namespace Hare
 		// It's a container of Entities, and entity
 		// is just an uint id that contains components.
 		entt::registry m_Registry;
+
+		using EntityMap = std::map<uint64_t, Entity>;
+		EntityMap m_EntityMapID;
 
 		uint32_t m_ViewportWidth = 0;
 		uint32_t m_ViewportHeight = 0;
