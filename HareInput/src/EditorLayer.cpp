@@ -312,7 +312,7 @@ namespace Hare
 			glm::mat4 transform = tc.GetTransform();
 
 			// Snapping
-			bool snap = Input::IsKeyPressed(Key::LeftControl);
+			bool snap = Input::IsKeyPressed(Key::LeftShift);
 			float actualSnapValue = m_GizmoType == OPERATION::ROTATE ? m_SnapRotationValue : m_SnapTranslationAndScaleValue;
 			float snapValues[3] = { actualSnapValue, actualSnapValue, actualSnapValue };
 
@@ -342,7 +342,7 @@ namespace Hare
 						auto& otherTc = ent.GetComponent<TransformComponent>();
 
 						otherTc.Translation += translation - startTranslation;
-						otherTc.Rotation += (rotation - (otherTc.Rotation));
+						otherTc.Rotation += rotation - startRotation;
 						otherTc.Scale += scale - startScale;
 					}
 				}
@@ -394,13 +394,6 @@ namespace Hare
 				break;
 			}
 
-			// Gizmos
-			case Key::Q: 
-			{
-				if (!ImGuizmo::IsUsing())	// prevent crashing when operating with gizmos.
-					m_GizmoType = -1;
-				break;
-			}
 			case Key::W:
 			{
 				if (!ImGuizmo::IsUsing())	// prevent crashing when operating with gizmos.

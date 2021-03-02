@@ -57,7 +57,7 @@ namespace Hare
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 
 		// Gizmos
-		int m_GizmoType = -1;	// None
+		int m_GizmoType = 0;	// None
 		float m_SnapTranslationAndScaleValue = 0.5f;
 		float m_SnapRotationValue = 45.0f;
 	};
