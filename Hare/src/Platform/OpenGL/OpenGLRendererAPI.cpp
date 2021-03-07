@@ -12,16 +12,8 @@ namespace Hare
 		HR_PROFILE_FUNCTION();	// Usually we don't want to profile renderer because there are many calculation and we don't want to add any heavy functions.
 
 		glEnable(GL_BLEND);
-
-		// void glBlendFunc(GLenum sfactor, GLenum dfactor);
-		// @param: sfactor, Specifies how the red, green, blue, and alpha source blending factors are computed. The initial value is GL_ONE. 
-		// @param: dfactor, Specifies how the red, green, blue, and alpha destination blending factors are computed. 
-		// The following symbolic constants are accepted: GL_ZERO, GL_ONE, GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR, GL_DST_COLOR, 
-		// GL_ONE_MINUS_DST_COLOR, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA. GL_CONSTANT_COLOR, 
-		// GL_ONE_MINUS_CONSTANT_COLOR, GL_CONSTANT_ALPHA, and GL_ONE_MINUS_CONSTANT_ALPHA. The initial value is GL_ZERO. 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LESS);
 	}
 
 	void OpenGLRendererAPI::SetClearColor(const vec4& color)

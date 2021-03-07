@@ -8,11 +8,21 @@
 
 
 #include <glm/glm.hpp>
+#include <algorithm>
+#include <glad/glad.h>
 
 using namespace glm;
+using namespace std;
 
 namespace Hare
 {
+	struct DrawElements
+	{
+		TransformComponent Transform;
+		SpriteRendererComponent Sprite;
+		int RedID;
+	};
+
 	Scene::Scene()
 	{
 	}
@@ -85,6 +95,7 @@ namespace Hare
 		// Render
 		Camera* mainCamera = nullptr;
 		glm::mat4 mainCameraTransform;
+		glm::vec3 mainCameraPosition;
 		{
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view)
@@ -95,6 +106,7 @@ namespace Hare
 				{
 					mainCamera = &cameraRef.Camera;
 					mainCameraTransform = transformRef.GetTransform();
+					mainCameraPosition = transformRef.Translation;
 					break;
 				}
 			}
@@ -102,16 +114,38 @@ namespace Hare
 
 		if (mainCamera)
 		{
+			// We need to render the object following those steps:
+			// * Draw all opaque object first.
+			// * Sort all transparent objects.
+			// * Draw all transparent objects in order.
+
 			Renderer2D::BeginScene(*mainCamera, mainCameraTransform);
 
-			// Search multiple component inside the registry.
+			// I choose to use a map to order the transparency because it order automatically the keys when assigned.
+			map<float, DrawElements> sorted;
+
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+
 			for (auto entity : group)
 			{
-				// Get the reference to transform component
-				auto [transfromRef, spriteRef] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-				Renderer2D::DrawSprite(transfromRef.GetTransform(), spriteRef, (int)entity);
+				// Check if it has a texture. If it is so add it to the map 
+				if (sprite.ToggleTexture)
+				{
+					float distance = glm::length(mainCameraPosition - transform.Translation);
+					sorted[distance] = { transform, sprite, (int)entity };
+				}
+				// Render it normally
+				else
+				{
+					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+				}
+			}
+
+			for (auto it = sorted.rbegin(); it != sorted.rend(); ++it)
+			{
+				Renderer2D::DrawSprite(it->second.Transform.GetTransform(), it->second.Sprite, it->second.RedID);
 			}
 
 			Renderer2D::EndScene();
@@ -121,14 +155,38 @@ namespace Hare
 
 	void Scene::OnUpdateEditor(DeltaTime dt, EditorCamera& camera)
 	{
+		// We need to render the object following those steps:
+		// * Draw all opaque object first.
+		// * Sort all transparent objects.
+		// * Draw all transparent objects in order.
+
 		Renderer2D::BeginScene(camera);
 
+		// I choose to use a map to order the transparency because it order automatically the keys when assigned.
+		map<float, DrawElements> sorted;
+
 		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+		
 		for (auto entity : group)
 		{
 			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-			Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+			// Check if it has a texture. If it is so add it to the map 
+			if (sprite.ToggleTexture)
+			{
+				float distance = glm::length(camera.GetPosition() - transform.Translation);
+				sorted[distance] = { transform, sprite, (int)entity };
+			}
+			// Render it normally
+			else
+			{
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+			}
+		}
+
+		for (auto it = sorted.rbegin(); it != sorted.rend(); ++it)
+		{
+			Renderer2D::DrawSprite(it->second.Transform.GetTransform(), it->second.Sprite, it->second.RedID);
 		}
 
 		Renderer2D::EndScene();
